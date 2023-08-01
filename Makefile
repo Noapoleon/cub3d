@@ -9,7 +9,9 @@ LIBDIR	=	libs
 RM	=	rm -rf
 
 # Files
-SRCS	:=	main.c
+SRCS	:=	main.c \
+			setup.c \
+			utils_error.c
 OBJS	:=	$(SRCS:.c=.o)
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCS))
 OBJS	:=	$(addprefix $(OBJDIR)/, $(OBJS))
