@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 17:48:35 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/12 18:56:22 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/08/14 04:40:11 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,11 @@ void	ft_putnbr_fd(int n, int fd);
 // BONUS
 typedef struct s_list
 {
-	void			*content;
+	void			*data;
 	struct s_list	*next;
 }				t_list;
 
-t_list	*ft_lstnew(void *content);
+t_list	*ft_lstnew(void *data);
 void	ft_lstadd_front(t_list **lst, t_list *new);
 int		ft_lstsize(t_list *lst);
 t_list	*ft_lstlast(t_list *lst);
@@ -210,4 +210,5 @@ int		ft_abs(int n);
 int		ft_min(int a, int b);
 int		ft_max(int a, int b);
 int		ft_numlen(int n);
+void	ft_lstrev(t_list **lst);
 #endif

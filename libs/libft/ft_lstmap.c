@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/13 17:33:09 by nlegrand          #+#    #+#             */
-/*   Updated: 2022/09/15 01:29:25 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/08/14 04:35:33 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 			prev = tmp;
 			if (beg == NULL)
 				beg = tmp;
-			tmp->content = (*f)(lst->content);
+			tmp->data = (*f)(lst->data);
 			lst = lst->next;
 		}
 		tmp->next = NULL;

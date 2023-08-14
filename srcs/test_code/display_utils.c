@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstclear.c                                      :+:      :+:    :+:   */
+/*   display_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/13 17:22:02 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/14 04:35:33 by nlegrand         ###   ########.fr       */
+/*   Created: 2023/08/14 05:20:42 by nlegrand          #+#    #+#             */
+/*   Updated: 2023/08/14 05:22:36 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "cub3d.h"
 
-void	ft_lstclear(t_list **lst, void (*del)(void *))
+void	show_map(t_list *lst)
 {
-	t_list	*curr;
-	t_list	*tmp;
+	t_list	*cur;
 
-	if (lst && *lst && del)
+	cur = lst;
+	while (cur)
 	{
-		curr = *lst;
-		while (curr != NULL)
-		{
-			tmp = curr;
-			curr = curr->next;
-			(*del)(tmp->data);
-			free(tmp);
-		}
-		*lst = NULL;
+		printf("%s", (char *)(cur->data));
+		cur = cur->next;
 	}
 }

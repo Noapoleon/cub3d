@@ -1,32 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstclear.c                                      :+:      :+:    :+:   */
+/*   ft_lstrev.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/13 17:22:02 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/14 04:35:33 by nlegrand         ###   ########.fr       */
+/*   Created: 2023/08/14 04:36:56 by nlegrand          #+#    #+#             */
+/*   Updated: 2023/08/14 04:49:31 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstclear(t_list **lst, void (*del)(void *))
+// Reverses a chained list
+void	ft_lstrev(t_list **lst)
 {
+	t_list	*prev;
 	t_list	*curr;
-	t_list	*tmp;
+	t_list	*next;
 
-	if (lst && *lst && del)
+	if (lst == NULL || *lst == NULL)
+		return ;
+	prev = NULL;
+	curr = *lst;
+	while (curr)
 	{
-		curr = *lst;
-		while (curr != NULL)
-		{
-			tmp = curr;
-			curr = curr->next;
-			(*del)(tmp->data);
-			free(tmp);
-		}
-		*lst = NULL;
+		next = curr->next;
+		curr->next = prev;
+		prev = curr;
+		curr = next;
 	}
+	*lst = prev;
 }

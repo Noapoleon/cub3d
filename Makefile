@@ -7,11 +7,20 @@ LIBDIR	=	libs
 
 # Other
 RM	=	rm -rf
+# Colors
+COL_FRONT	=	\033[44;37;1m
+COL_BACK	=	\033[7m
+COL_ERR		=	\033[41;37;5;1m
+COL_OK		=	\033[32;1m
+COL_RESET	=	\033[0m
 
 # Files
 SRCS	:=	main.c \
 			setup.c \
-			utils_error.c
+			parser.c \
+			utils.c \
+			utils_error.c \
+			test_code/display_utils.c
 OBJS	:=	$(SRCS:.c=.o)
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCS))
 OBJS	:=	$(addprefix $(OBJDIR)/, $(OBJS))
@@ -57,4 +66,23 @@ bonus: all
 
 -include $(OBJS:.o=.d)
 
-.PHONY: all clean fclean re bonus
+norm:
+	@echo -e "$(COL_FRONT)              $(COL_RESET)"
+	@echo -e "$(COL_FRONT)  LIBS NORM:  $(COL_BACK)  $(COL_RESET)"
+	@echo -e "$(COL_FRONT)              $(COL_BACK)  $(COL_RESET)"
+	@echo -e " $(COL_BACK)               $(COL_RESET)"
+	@norminette $(LIBDIR)/libft | awk '{if ($$NF == "OK!") { print "$(COL_OK)"$$0"$(COL_RESET)" } else if ($$NF == "Error!") { print "$(COL_ERR)"$$0"$(COL_RESET)" } else { print }}'
+	@echo -e "\n"
+	@echo -e "$(COL_FRONT)              $(COL_RESET)"
+	@echo -e "$(COL_FRONT)  SRCS NORM:  $(COL_BACK)  $(COL_RESET)"
+	@echo -e "$(COL_FRONT)              $(COL_BACK)  $(COL_RESET)"
+	@echo -e " $(COL_BACK)               $(COL_RESET)"
+	@norminette $(SRCDIR) | awk '{if ($$NF == "OK!") { print "$(COL_OK)"$$0"$(COL_RESET)" } else if ($$NF == "Error!") { print "$(COL_ERR)"$$0"$(COL_RESET)" } else { print }}'
+	@echo -e "\n"
+	@echo -e "$(COL_FRONT)              $(COL_RESET)"
+	@echo -e "$(COL_FRONT)  INCS NORM:  $(COL_BACK)  $(COL_RESET)"
+	@echo -e "$(COL_FRONT)              $(COL_BACK)  $(COL_RESET)"
+	@echo -e " $(COL_BACK)               $(COL_RESET)"
+	@norminette $(INCDIR) | awk '{if ($$NF == "OK!") { print "$(COL_OK)"$$0"$(COL_RESET)" } else if ($$NF == "Error!") { print "$(COL_ERR)"$$0"$(COL_RESET)" } else { print }}'
+
+.PHONY: all clean fclean re bonus norm

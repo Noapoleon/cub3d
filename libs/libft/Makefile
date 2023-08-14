@@ -67,7 +67,9 @@ SRCS	=	ft_isalpha.c \
 			ft_abs.c \
 			ft_min.c \
 			ft_max.c \
-			ft_numlen.c
+			ft_numlen.c \
+			ft_lstrev.c
+
 OBJS	=	$(SRCS:.c=.o)
 
 .c.o:

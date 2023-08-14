@@ -1,32 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstclear.c                                      :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/13 17:22:02 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/14 04:35:33 by nlegrand         ###   ########.fr       */
+/*   Created: 2023/08/13 16:11:15 by nlegrand          #+#    #+#             */
+/*   Updated: 2023/08/13 16:17:47 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "cub3d.h"
 
-void	ft_lstclear(t_list **lst, void (*del)(void *))
+// Sets array of ints to given val
+// Assumes arr is valid and allocated
+void	set_int_arr(int *arr, int size, int val)
 {
-	t_list	*curr;
-	t_list	*tmp;
+	int	i;
 
-	if (lst && *lst && del)
-	{
-		curr = *lst;
-		while (curr != NULL)
-		{
-			tmp = curr;
-			curr = curr->next;
-			(*del)(tmp->data);
-			free(tmp);
-		}
-		*lst = NULL;
-	}
+	i = 0;
+	while (i < size)
+		arr[i++] = val;
 }
