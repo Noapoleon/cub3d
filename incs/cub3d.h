@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/14 05:21:36 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/08/21 01:02:46 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,40 +23,52 @@
 # include "libft.h"
 # include "mlx.h"
 
-# define CUB_ERR			"\e[31;7;1m[CUB3D ERROR]\e[0m "
-# define CE_SETUP			"Setup failed\n"
-# define CE_MAP_PATH_NULL	"Map path is NULL\n"
-# define CE_MAP_PATH_FORMAT	"Map path wrong format, \
+# define CUB_ERR				"Error\n"
+# define CE_SCENE_PATH_NULL		"Scene path is NULL\n"
+# define CE_SCENE_PATH_FORMAT	"Scene path wrong format, \
 file name must end with '.map'\n"
-# define CE_MAP_DIRECTORY	"Map path is a directory\n"
-# define CE_MAP_OPEN		"Failed to open map: %s: %s\n"
-# define CE_MAP_READ		"Failed to read map: %s\n\n"
-# define CE_MAP_LINE		"Map parsing error at line %d: %s\n"
+# define CE_SCENE_DIRECTORY		"Scene path is a directory\n"
+# define CE_SCENE_OPEN			"Failed to open scene: %s: %s\n"
+# define CE_SCENE_READ			"Failed to read scene: %s\n\n"
+# define CE_SCENE_LINE			"Scene parsing error at line %d: %s\n"
+# define CE_SCENE_EMPTY			"Scene is empty"
+# define CE_TEXTURE_PATH		"Invalid texture path"
+# define CE_TEXTURE_DUP			"Duplicate texture assignment"
+# define CE_PROP_UNKNOWN		"Unknown property"
+# define CE_MAP_NONE			"No map found in scene"
+# define CE_MAP_UNKOWN_OPT		"Unknown scene option"
 
+typedef struct s_props	t_props;
 typedef struct s_map	t_map;
 typedef struct s_player	t_player;
 typedef struct s_cub	t_cub;
 
-struct s_map
+struct s_props
 {
-	int		**blocks;
-	int		col_flr[3];
-	int		col_cil[3];
 	// not sure how to store images yet, probably an mlx thing
 	// but for now let's just store the path
 	char	*no;
 	char	*so;
 	char	*we;
 	char	*ea;
+	int		col_f[3];
+	int		col_c[3];
+};
+struct s_map
+{
+	int		w;
+	int		h;
+	int		**blocks;
 };
 struct s_player
 {
-	double	x;
-	double	y;
-	long	rot;
+	float	x;
+	float	y;
+	float	rot;
 };
 struct s_cub
 {
+	t_props		props;
 	t_map		map;
 	t_player	player;
 
@@ -70,16 +82,19 @@ int		setup_cub(t_cub *cub, int ac, char **av);
 // ------ //
 // PARSER //
 // ------ //
-int		parse_map(t_cub *cub, const char *map_path);
+int		parse_scene(t_cub *cub, const char *map_path);
+char	*get_line_start(char *line);
+int		has_all_props(t_props *props);
 
 // ----- //
 // UTILS //
 // ----- //
 void	set_int_arr(int *arr, int size, int val);
-// error
-void	print_err(char *err);
+void	free_props(t_props *props);
+void	free_cub(t_cub *cub);
 
 // TEST CODE REMOVE LATER -------------------------------------------------------
 void	show_map(t_list *lst);
+void	display_scene(t_cub *cub);
 
 #endif

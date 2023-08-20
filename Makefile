@@ -18,8 +18,8 @@ COL_RESET	=	\033[0m
 SRCS	:=	main.c \
 			setup.c \
 			parser.c \
+			parser2.c \
 			utils.c \
-			utils_error.c \
 			test_code/display_utils.c
 OBJS	:=	$(SRCS:.c=.o)
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCS))
@@ -29,7 +29,7 @@ LIBS	:=	libft.a \
 LIBS	:=	$(addprefix $(LIBDIR)/, $(LIBS))
 
 # Compiler Options
-CC		=	cc
+CC		=	cc -g
 #CFLAGS	=	-Wall -Wextra -Werror -MD
 CFLAGS	=	-Wall -Wextra -Werror -MD -g -gdwarf-4
 CINCS	=	-I./$(INCDIR) -I./$(LIBDIR)/libft -I./$(LIBDIR)/libmlx
@@ -64,6 +64,9 @@ re: fclean all
 
 bonus: all
 
+tags:
+	ctags -R $(SRCDIR) $(INCDIR) $(LIBDIR)
+
 -include $(OBJS:.o=.d)
 
 norm:
@@ -85,4 +88,4 @@ norm:
 	@echo -e " $(COL_BACK)               $(COL_RESET)"
 	@norminette $(INCDIR) | awk '{if ($$NF == "OK!") { print "$(COL_OK)"$$0"$(COL_RESET)" } else if ($$NF == "Error!") { print "$(COL_ERR)"$$0"$(COL_RESET)" } else { print }}'
 
-.PHONY: all clean fclean re bonus norm
+.PHONY: all clean fclean re bonus norm tags

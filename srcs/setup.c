@@ -6,34 +6,55 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:45:29 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/14 04:59:19 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/08/21 00:29:43 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+// Initializes properties variables to default values
+static void	init_vars_props(t_props *props)
+{
+	set_int_arr(props->col_f, 3, -1);
+	set_int_arr(props->col_c, 3, -1);
+	props->no = NULL;
+	props->so = NULL;
+	props->we = NULL;
+	props->ea = NULL;
+}
+
+// Initializes map variables to default values
+static void	init_vars_map(t_map *map)
+{
+	map->w = -1;
+	map->h = -1;
+	map->blocks = NULL;
+}
+
+// Initializes player variables to default values
+static void	init_vars_player(t_player *player)
+{
+	player->x = 0.0;
+	player->y = 0.0;
+	player->rot = 0;
+}
+
 // Put all vars to initial values
 static void	init_vars(t_cub *cub)
 {
-	cub->map.blocks = NULL;
-	set_int_arr(cub->map.col_flr, 3, -1);
-	set_int_arr(cub->map.col_cil, 3, -1);
-	cub->map.no = NULL;
-	cub->map.so = NULL;
-	cub->map.we = NULL;
-	cub->map.ea = NULL;
-	cub->player.x = 0.0;
-	cub->player.y = 0.0;
-	cub->player.rot = 0;
+	init_vars_props(&cub->props);
+	init_vars_map(&cub->map);
+	init_vars_player(&cub->player);
 }
 
-// Reads maps, allocates resources and sets up the player
+// Reads scene, allocates resources and sets up the player
 int	setup_cub(t_cub *cub, int ac, char **av)
 {
 	if (ac != 2)
-		return (ft_dprintf(STDERR_FILENO, "Usage: %s <map.cub>\n", av[0]), -1);
+		return (ft_dprintf(STDERR_FILENO, "Usage: %s <scene.cub>\n", av[0]), -1);
 	init_vars(cub);
-	if (parse_map(cub, av[1]) == -1)
+	if (parse_scene(cub, av[1]) == -1)
 		return (-1);
+	display_scene(cub);
 	return (0);
 }

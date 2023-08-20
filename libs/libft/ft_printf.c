@@ -6,7 +6,7 @@
 /*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 19:25:46 by nlegrand          #+#    #+#             */
-/*   Updated: 2022/11/25 15:50:18 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/08/20 18:23:16 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,17 @@ int	ft_dprintf(int fd, const char *s, ...)
 
 	va_start(valist, s);
 	ret = ft_vdprintf(fd, s, valist);
+	va_end(valist);
+	return (ret);
+}
+
+int	ft_perr(const char *s, ...)
+{
+	va_list	valist;
+	int		ret;
+
+	va_start(valist, s);
+	ret = ft_vdprintf(STDERR_FILENO, s, valist);
 	va_end(valist);
 	return (ret);
 }
