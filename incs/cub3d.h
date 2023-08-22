@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/21 01:02:46 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/08/22 03:58:33 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,26 +22,17 @@
 # include <string.h>
 # include "libft.h"
 # include "mlx.h"
+# include "cub3d_err.h"
 
-# define CUB_ERR				"Error\n"
-# define CE_SCENE_PATH_NULL		"Scene path is NULL\n"
-# define CE_SCENE_PATH_FORMAT	"Scene path wrong format, \
-file name must end with '.map'\n"
-# define CE_SCENE_DIRECTORY		"Scene path is a directory\n"
-# define CE_SCENE_OPEN			"Failed to open scene: %s: %s\n"
-# define CE_SCENE_READ			"Failed to read scene: %s\n\n"
-# define CE_SCENE_LINE			"Scene parsing error at line %d: %s\n"
-# define CE_SCENE_EMPTY			"Scene is empty"
-# define CE_TEXTURE_PATH		"Invalid texture path"
-# define CE_TEXTURE_DUP			"Duplicate texture assignment"
-# define CE_PROP_UNKNOWN		"Unknown property"
-# define CE_MAP_NONE			"No map found in scene"
-# define CE_MAP_UNKOWN_OPT		"Unknown scene option"
+typedef struct e_blocktype	t_blocktype;
+typedef struct s_props		t_props;
+typedef struct s_map		t_map;
+typedef struct s_player		t_player;
+typedef struct s_cub		t_cub;
 
-typedef struct s_props	t_props;
-typedef struct s_map	t_map;
-typedef struct s_player	t_player;
-typedef struct s_cub	t_cub;
+# define T_NONE	-1
+# define T_AIR	0
+# define T_WALL	1
 
 struct s_props
 {
@@ -58,7 +49,8 @@ struct s_map
 {
 	int		w;
 	int		h;
-	int		**blocks;
+	int		x_offset;
+	int		**tiles;
 };
 struct s_player
 {
@@ -83,14 +75,18 @@ int		setup_cub(t_cub *cub, int ac, char **av);
 // PARSER //
 // ------ //
 int		parse_scene(t_cub *cub, const char *map_path);
-char	*get_line_start(char *line);
+char	*get_line_start(const char *line);
+char	*get_line_end(const char *line);
 int		has_all_props(t_props *props);
+int		is_map_str(const char *s);
+void	print_missing_props(t_props *prop);
 
 // ----- //
 // UTILS //
 // ----- //
 void	set_int_arr(int *arr, int size, int val);
 void	free_props(t_props *props);
+void	free_map(t_map *map);
 void	free_cub(t_cub *cub);
 
 // TEST CODE REMOVE LATER -------------------------------------------------------

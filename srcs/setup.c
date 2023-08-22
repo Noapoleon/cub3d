@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:45:29 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/21 00:29:43 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/08/22 03:59:10 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,16 @@ static void	init_vars_map(t_map *map)
 {
 	map->w = -1;
 	map->h = -1;
-	map->blocks = NULL;
+	map->x_offset = -1;
+	map->tiles = NULL;
 }
 
 // Initializes player variables to default values
 static void	init_vars_player(t_player *player)
 {
-	player->x = 0.0;
-	player->y = 0.0;
-	player->rot = 0;
+	player->x = -1.0f;
+	player->y = -1.0f;
+	player->rot = -1.0f;
 }
 
 // Put all vars to initial values
