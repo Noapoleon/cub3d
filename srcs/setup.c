@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:45:29 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/22 03:59:10 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/08/23 05:37:57 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	setup_cub(t_cub *cub, int ac, char **av)
 	if (ac != 2)
 		return (ft_dprintf(STDERR_FILENO, "Usage: %s <scene.cub>\n", av[0]), -1);
 	init_vars(cub);
-	if (parse_scene(cub, av[1]) == -1)
+	if (parse_scene(cub, av[1]) != 0)
 		return (-1);
 	display_scene(cub);
 	return (0);

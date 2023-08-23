@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 16:18:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/22 04:25:17 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/08/23 05:51:28 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ static int	get_props(t_props *props, t_list **cur, int *count)
 	while (*cur && !has_all_props(props))
 	{
 		tmp = get_line_start((*cur)->data);
-		if (tmp[0] != '\0' && get_prop(props, tmp, *count) == -1) // CHECK AGAIN FOR OTHER OUTCOMES
+		if (tmp[0] != '\0' && get_prop(props, tmp, *count) != 0) // CHECK AGAIN FOR OTHER OUTCOMES
 			return (free_props(props), -1);
 		++(*count);
 		*cur = (*cur)->next;
@@ -262,7 +262,7 @@ static int	fill_map(t_map *map, t_player *player, t_list *cur, int count)
 		{
 			c = ((char *)cur->data)[map->x_offset + x];
 			map->tiles[y][x] = get_tile_val(c);
-			if (ft_isalpha(c) && set_player(player, x, y, c) == -1)
+			if (ft_isalpha(c) && set_player(player, x, y, c) != 0)
 				return (ft_perr(CUB_ERR CE_SCENE_LINE, count, CE_PLAYER_DUP),
 						-1);
 			++x;
@@ -272,6 +272,41 @@ static int	fill_map(t_map *map, t_player *player, t_list *cur, int count)
 	}
 	if (player->x == -1.0f)
 		return (ft_perr(CUB_ERR CE_PLAYER_NONE), -1);
+	return (0);
+}
+
+static int	check_airtile_surround(t_map *map, int x, int y)
+{
+	int	**tiles;
+
+	tiles = map->tiles;
+	if (x == 0 || x == map->w - 1 || y == 0 || y == map->h - 1)
+		return (-1);
+	if (tiles[y][x - 1] == -1 || tiles[y][x + 1] == -1)
+		return (-1);
+	if (tiles[y - 1][x] == -1 || tiles[y + 1][x] == -1)
+		return (-1);
+	return (0);
+}
+
+static int	check_map(t_map *map, int count)
+{
+	int		x;
+	int		y;
+
+	y = 0;
+	while (y < map->h)
+	{
+		++count;
+		x = 0;
+		while (x < map->w)
+		{
+			if (map->tiles[y][x] == 0 && check_airtile_surround(map, x, y) != 0)
+				return (ft_perr(CUB_ERR CE_SCENE_LINE, count, CE_MAP_BAD), -1);
+			++x;
+		}
+		++y;
+	}
 	return (0);
 }
 
@@ -292,8 +327,8 @@ static int	get_map(t_map *map, t_player *player, t_list *cur, int count)
 		return (-1);
 	if (fill_map(map, player, cur, count) != 0)
 		return (free_map(map), -1);
-	//if (check_map(map, count) == -1)
-	//	return (free_map(map), -1); // free_allocated map
+	if (check_map(map, count) != 0)
+		return (free_map(map), -1); // free_allocated map
 	return (0);
 }
 
@@ -323,7 +358,7 @@ int	parse_scene(t_cub *cub, const char *map_path)
 {
 	t_list	*lines;
 
-	if (check_map_path(map_path) == -1)
+	if (check_map_path(map_path) != 0)
 		return (-1);
 	lines = NULL;
 	if (read_map_file(map_path, &lines) != 0)
