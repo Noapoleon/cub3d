@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/22 03:58:33 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/08/26 19:40:44 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,40 @@
 # include <string.h>
 # include "libft.h"
 # include "mlx.h"
+# include "mlx_int.h"
 # include "cub3d_err.h"
 
-typedef struct e_blocktype	t_blocktype;
+// SETTINGS
+# define T_NONE		-1
+# define T_AIR		0
+# define T_WALL		1
+# define W_WIDTH	1920
+# define W_HEIGHT	1080
+# define W_TITLE	"cub3d"
+
+typedef struct s_imgbuf		t_imgbuf;
+typedef struct s_mlx		t_mlx;
 typedef struct s_props		t_props;
 typedef struct s_map		t_map;
 typedef struct s_player		t_player;
 typedef struct s_cub		t_cub;
 
-# define T_NONE	-1
-# define T_AIR	0
-# define T_WALL	1
-
+struct	s_imgbuf
+{
+	void	*ptr;
+	char	*addr;
+	int		bpp;
+	int		ll;
+	int		endian;
+};
+struct s_mlx
+{
+	void		*ptr;
+	void		*win;
+	t_imgbuf	img;
+	int			w;
+	int			h;
+};
 struct s_props
 {
 	// not sure how to store images yet, probably an mlx thing
@@ -57,40 +79,75 @@ struct s_player
 	float	x;
 	float	y;
 	float	rot;
+	float	speed[2];
 };
 struct s_cub
 {
 	t_props		props;
 	t_map		map;
 	t_player	player;
-
+	t_mlx		mlx;
+	int			redraw;
 };
+
+// MAIN //
+int		loop_hook(t_cub *cub);
 
 // ----- //
 // SETUP //
 // ----- //
+// setup.c
 int		setup_cub(t_cub *cub, int ac, char **av);
+// setup_init.c
+void	init_vars(t_cub *cub);
+// setup_mlx.c
+int		setup_mlx(t_cub *cub, t_mlx *mlx);
 
 // ------ //
 // PARSER //
 // ------ //
+// parser.c
 int		parse_scene(t_cub *cub, const char *map_path);
+// parser_read.c
+int		check_map_path(const char *map_path);
+int		read_map_file(const char *map_path, t_list **lines);
+// parser_props.c
+int		get_props(t_props *props, t_list **cur, int *count);
+// parser_map.c
+int		get_map(t_map *map, t_player *player, t_list *cur, int count);
+// parser_utils.c
 char	*get_line_start(const char *line);
 char	*get_line_end(const char *line);
 int		has_all_props(t_props *props);
 int		is_map_str(const char *s);
 void	print_missing_props(t_props *prop);
+int		get_tile_val(char c);
+int		check_airtile_surround(t_map *map, int x, int y);
+void	alloc_map_size(t_map *map, int width, int height);
 
 // ----- //
 // UTILS //
 // ----- //
+// utils1.c
 void	set_int_arr(int *arr, int size, int val);
 void	free_props(t_props *props);
 void	free_map(t_map *map);
+void	free_mlx(t_mlx *mlx);
 void	free_cub(t_cub *cub);
+// utils2.c
+void	clear_img(t_cub *cub, int col);
 
 // TEST CODE REMOVE LATER -------------------------------------------------------
 void	show_map(t_list *lst);
 void	display_scene(t_cub *cub);
+void	view_map(t_cub *cub);
+void	draw_square(t_cub *cub, int pos[2], int size, int col);
+void	my_pixel_put(t_cub *cub, int pos[2], int col);
+
+// Features                                                                    remove
+// w a s d	: move
+// m		: toggle map
+// mouse	: look around
+// add ifndef for mac and dell keys
 
 #endif

@@ -1,40 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/31 15:33:01 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/26 20:14:00 by nlegrand         ###   ########.fr       */
+/*   Created: 2023/08/26 19:10:09 by nlegrand          #+#    #+#             */
+/*   Updated: 2023/08/26 19:18:40 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// Useless function
-int	main(int ac, char **av)
+// Clears all the pixels of the image buffer to the specified color
+void	clear_img(t_cub *cub, int col)
 {
-	t_cub	cub;
+	// move in subfolder for graphics things later
+	// replace with function that clears with ceiling and floor colors
+	int		x;
+	int		y;
 
-	errno = 0;
-	if (setup_cub(&cub, ac, av) != 0)
-		return (1);
-	mlx_loop(cub.mlx.ptr);
-	free_cub(&cub);
-	return (0);
-}
-
-// main game loop
-int	loop_hook(t_cub *cub)
-{
-	if (cub->redraw)
+	y = 0;
+	while (y < cub->mlx.h)
 	{
-		clear_img(cub, 0);
-		view_map(cub);
-		mlx_put_image_to_window(cub->mlx.ptr, cub->mlx.win, cub->mlx.img.ptr,
-				0, 0);
-		cub->redraw = 0;
+		x = 0;
+		while (x < cub->mlx.w)
+		{
+			my_pixel_put(cub, (int[2]){x, y}, col);
+			++x;
+		}
+		++y;
 	}
-	return (0);
 }

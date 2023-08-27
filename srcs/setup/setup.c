@@ -1,40 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   setup.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/31 15:33:01 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/26 20:14:00 by nlegrand         ###   ########.fr       */
+/*   Created: 2023/08/01 17:45:29 by nlegrand          #+#    #+#             */
+/*   Updated: 2023/08/24 17:28:41 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// Useless function
-int	main(int ac, char **av)
+// Reads scene, allocates resources and sets up the player
+int	setup_cub(t_cub *cub, int ac, char **av)
 {
-	t_cub	cub;
-
-	errno = 0;
-	if (setup_cub(&cub, ac, av) != 0)
-		return (1);
-	mlx_loop(cub.mlx.ptr);
-	free_cub(&cub);
-	return (0);
-}
-
-// main game loop
-int	loop_hook(t_cub *cub)
-{
-	if (cub->redraw)
-	{
-		clear_img(cub, 0);
-		view_map(cub);
-		mlx_put_image_to_window(cub->mlx.ptr, cub->mlx.win, cub->mlx.img.ptr,
-				0, 0);
-		cub->redraw = 0;
-	}
+	// check W_WIDHT AND W_HEIGHT for bad values
+	if (ac != 2)
+		return (ft_dprintf(STDERR_FILENO, "Usage: %s <scene.cub>\n", av[0]), -1);
+	init_vars(cub);
+	if (parse_scene(cub, av[1]) != 0)
+		return (-1);
+	if (setup_mlx(cub, &cub->mlx) != 0)
+		return (free_props(&cub->props), free_map(&cub->map), -1);
 	return (0);
 }

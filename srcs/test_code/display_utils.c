@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 05:20:42 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/22 04:05:52 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/08/26 19:21:00 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,74 @@ void	display_scene(t_cub *cub)
 	printf("x_offset -> %d\n", cub->map.x_offset);
 	display_map(&cub->map);
 	printf("\n### SCENE END ###\n");
+}
+
+// Substitue function for mlx_pixel_put
+// Writes pixels into the image buffer instead of directly to the screen for
+// much better performance
+void	my_pixel_put(t_cub *cub, int pos[2], int col)
+{
+	char	*dst;
+
+	if (pos[0] >= 0 && pos[0] < cub->mlx.w
+			&& pos[1] >= 0 && pos[1] < cub->mlx.h)
+	{
+		dst = cub->mlx.img.addr +
+			(pos[1] * cub->mlx.img.ll + pos[0] * (cub->mlx.img.bpp / 8));
+		*(unsigned int *)dst = col;
+	}
+}
+
+void	draw_square(t_cub *cub, int pos[2], int size, int col)
+{
+	int	i;
+	int	j;
+
+	if (size < 0)
+		return ;
+	j = 0;
+	while (j < size)
+	{
+		i = 0;
+		while (i < size)
+		{
+			my_pixel_put(cub, (int[2]){pos[0] + i, pos[1] + j}, col);
+			++i;
+		}
+		++j;
+	}
+}
+
+void	view_map(t_cub *cub)
+{
+	t_map		*map;
+	int			i;
+	int			j;
+	int			pos[2];
+	const int	size = 50;
+
+	map = &cub->map;
+	j = 0;
+	while (j < map->h)
+	{
+		i = 0;
+		while (i < map->w)
+		{
+			if (map->tiles[j][i] == 1)
+			{
+				//pos[0] = size * i + i;
+				//pos[1] = size * j + j;
+				pos[0] = size * i;
+				pos[1] = size * j;
+				draw_square(cub, pos, size, 0x00ff0000);
+			}
+			++i;
+		}
+		++j;
+	}
+
+	float useless;
+	pos[0] = (int)cub->player.x * size + (int)(modff(cub->player.x, &useless) * (float)size);
+	pos[1] = (int)cub->player.y * size + (int)(modff(cub->player.y, &useless) * (float)size);
+	draw_square(cub, pos, 5, 0x0000ff00);
 }

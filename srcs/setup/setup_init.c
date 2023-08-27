@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   setup.c                                            :+:      :+:    :+:   */
+/*   setup_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/01 17:45:29 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/23 05:37:57 by nlegrand         ###   ########.fr       */
+/*   Created: 2023/08/24 15:52:56 by nlegrand          #+#    #+#             */
+/*   Updated: 2023/08/24 22:00:45 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,27 @@ static void	init_vars_player(t_player *player)
 	player->rot = -1.0f;
 }
 
+// Initializes mlx variables to default values
+static void	init_vars_mlx(t_mlx *mlx)
+{
+	mlx->ptr = NULL;
+	mlx->win = NULL;
+	mlx->img.ptr = NULL;
+	mlx->img.addr = NULL;
+	mlx->img.bpp = 0;
+	mlx->img.ll = 0;
+	mlx->img.endian = 0;
+	mlx->w = -1;
+	mlx->h = -1;
+}
+
 // Put all vars to initial values
-static void	init_vars(t_cub *cub)
+void	init_vars(t_cub *cub)
 {
 	init_vars_props(&cub->props);
 	init_vars_map(&cub->map);
 	init_vars_player(&cub->player);
+	init_vars_mlx(&cub->mlx);
+	cub->redraw = 0;
 }
 
-// Reads scene, allocates resources and sets up the player
-int	setup_cub(t_cub *cub, int ac, char **av)
-{
-	if (ac != 2)
-		return (ft_dprintf(STDERR_FILENO, "Usage: %s <scene.cub>\n", av[0]), -1);
-	init_vars(cub);
-	if (parse_scene(cub, av[1]) != 0)
-		return (-1);
-	display_scene(cub);
-	return (0);
-}

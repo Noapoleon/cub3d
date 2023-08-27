@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 16:11:15 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/22 01:54:47 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/08/24 22:04:37 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,22 @@ void	free_map(t_map *map)
 	free(map->tiles);
 }
 
+void	free_mlx(t_mlx *mlx)
+{
+	if (mlx->ptr)
+	{
+		if (mlx->img.ptr)
+			mlx_destroy_image(mlx->ptr, mlx->img.ptr);
+		if (mlx->win)
+			mlx_destroy_window(mlx->ptr, mlx->win);
+		mlx_destroy_display(mlx->ptr);
+		free(mlx->ptr);
+	}
+}
+
 void	free_cub(t_cub *cub)
 {
 	free_props(&cub->props);
 	free_map(&cub->map);
+	free_mlx(&cub->mlx);
 }

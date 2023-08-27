@@ -39,7 +39,6 @@
 
 # define MLX_MAX_EVENT LASTEvent
 
-
 # define ENV_DISPLAY "DISPLAY"
 # define LOCALHOST "localhost"
 # define ERR_NO_TRUECOLOR "MinilibX Error : No TrueColor Visual available.\n"

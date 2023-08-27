@@ -16,10 +16,17 @@ COL_RESET	=	\033[0m
 
 # Files
 SRCS	:=	main.c \
-			setup.c \
-			parser.c \
-			parser2.c \
-			utils.c \
+			setup/setup.c \
+			setup/setup_init.c \
+			setup/setup_mlx.c \
+			parsing/parser.c \
+			parsing/parser_read.c \
+			parsing/parser_props.c \
+			parsing/parser_map.c \
+			parsing/parser_utils1.c \
+			parsing/parser_utils2.c \
+			utils1.c \
+			utils2.c \
 			test_code/display_utils.c
 OBJS	:=	$(SRCS:.c=.o)
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCS))
@@ -29,7 +36,7 @@ LIBS	:=	libft.a \
 LIBS	:=	$(addprefix $(LIBDIR)/, $(LIBS))
 
 # Compiler Options
-CC		=	cc -g
+CC		=	cc
 #CFLAGS	=	-Wall -Wextra -Werror -MD
 CFLAGS	=	-Wall -Wextra -Werror -MD -g -gdwarf-4
 CINCS	=	-I./$(INCDIR) -I./$(LIBDIR)/libft -I./$(LIBDIR)/libmlx

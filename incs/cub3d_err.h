@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 15:28:17 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/23 05:44:29 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/08/24 17:42:50 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,10 @@ file name must end with '.map'\n"
 # define CE_MAP_SMALL		"Map too small\n"
 # define CE_MAP_MALLOC		"Map alloc fail: %s\n"
 # define CE_PLAYER_NONE		"No player found\n"
+
+// MLX errors
+# define CE_MLX_PTR		"Failed to initialize mlx\n"
+# define CE_MLX_WIN		"Failed to create new mlx window\n"
+# define CE_MLX_IMG		"Failed to create new mlx image\n"
 
 #endif
