@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/26 19:40:44 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:13:06 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <sys/stat.h>
+# include <sys/time.h>
 # include <fcntl.h>
 # include <math.h>
 # include <errno.h>
@@ -26,13 +27,15 @@
 # include "cub3d_err.h"
 
 // SETTINGS
-# define T_NONE		-1
-# define T_AIR		0
-# define T_WALL		1
-# define W_WIDTH	1920
-# define W_HEIGHT	1080
-# define W_TITLE	"cub3d"
+# define T_NONE			-1
+# define T_AIR			0
+# define T_WALL			1
+# define W_WIDTH		1920
+# define W_HEIGHT		1080
+# define W_TITLE		"cub3d"
+# define MOUSE_SPEED	1000
 
+typedef struct s_inputs		t_inputs;
 typedef struct s_imgbuf		t_imgbuf;
 typedef struct s_mlx		t_mlx;
 typedef struct s_props		t_props;
@@ -40,7 +43,14 @@ typedef struct s_map		t_map;
 typedef struct s_player		t_player;
 typedef struct s_cub		t_cub;
 
-struct	s_imgbuf
+struct s_inputs
+{
+	int	w;
+	int	s;
+	int	a;
+	int	d;
+};
+struct s_imgbuf
 {
 	void	*ptr;
 	char	*addr;
@@ -55,6 +65,9 @@ struct s_mlx
 	t_imgbuf	img;
 	int			w;
 	int			h;
+	int			w_mid;
+	int			h_mid;
+	int			focused;
 };
 struct s_props
 {
@@ -76,10 +89,10 @@ struct s_map
 };
 struct s_player
 {
-	float	x;
-	float	y;
-	float	rot;
-	float	speed[2];
+	double	x;
+	double	y;
+	double	rot; // array vector or radian? [2] or PI?
+	//double	mov; // array vector or radian? [2] or PI?
 };
 struct s_cub
 {
@@ -87,11 +100,14 @@ struct s_cub
 	t_map		map;
 	t_player	player;
 	t_mlx		mlx;
-	int			redraw;
+	t_inputs	inputs;
+	long		dt;
 };
 
+// ---- //
 // MAIN //
-int		loop_hook(t_cub *cub);
+// ---- //
+int		game_loop(t_cub *cub);
 
 // ----- //
 // SETUP //
@@ -99,7 +115,11 @@ int		loop_hook(t_cub *cub);
 // setup.c
 int		setup_cub(t_cub *cub, int ac, char **av);
 // setup_init.c
-void	init_vars(t_cub *cub);
+void	init_vars_props(t_props *props);
+void	init_vars_map(t_map *map);
+void	init_vars_player(t_player *player);
+void	init_vars_mlx(t_mlx *mlx);
+void	init_vars_inputs(t_inputs *inputs);
 // setup_mlx.c
 int		setup_mlx(t_cub *cub, t_mlx *mlx);
 
@@ -135,14 +155,43 @@ void	free_map(t_map *map);
 void	free_mlx(t_mlx *mlx);
 void	free_cub(t_cub *cub);
 // utils2.c
-void	clear_img(t_cub *cub, int col);
+void	clear_imgbuf(t_cub *cub, int col);
+void	get_deltatime(t_cub *cub);
+void	set_player_rotation(t_mlx *mlx, t_player *player);
+
+
+// ----- //
+// HOOKS //
+// ----- //
+// hooks.c
+int		set_mlx_hooks(t_cub *cub, t_mlx *mlx);
+// hooks_keys.c
+int		keypress_hook(int keycode, t_cub *cub);
+int		keyrelease_hook(int keycode, t_cub *cub);
+// hooks_mouse.c
+int		mouse_move_hook(int x, int y, t_cub *cub);
+
+// ------- //
+// GRAHICS //
+// ------- //
+// draw_frame.c
+int		draw_frame(t_cub *cub, t_mlx *mlx, t_player *player);
+// draw_utils.c
+void	my_pixel_put(t_mlx *mlx, int pos[2], int col);
+
+// ------ //
+// INPUTS //
+// ------ //
+void	handle_inputs(t_cub *cub, t_mlx *mlx, t_player *player);
+
 
 // TEST CODE REMOVE LATER -------------------------------------------------------
 void	show_map(t_list *lst);
 void	display_scene(t_cub *cub);
-void	view_map(t_cub *cub);
+void	display_map(t_map *map);
 void	draw_square(t_cub *cub, int pos[2], int size, int col);
-void	my_pixel_put(t_cub *cub, int pos[2], int col);
+void	display_inputs(t_cub *cub, int pos[2]);
+void	display_rot(t_cub *cub, int pos[2]);
 
 // Features                                                                    remove
 // w a s d	: move

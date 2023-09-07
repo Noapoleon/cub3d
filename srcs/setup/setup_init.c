@@ -6,14 +6,14 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 15:52:56 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/24 22:00:45 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/09/07 14:00:56 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // Initializes properties variables to default values
-static void	init_vars_props(t_props *props)
+void	init_vars_props(t_props *props)
 {
 	set_int_arr(props->col_f, 3, -1);
 	set_int_arr(props->col_c, 3, -1);
@@ -24,7 +24,7 @@ static void	init_vars_props(t_props *props)
 }
 
 // Initializes map variables to default values
-static void	init_vars_map(t_map *map)
+void	init_vars_map(t_map *map)
 {
 	map->w = -1;
 	map->h = -1;
@@ -33,15 +33,16 @@ static void	init_vars_map(t_map *map)
 }
 
 // Initializes player variables to default values
-static void	init_vars_player(t_player *player)
+void	init_vars_player(t_player *player)
 {
 	player->x = -1.0f;
 	player->y = -1.0f;
-	player->rot = -1.0f;
+	player->rot = 0.0f; // set by map orientation
+	//player->mov = 0.0f; // zero should be for w
 }
 
 // Initializes mlx variables to default values
-static void	init_vars_mlx(t_mlx *mlx)
+void	init_vars_mlx(t_mlx *mlx)
 {
 	mlx->ptr = NULL;
 	mlx->win = NULL;
@@ -52,15 +53,16 @@ static void	init_vars_mlx(t_mlx *mlx)
 	mlx->img.endian = 0;
 	mlx->w = -1;
 	mlx->h = -1;
+	mlx->w_mid = -1;
+	mlx->h_mid = -1;
+	mlx->focused = 0; // maybe set to 1
 }
 
-// Put all vars to initial values
-void	init_vars(t_cub *cub)
+// Initializes inputs variables to default values
+void	init_vars_inputs(t_inputs *inputs)
 {
-	init_vars_props(&cub->props);
-	init_vars_map(&cub->map);
-	init_vars_player(&cub->player);
-	init_vars_mlx(&cub->mlx);
-	cub->redraw = 0;
+	inputs->w = 0;
+	inputs->s = 0;
+	inputs->a = 0;
+	inputs->d = 0;
 }
-

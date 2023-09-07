@@ -6,35 +6,20 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 17:20:54 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/26 19:51:07 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/09/07 16:36:57 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static int	key_hook(int keycode, t_cub *cub)
-{
-	printf("keycode -> %d\n", keycode); // remove
-	if (keycode == XK_w)
-		cub->player.y -= 1.0f;
-	if (keycode == XK_s)
-		cub->player.y += 1.0f;
-	if (keycode == XK_a)
-		cub->player.x -= 1.0f;
-	if (keycode == XK_d)
-		cub->player.x += 1.0f;
-	if (keycode == XK_Escape)
-		mlx_loop_end(cub->mlx.ptr);
-	cub->redraw = 1;
-	return (0);
-}
-
-static int	set_hooks(t_cub *cub, t_mlx *mlx)
-{
-	mlx_key_hook(mlx->win, &key_hook, cub);
-	mlx_loop_hook(mlx->ptr, &loop_hook, cub);
-	return (0);
-}
+//static void validate_pos(t_cub *cub, t_player *player, float new_pos[2])
+//{
+//	if (cub->map.tiles[(int)new_pos[1]][(int)new_pos[0]] == 0)
+//	{
+//		player->x = new_pos[0];
+//		player->y = new_pos[1];
+//	}
+//}
 
 // Uses mlx functions to open the mlx window
 // Returns 0 on success, -1 otherwise
@@ -53,7 +38,8 @@ int	setup_mlx(t_cub *cub, t_mlx *mlx)
 			&mlx->img.endian);
 	mlx->w = W_WIDTH;
 	mlx->h = W_HEIGHT;
-	set_hooks(cub, mlx);
-	mlx_do_key_autorepeaton(mlx->ptr);
+	mlx->w_mid = W_WIDTH / 2;
+	mlx->h_mid = W_HEIGHT / 2;
+	set_mlx_hooks(cub, mlx);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 16:20:00 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/26 17:07:01 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/09/07 14:10:03 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@ static int	get_texture(char **dst, const char *src, int count)
 	int	i;
 
 	if (*dst)
-		return (ft_perr(CUB_ERR CE_SCENE_LINE, count, CE_TEXTURE_DUP), -1);
+		return (ft_perr(CUB_ERR CE_LINE, count, CE_TEXTURE_DUP), -1);
 	i = 0;
 	while (src[i] != ' ')
 		++i;
 	while (src[i] == ' ')
 		++i;
 	if (src[i] == '\0')
-		return (ft_perr(CUB_ERR CE_SCENE_LINE, count, CE_TEXTURE_PATH), -1);
+		return (ft_perr(CUB_ERR CE_LINE, count, CE_TEXTURE_PATH), -1);
 	*dst = ft_strdup(src + i);
 	if (*dst == NULL)
-		return (ft_perr(CUB_ERR CE_SCENE_LINE, count, strerror(errno)), -1);
+		return (ft_perr(CUB_ERR CE_LINE, count, strerror(errno)), -1);
 	return (0);
 }
 
@@ -69,12 +69,12 @@ static int	get_color(int col[3], const char *tmp, int count)
 			++i;
 		ret = get_8bit_col(&tmp[i], &col[j]);
 		if (ret == -1)
-			return (ft_perr(CUB_ERR CE_SCENE_LINE, count, CE_COL_FORMAT), -1);
+			return (ft_perr(CUB_ERR CE_LINE, count, CE_COL_FORMAT), -1);
 		i += ret;
 		while (tmp[i] == ' ')
 			++i;
 		if (j != 2 && tmp[i++] != ',')
-			return (ft_perr(CUB_ERR CE_SCENE_LINE, count, CE_COL_FORMAT), -1);
+			return (ft_perr(CUB_ERR CE_LINE, count, CE_COL_FORMAT), -1);
 		++j;
 	}
 	return (0);
@@ -98,10 +98,10 @@ static int	get_prop(t_props *props, const char *tmp, int count)
 	else
 	{
 		if (is_map_str(tmp))
-			return (ft_perr(CUB_ERR CE_SCENE_LINE, count, CE_PROP_MAP),
+			return (ft_perr(CUB_ERR CE_LINE, count, CE_PROP_MAP),
 					print_missing_props(props), -1);
 		else
-			return (ft_perr(CUB_ERR CE_SCENE_LINE, count, CE_PROP_UNKNOWN), -1);
+			return (ft_perr(CUB_ERR CE_LINE, count, CE_PROP_UNKNOWN), -1);
 	}
 }
 

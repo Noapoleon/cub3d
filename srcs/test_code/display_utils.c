@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 05:20:42 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/26 19:21:00 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/09/07 17:30:05 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,22 +73,6 @@ void	display_scene(t_cub *cub)
 	printf("\n### SCENE END ###\n");
 }
 
-// Substitue function for mlx_pixel_put
-// Writes pixels into the image buffer instead of directly to the screen for
-// much better performance
-void	my_pixel_put(t_cub *cub, int pos[2], int col)
-{
-	char	*dst;
-
-	if (pos[0] >= 0 && pos[0] < cub->mlx.w
-			&& pos[1] >= 0 && pos[1] < cub->mlx.h)
-	{
-		dst = cub->mlx.img.addr +
-			(pos[1] * cub->mlx.img.ll + pos[0] * (cub->mlx.img.bpp / 8));
-		*(unsigned int *)dst = col;
-	}
-}
-
 void	draw_square(t_cub *cub, int pos[2], int size, int col)
 {
 	int	i;
@@ -102,7 +86,7 @@ void	draw_square(t_cub *cub, int pos[2], int size, int col)
 		i = 0;
 		while (i < size)
 		{
-			my_pixel_put(cub, (int[2]){pos[0] + i, pos[1] + j}, col);
+			my_pixel_put(&cub->mlx, (int[2]){pos[0] + i, pos[1] + j}, col);
 			++i;
 		}
 		++j;
@@ -141,4 +125,29 @@ void	view_map(t_cub *cub)
 	pos[0] = (int)cub->player.x * size + (int)(modff(cub->player.x, &useless) * (float)size);
 	pos[1] = (int)cub->player.y * size + (int)(modff(cub->player.y, &useless) * (float)size);
 	draw_square(cub, pos, 5, 0x0000ff00);
+}
+
+void display_inputs(t_cub *cub, int pos[2])
+{
+	t_inputs *inputs = &cub->inputs;
+	int	size = 60;
+
+	if (inputs->w)
+		draw_square(cub, (int[2]){pos[0] + size, pos[1]}, size, 0x00ff0000);
+	if (inputs->s)
+		draw_square(cub, (int[2]){pos[0] + size, pos[1] + size}, size, 0x00ff0000);
+	if (inputs->a)
+		draw_square(cub, (int[2]){pos[0], pos[1] + size}, size, 0x00ff0000);
+	if (inputs->d)
+		draw_square(cub, (int[2]){pos[0] + size * 2, pos[1] + size}, size, 0x00ff0000);
+}
+
+void	display_rot(t_cub *cub, int pos[2])
+{
+	double size = 200.0;
+
+	draw_square(cub, pos, 10, 0x0000ff00);
+	pos[0] += cos(cub->player.rot) * size;
+	pos[1] += sin(cub->player.rot) * size;
+	draw_square(cub, pos, 10, 0x00ff0000);
 }
