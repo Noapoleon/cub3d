@@ -6,26 +6,13 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 05:20:42 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/09/07 17:30:05 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/09/14 20:19:58 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	show_map(t_list *lst)
-{
-	t_list	*cur;
-
-	cur = lst;
-	while (cur)
-	{
-		printf("%s\n", (char *)(cur->data));
-		cur = cur->next;
-	}
-}
-
-
-void	display_map(t_map *map)
+void	write_map(t_map *map)
 {
 	int x = 0;
 	int y = 0;
@@ -69,7 +56,7 @@ void	display_scene(t_cub *cub)
 	printf("\nMap:\n");
 	printf("w -> %d, h -> %d\n", cub->map.w, cub->map.h);
 	printf("x_offset -> %d\n", cub->map.x_offset);
-	display_map(&cub->map);
+	write_map(&cub->map);
 	printf("\n### SCENE END ###\n");
 }
 
@@ -93,7 +80,7 @@ void	draw_square(t_cub *cub, int pos[2], int size, int col)
 	}
 }
 
-void	view_map(t_cub *cub)
+void	display_map(t_cub *cub)
 {
 	t_map		*map;
 	int			i;
@@ -124,7 +111,8 @@ void	view_map(t_cub *cub)
 	float useless;
 	pos[0] = (int)cub->player.x * size + (int)(modff(cub->player.x, &useless) * (float)size);
 	pos[1] = (int)cub->player.y * size + (int)(modff(cub->player.y, &useless) * (float)size);
-	draw_square(cub, pos, 5, 0x0000ff00);
+	//draw_square(cub, pos, 5, 0x0000ff00);
+	display_rot(cub, pos);
 }
 
 void display_inputs(t_cub *cub, int pos[2])
@@ -144,10 +132,10 @@ void display_inputs(t_cub *cub, int pos[2])
 
 void	display_rot(t_cub *cub, int pos[2])
 {
-	double size = 200.0;
+	double size = 30.0;
 
-	draw_square(cub, pos, 10, 0x0000ff00);
+	draw_square(cub, pos, 5, 0x0000ff00);
 	pos[0] += cos(cub->player.rot) * size;
 	pos[1] += sin(cub->player.rot) * size;
-	draw_square(cub, pos, 10, 0x00ff0000);
+	draw_square(cub, pos, 5, 0x000000ff);
 }

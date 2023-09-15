@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/09/07 17:13:06 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/09/14 20:05:46 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@
 # define W_WIDTH		1920
 # define W_HEIGHT		1080
 # define W_TITLE		"cub3d"
-# define MOUSE_SPEED	1000
+# define MOUSE_SPEED	1000 // reversed, remove commeeeeeeeeeeeeeeeeeeeeeeeeeeent
+# define PLAYER_SPEED	2.5
 
 typedef struct s_inputs		t_inputs;
 typedef struct s_imgbuf		t_imgbuf;
@@ -157,7 +158,6 @@ void	free_cub(t_cub *cub);
 // utils2.c
 void	clear_imgbuf(t_cub *cub, int col);
 void	get_deltatime(t_cub *cub);
-void	set_player_rotation(t_mlx *mlx, t_player *player);
 
 
 // ----- //
@@ -179,16 +179,14 @@ int		draw_frame(t_cub *cub, t_mlx *mlx, t_player *player);
 // draw_utils.c
 void	my_pixel_put(t_mlx *mlx, int pos[2], int col);
 
-// ------ //
-// INPUTS //
-// ------ //
-void	handle_inputs(t_cub *cub, t_mlx *mlx, t_player *player);
+// movement.c
+void	set_player_movement(t_cub *cub);
 
 
 // TEST CODE REMOVE LATER -------------------------------------------------------
-void	show_map(t_list *lst);
+void	write_map(t_map *map);
 void	display_scene(t_cub *cub);
-void	display_map(t_map *map);
+void	display_map(t_cub *cub);
 void	draw_square(t_cub *cub, int pos[2], int size, int col);
 void	display_inputs(t_cub *cub, int pos[2]);
 void	display_rot(t_cub *cub, int pos[2]);

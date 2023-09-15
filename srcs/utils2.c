@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 19:10:09 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/09/07 17:35:31 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/09/14 19:31:48 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,4 @@ void	get_deltatime(t_cub *cub)
 		last = now;
 	cub->dt = now - last;
 	last = now;
-}
-
-void	set_player_rotation(t_mlx *mlx, t_player *player)
-{
-	int		pos[2];
-
-	mlx_mouse_get_pos(mlx->ptr, mlx->win, &pos[0], &pos[1]);
-	//printf("x -> %d && y -> %d\n", pos[0], pos[1]);
-	if (pos[0] != mlx->w_mid && mlx->focused)
-	{
-		//printf("delta -> %d\n", (double)(pos[0] - mlx->w_mid) / MOUSE_SPEED);
-		player->rot += ((double)(pos[0] - mlx->w_mid) / MOUSE_SPEED) * M_PI;
-		if (player->rot <= 2.0 * -M_PI || player->rot > 2.0 * M_PI)
-			player->rot = fmod(player->rot, 2.0 * M_PI); // modulo of m_pi * 2??? or m_pi
-		//printf("rot -> %lf\n", player->rot);
-	}
-	if (mlx->focused)
-		mlx_mouse_move(mlx->ptr, mlx->win, mlx->w_mid, mlx->h_mid); // at the end
 }
