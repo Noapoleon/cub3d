@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 09:17:05 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/09/14 20:20:10 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/09/16 11:01:20 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	draw_frame(t_cub *cub, t_mlx *mlx, t_player *player)
 	clear_imgbuf(cub, 0x0);
 	//display_inputs(cub, (int[2]){20, 20}); // remove later
 	display_map(cub);
+	//display_movdir(cub, (int[2]){500, 500});
 	//display_rot(cub, (int[2]){500, 500}); // remove later
 	mlx_put_image_to_window(mlx->ptr, mlx->win, mlx->img.ptr, 0, 0);
 	return (0);

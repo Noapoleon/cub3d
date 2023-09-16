@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/09/14 20:05:46 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/09/16 10:22:15 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,7 @@ void	display_map(t_cub *cub);
 void	draw_square(t_cub *cub, int pos[2], int size, int col);
 void	display_inputs(t_cub *cub, int pos[2]);
 void	display_rot(t_cub *cub, int pos[2]);
+void	display_movdir(t_cub *cub, int pos[2]);
 
 // Features                                                                    remove
 // w a s d	: move

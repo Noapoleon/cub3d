@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 05:20:42 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/09/14 20:19:58 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/09/16 11:01:15 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,3 +139,20 @@ void	display_rot(t_cub *cub, int pos[2])
 	pos[1] += sin(cub->player.rot) * size;
 	draw_square(cub, pos, 5, 0x000000ff);
 }
+
+//void	display_movdir(t_cub *cub, int pos[2])
+//{
+//	double size = 30.0;
+//
+//	double inputdir[2];
+//	inputdir[0] = cub->inputs.w - cub->inputs.s;
+//	inputdir[1] = cub->inputs.d - cub->inputs.a;
+//
+//	double movdir = atan(inputdir[0] / inputdir[1]);
+//	//double movdir = atan(inputdir[1] / inputdir[0]);
+//
+//	draw_square(cub, pos, 5, 0x0000ff00);
+//	pos[0] += cos(movdir) * size;
+//	pos[1] += sin(movdir) * size;
+//	draw_square(cub, pos, 5, 0x000000ff);
+//}

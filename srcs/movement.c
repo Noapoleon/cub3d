@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 19:29:12 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/09/14 20:16:36 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/09/16 11:42:24 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,38 @@ static void	set_player_rotation(t_player *player, t_mlx *mlx)
 	}
 }
 
+static double get_mov_vec(double rot, t_inputs *inputs)
+{
+	if (inputs->w - inputs->s && inputs->a - inputs->d)
+	{
+		if (inputs->w && inputs->a)
+			rot -= M_PI_4;
+		else if (inputs->w)
+			rot += M_PI_4;
+		else if (inputs->s && inputs->a)
+			rot -= 3.0 * M_PI_4;
+		else if (inputs->s)
+			rot += 3.0 * M_PI_4;
+	}
+	else if (!inputs->w && inputs->s)
+		rot += M_PI;
+	else if (inputs->a && !inputs->d)
+		rot -= M_PI_2;
+	else if (inputs->d)
+		rot += M_PI_2;
+	return (rot);
+}
+
 static void	set_player_location(t_player *player, t_inputs *inputs, t_cub *cub)
 {
-	const double	mov_v = inputs->s - inputs->w;
-	const double	mov_h = inputs->d - inputs->a;
+	double	mov_vec;
 
-	if (mov_h)
-		player->x += ((double)cub->dt / 1000000) * PLAYER_SPEED * mov_h;
-	if (mov_v)
-		player->y += ((double)cub->dt / 1000000) * PLAYER_SPEED * mov_v;
-	// add movement according to rotation
+	if (inputs->s - inputs->w || inputs->d - inputs->a)
+	{
+		mov_vec = get_mov_vec(player->rot, inputs);
+		player->x += ((double)cub->dt / 1000000) * PLAYER_SPEED * cos(mov_vec);
+		player->y += ((double)cub->dt / 1000000) * PLAYER_SPEED * sin(mov_vec);
+	}
 }
 
 void	set_player_movement(t_cub *cub)
