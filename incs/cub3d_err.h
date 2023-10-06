@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 15:28:17 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/09/14 19:58:40 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/07 00:45:03 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@
 
 // Settings errors
 # define CE_BAD_RES			"Resolution cannot be inferior to 100x100\n"
-# define CE_BAD_MOUSESPEED	"Mouse speed cannot be zero\n"
-# define CE_BAD_PLAYERSPEED	"Player speed cannot be zero\n"
+# define CE_BAD_MOUSESPEED	"Mouse speed must be positive\n"
+# define CE_BAD_PLAYERSPEED	"Player speed must be positive\n"
+# define CE_BAD_RENDERDIST	"Render distance must be positive\n"
 
 // Scene file
 # define CE_SCENE_PATH_NULL		"Scene path is NULL\n"

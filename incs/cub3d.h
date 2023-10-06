@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/09/22 16:39:47 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/07 00:54:37 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define W_TITLE		"cub3d"
 # define MOUSE_SPEED	1.0 // reversed, make linear, remove commeeeeeeeeeeeeeeeeeeeeeeeeeeent
 # define PLAYER_SPEED	2.5
+# define RENDER_DIST	50.0 // secure later
 
 typedef struct s_inputs		t_inputs;
 typedef struct s_imgbuf		t_imgbuf;

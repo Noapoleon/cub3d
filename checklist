@@ -1,4 +1,6 @@
 doing:
+	- figure out why we're using prev_dist for casting???
+	- protect render distance
 	- make clean struct for casting single ray from player rot
 	- handle collisions to walls [ DO LATER ]
 
