@@ -1,0 +1,16 @@
+doing:
+	- make clean struct for casting single ray from player rot
+	- handle collisions to walls [ DO LATER ]
+
+done:
+	- init player rotation
+	- player rotation
+	- move player according to time elapsed
+	- move player on map according to rotation
+	- fix rotation at program start because mouse is not centered by default
+	- fix rotation display
+	- cast single ray from player rotation
+
+not doing:
+	- reverse map coordinates XOR reverse player movement
+		* reversing the map would be better for the long run but annoying for displaying the map

@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 17:20:54 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/09/07 16:36:57 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/06 22:56:36 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,6 @@ int	setup_mlx(t_cub *cub, t_mlx *mlx)
 	mlx->w_mid = W_WIDTH / 2;
 	mlx->h_mid = W_HEIGHT / 2;
 	set_mlx_hooks(cub, mlx);
+	mlx_mouse_move(cub->mlx.ptr, cub->mlx.win, cub->mlx.w_mid, cub->mlx.h_mid);
 	return (0);
 }

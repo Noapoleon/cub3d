@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/09/16 10:22:15 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/09/22 16:39:47 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define W_WIDTH		1920
 # define W_HEIGHT		1080
 # define W_TITLE		"cub3d"
-# define MOUSE_SPEED	1000 // reversed, remove commeeeeeeeeeeeeeeeeeeeeeeeeeeent
+# define MOUSE_SPEED	1.0 // reversed, make linear, remove commeeeeeeeeeeeeeeeeeeeeeeeeeeent
 # define PLAYER_SPEED	2.5
 
 typedef struct s_inputs		t_inputs;
@@ -158,6 +158,7 @@ void	free_cub(t_cub *cub);
 // utils2.c
 void	clear_imgbuf(t_cub *cub, int col);
 void	get_deltatime(t_cub *cub);
+double	get_principal_angle(double angle);
 
 
 // ----- //
@@ -180,7 +181,7 @@ int		draw_frame(t_cub *cub, t_mlx *mlx, t_player *player);
 void	my_pixel_put(t_mlx *mlx, int pos[2], int col);
 
 // movement.c
-void	set_player_movement(t_cub *cub);
+void	do_player_movement(t_cub *cub);
 
 
 // TEST CODE REMOVE LATER -------------------------------------------------------

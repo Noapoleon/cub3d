@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 19:10:09 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/09/14 19:31:48 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/09/22 15:53:27 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,13 @@ void	get_deltatime(t_cub *cub)
 		last = now;
 	cub->dt = now - last;
 	last = now;
+}
+
+// Returns an angle in radians between 0 and 2 * M_PI
+double	get_principal_angle(double angle)
+{
+	angle = fmod(angle, 2.0 * M_PI);
+	if (angle < 0.0)
+		angle += 2.0 * M_PI;
+	return (angle);
 }

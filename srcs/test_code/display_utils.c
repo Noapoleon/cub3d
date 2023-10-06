@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 05:20:42 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/09/16 11:01:15 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/05 17:37:44 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	display_map(t_cub *cub)
 	int			i;
 	int			j;
 	int			pos[2];
-	const int	size = 50;
+	const double size = 50;
 
 	map = &cub->map;
 	j = 0;
@@ -108,9 +108,13 @@ void	display_map(t_cub *cub)
 		++j;
 	}
 
-	float useless;
-	pos[0] = (int)cub->player.x * size + (int)(modff(cub->player.x, &useless) * (float)size);
-	pos[1] = (int)cub->player.y * size + (int)(modff(cub->player.y, &useless) * (float)size);
+	//printf("player: x -> %lf; y -> %lf\n", cub->player.x, cub->player.y);
+	//float useless;
+
+	pos[0] = (int)(cub->player.x * size);
+	pos[1] = (int)(cub->player.y * size);
+	//pos[0] = (int)cub->player.x * size + (int)(modff(cub->player.x, &useless) * (float)size);
+	//pos[1] = (int)cub->player.y * size + (int)(modff(cub->player.y, &useless) * (float)size);
 	//draw_square(cub, pos, 5, 0x0000ff00);
 	display_rot(cub, pos);
 }
@@ -132,12 +136,13 @@ void display_inputs(t_cub *cub, int pos[2])
 
 void	display_rot(t_cub *cub, int pos[2])
 {
-	double size = 30.0;
+	double	size = 30.0;
+	int		dot = 6;
 
-	draw_square(cub, pos, 5, 0x0000ff00);
-	pos[0] += cos(cub->player.rot) * size;
-	pos[1] += sin(cub->player.rot) * size;
-	draw_square(cub, pos, 5, 0x000000ff);
+	draw_square(cub, (int[2]){pos[0] - dot / 2, pos[1] - dot / 2}, dot, 0x0000ff00);
+	pos[0] += cos(cub->player.rot) * size - dot / 2;
+	pos[1] -= sin(cub->player.rot) * size + dot / 2;
+	draw_square(cub, pos, dot, 0x000000ff);
 }
 
 //void	display_movdir(t_cub *cub, int pos[2])

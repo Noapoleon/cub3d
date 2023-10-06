@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:45:29 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/09/14 19:58:37 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/06 22:56:36 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ static int	settings_check(void)
 {
 	if (W_WIDTH < 100 || W_HEIGHT < 100)
 		return (ft_perr(CUB_ERR CE_BAD_RES), -1);
-	if (MOUSE_SPEED == 0)
+	if (MOUSE_SPEED <= 0)
 		return (ft_perr(CUB_ERR CE_BAD_MOUSESPEED), -1);
-	if (PLAYER_SPEED == 0)
+	if (PLAYER_SPEED <= 0)
 		return (ft_perr(CUB_ERR CE_BAD_PLAYERSPEED), -1);
 	return (0);
 }

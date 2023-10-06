@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 16:52:56 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/09/07 14:10:08 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/09/22 13:47:42 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	set_player(t_player *player, int x, int y, char c)
 	if (c == 'N')
 		player->rot = M_PI_2;
 	else if (c == 'S')
-		player->rot = -M_PI_2;
+		player->rot = M_PI_2 * 3.0;
 	else if (c == 'W')
 		player->rot = M_PI;
 	else
