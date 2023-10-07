@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 05:20:42 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/05 17:37:44 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/07 14:42:49 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	display_map(t_cub *cub)
 	int			i;
 	int			j;
 	int			pos[2];
-	const double size = 50;
+	const double size = 80.0;
 
 	map = &cub->map;
 	j = 0;

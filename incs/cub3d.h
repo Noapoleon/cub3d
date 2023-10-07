@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/07 00:54:37 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/08 01:11:57 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # define PLAYER_SPEED	2.5
 # define RENDER_DIST	50.0 // secure later
 
+typedef struct s_ray	t_ray;
 typedef struct s_inputs		t_inputs;
 typedef struct s_imgbuf		t_imgbuf;
 typedef struct s_mlx		t_mlx;
@@ -45,6 +46,15 @@ typedef struct s_map		t_map;
 typedef struct s_player		t_player;
 typedef struct s_cub		t_cub;
 
+struct s_ray
+{
+	double	norm[2];
+	int		step[2];
+	double	step_dist[2];
+	int		map_check[2];
+	double	dist[2];
+	double	prev_dist;
+};
 struct s_inputs
 {
 	int	w;
@@ -180,6 +190,7 @@ int		mouse_move_hook(int x, int y, t_cub *cub);
 int		draw_frame(t_cub *cub, t_mlx *mlx, t_player *player);
 // draw_utils.c
 void	my_pixel_put(t_mlx *mlx, int pos[2], int col);
+void	draw_vert_line(t_mlx *mlx, int pos[2], int height, int col);
 
 // movement.c
 void	do_player_movement(t_cub *cub);
