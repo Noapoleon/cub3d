@@ -1,8 +1,9 @@
-doing:
+to do:
 	- figure out why we're using prev_dist for casting???
+	- handle collisions to walls
 	- protect render distance
-	- make clean struct for casting single ray from player rot
-	- handle collisions to walls [ DO LATER ]
+	- fix fish eye effect
+	- make mouse movement depend on delta time too
 
 done:
 	- init player rotation
@@ -12,7 +13,10 @@ done:
 	- fix rotation at program start because mouse is not centered by default
 	- fix rotation display
 	- cast single ray from player rotation
+	- make clean struct for casting single ray from player rot
+	- w, a and d pressed is going right?
 
 not doing:
 	- reverse map coordinates XOR reverse player movement
 		* reversing the map would be better for the long run but annoying for displaying the map
+	- allow quitting the game with q

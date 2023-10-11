@@ -2,11 +2,12 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   draw_utils.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
+/*                                                    +
+ *                                                    :+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 09:17:05 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/08 01:22:53 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/08 23:12:03 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +15,15 @@
 
 static void	init_ray(t_ray *r, t_player *p, double angle)
 {
+	r->angle = angle; // remove
 	r->norm[0] = cos(angle);
 	r->norm[1] = sin(angle);
-	r->step_dist[0] = sqrt(1 + (r->norm[1] / r->norm[0]) *
-			(r->norm[1] / r->norm[0]));
-	r->step_dist[1] = sqrt(1 + (r->norm[0] / r->norm[1]) *
-			(r->norm[0] / r->norm[1]));
+	//r->step_dist[0] = sqrt(1 + (r->norm[1] / r->norm[0]) *
+	//		(r->norm[1] / r->norm[0]));
+	//r->step_dist[1] = sqrt(1 + (r->norm[0] / r->norm[1]) *
+	//		(r->norm[0] / r->norm[1]));
+	r->step_dist[0] = fabs(1.0 / r->norm[0]);
+	r->step_dist[1] = fabs(1.0 / r->norm[1]);
 	r->map_check[0] = (int)(p->x);
 	r->map_check[1] = (int)(p->y);
 	r->step[0] = 1 - (r->norm[0] < 0.0) * 2;
@@ -32,11 +36,13 @@ static void	init_ray(t_ray *r, t_player *p, double angle)
 		r->dist[1] = ((double)(r->map_check[1] + 1) - p->y) * r->step_dist[1];
 	else
 		r->dist[1] = (p->y - (double)r->map_check[1]) * r->step_dist[1];
-	r->prev_dist = 0.0;
+	r->end = 0.0;
+	r->side = 0;
 }
 
 static void	cast_rays(t_cub *cub, t_player *p)
 {
+	double			tmp; // remove
 	static t_ray	ray;
 	int				wall_found;
 	int				line_height;
@@ -46,24 +52,24 @@ static void	cast_rays(t_cub *cub, t_player *p)
 
 	for (int i = 0; i < W_WIDTH; ++i)
 	{
-		init_ray(&ray, p, p->rot + (((M_PI / 180.0) * 90) / (double)W_WIDTH) * (double)i - (M_PI / 180.0) * 45.0);
+		init_ray(&ray, p, p->rot + (((M_PI / 180.0) * FOV) / (double)W_WIDTH) * (double)i - (M_PI / 180.0) * (FOV / 2.0));
 		wall_found = 0;
 		// ray_loop()
-		while (!wall_found && ray.prev_dist < RENDER_DIST)
+		while (!wall_found && ray.end <= RENDER_DIST)
 		{
 			if (ray.dist[0] < ray.dist[1])
 			{
 				ray.map_check[0] += ray.step[0];
-				ray.prev_dist = ray.dist[0];
+				ray.end = ray.dist[0];
 				ray.dist[0] += ray.step_dist[0];
-				line_col = 0;
+				ray.side = 0;
 			}
 			else
 			{
 				ray.map_check[1] += ray.step[1];
-				ray.prev_dist = ray.dist[1];
+				ray.end = ray.dist[1];
 				ray.dist[1] += ray.step_dist[1];
-				line_col = 1;
+				ray.side = 1;
 			}
 
 			if ((ray.map_check[0] >= 0 && ray.map_check[0] < cub->map.w) &&
@@ -75,19 +81,29 @@ static void	cast_rays(t_cub *cub, t_player *p)
 		}
 		if (wall_found)
 		{
-			//int tmp[2];
-			//tmp[0] = 80.0 * (p->x + ray.prev_dist * ray.norm[0]) - 3;
-			//tmp[1] = 80.0 * (p->y - ray.prev_dist * ray.norm[1]) - 3;
- 			//draw_square(cub, tmp, 6, 0x00ff00ff);
-			line_height = (int)((double)W_HEIGHT / ray.prev_dist);
+			(void)tmp;
+			if (ray.side == 0)
+			{
+				//tmp = ray.dist[0] - ray.step_dist[0];
+				line_col = 0x00bb0000;
+			}
+			else
+			{
+				//tmp = ray.dist[1] - ray.step_dist[1];
+				line_col = 0x000000bb;
+			}
+
+			tmp = fabs(p->rot - ray.angle);
+			//printf("tmp angle diff -> %lf\n", tmp);
+			tmp = ray.end * cos(tmp);
+			//line_height = (int)((double)W_HEIGHT / (ray.end * cos(tmp))); // fish eye fix
+			//line_height = (int)((double)W_HEIGHT / ray.end);
+			line_height = (int)((double)W_HEIGHT / tmp);
+			//line_height = (int)((double)W_HEIGHT * (1 / ray.end));
 			if (line_height > W_HEIGHT)
 				line_height = W_HEIGHT;
-			if (line_col == 0)
-				line_col = 0x00cc0000;
-			else
-				line_col = 0x00bb0000;
-
-			draw_vert_line(&cub->mlx, (int[2]){W_WIDTH - i, (W_HEIGHT - line_height) / 2}, line_height, line_col);
+			//draw_vert_line(&cub->mlx, (int[2]){W_WIDTH - i, (W_HEIGHT - line_height) / 2}, line_height, line_col);
+			draw_vert_line(&cub->mlx, (int[2]){W_WIDTH - i, -line_height / 2 + W_HEIGHT / 2}, line_height, line_col);
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 19:29:12 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/09/25 09:51:29 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/09 03:07:03 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,9 @@ static double get_mov_vec(double rot, t_inputs *inputs)
 		rot += M_PI;
 	else if (inputs->a && !inputs->d)
 		rot += M_PI_2;
-	else if (inputs->d)
+	else if (!inputs->a && inputs->d)
 		rot -= M_PI_2;
+	// if w a and d pressed
 	return (rot);
 }
 

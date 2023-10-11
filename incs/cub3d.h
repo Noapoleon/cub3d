@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/08 01:11:57 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/09 03:09:30 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@
 # define W_TITLE		"cub3d"
 # define MOUSE_SPEED	1.0 // reversed, make linear, remove commeeeeeeeeeeeeeeeeeeeeeeeeeeent
 # define PLAYER_SPEED	2.5
-# define RENDER_DIST	50.0 // secure later
+# define RENDER_DIST	100.0 // secure later // try really low and really high or protect higher than would be 1 pixel
+# define FOV			90.0 // secure later
 
 typedef struct s_ray	t_ray;
 typedef struct s_inputs		t_inputs;
@@ -48,12 +49,14 @@ typedef struct s_cub		t_cub;
 
 struct s_ray
 {
+	double	angle; // remove
 	double	norm[2];
 	int		step[2];
 	double	step_dist[2];
 	int		map_check[2];
 	double	dist[2];
-	double	prev_dist;
+	double	end;
+	int		side;
 };
 struct s_inputs
 {
