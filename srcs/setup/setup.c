@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:45:29 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/07 00:43:33 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/13 14:33:43 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,13 @@ static void	init_vars(t_cub *cub)
 	init_vars_player(&cub->player);
 	init_vars_mlx(&cub->mlx);
 	init_vars_inputs(&cub->inputs);
+	cub->dt = 0;
 }
 
 // Reads scene, allocates resources and sets up the player
 int	setup_cub(t_cub *cub, int ac, char **av)
 {
-	// check W_WIDHT AND W_HEIGHT for bad values
+	// check W_WIDTH AND W_HEIGHT for bad values
 	if (ac != 2)
 		return (ft_dprintf(STDERR_FILENO, "Usage: %s <scene.cub>\n", av[0]), -1);
 	if (settings_check() == -1)

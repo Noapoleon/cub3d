@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 05:20:42 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/07 14:42:49 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:06:19 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ void	display_scene(t_cub *cub)
 {
 	printf("### SCENE BEG ###\n");
 	printf("\nProperties:\n");
-	printf("NO -> %s\n", cub->props.no);
-	printf("SO -> %s\n", cub->props.so);
-	printf("WE -> %s\n", cub->props.we);
-	printf("EA -> %s\n", cub->props.ea);
+	printf("NO -> %s\n", cub->props.no.path);
+	printf("SO -> %s\n", cub->props.so.path);
+	printf("WE -> %s\n", cub->props.we.path);
+	printf("EA -> %s\n", cub->props.ea.path);
 	printf("F -> %d,%d,%d\n", cub->props.col_f[0], cub->props.col_f[1], cub->props.col_f[2]);
 	printf("C -> %d,%d,%d\n", cub->props.col_c[0], cub->props.col_c[1], cub->props.col_c[2]);
 	printf("\nPlayer:\n");

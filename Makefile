@@ -17,7 +17,8 @@ COL_RESET	=	\033[0m
 # Files
 SRCS	:=	main.c \
 			setup/setup.c \
-			setup/setup_init.c \
+			setup/setup_init1.c \
+			setup/setup_init2.c \
 			setup/setup_mlx.c \
 			parsing/parser.c \
 			parsing/parser_read.c \

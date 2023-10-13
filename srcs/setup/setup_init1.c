@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   setup_init.c                                       :+:      :+:    :+:   */
+/*   setup_init1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 15:52:56 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/09/07 14:00:56 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/13 14:53:43 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ void	init_vars_props(t_props *props)
 {
 	set_int_arr(props->col_f, 3, -1);
 	set_int_arr(props->col_c, 3, -1);
-	props->no = NULL;
-	props->so = NULL;
-	props->we = NULL;
-	props->ea = NULL;
+	init_vars_texture(&props->no);
+	init_vars_texture(&props->so);
+	init_vars_texture(&props->we);
+	init_vars_texture(&props->ea);
 }
 
 // Initializes map variables to default values
@@ -46,11 +46,7 @@ void	init_vars_mlx(t_mlx *mlx)
 {
 	mlx->ptr = NULL;
 	mlx->win = NULL;
-	mlx->img.ptr = NULL;
-	mlx->img.addr = NULL;
-	mlx->img.bpp = 0;
-	mlx->img.ll = 0;
-	mlx->img.endian = 0;
+	init_vars_imgbuf(&mlx->img);
 	mlx->w = -1;
 	mlx->h = -1;
 	mlx->w_mid = -1;

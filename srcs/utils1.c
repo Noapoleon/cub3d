@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 16:11:15 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/24 22:04:37 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:05:51 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,14 @@ void	set_int_arr(int *arr, int size, int val)
 
 void	free_props(t_props *props)
 {
-	free(props->no);
-	free(props->so);
-	free(props->we);
-	free(props->ea);
+	if (props->no.path)
+		free(props->no.path);
+	if (props->so.path)
+		free(props->so.path);
+	if (props->we.path)
+		free(props->we.path);
+	if (props->ea.path)
+		free(props->ea.path);
 }
 
 void	free_map(t_map *map)
@@ -43,10 +47,19 @@ void	free_map(t_map *map)
 	free(map->tiles);
 }
 
-void	free_mlx(t_mlx *mlx)
+void	free_mlx(t_mlx *mlx, t_props *props)
 {
 	if (mlx->ptr)
 	{
+		if (props->no.img.ptr)
+			mlx_destroy_image(mlx->ptr, props->no.img.ptr);
+		if (props->so.img.ptr)
+			mlx_destroy_image(mlx->ptr, props->so.img.ptr);
+		if (props->we.img.ptr)
+			mlx_destroy_image(mlx->ptr, props->we.img.ptr);
+		if (props->ea.img.ptr)
+			mlx_destroy_image(mlx->ptr, props->ea.img.ptr);
+		// free all textures and sprites
 		if (mlx->img.ptr)
 			mlx_destroy_image(mlx->ptr, mlx->img.ptr);
 		if (mlx->win)
@@ -58,7 +71,7 @@ void	free_mlx(t_mlx *mlx)
 
 void	free_cub(t_cub *cub)
 {
+	free_mlx(&cub->mlx, &cub->props);
 	free_props(&cub->props);
 	free_map(&cub->map);
-	free_mlx(&cub->mlx);
 }

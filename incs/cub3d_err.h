@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 15:28:17 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/07 00:45:03 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/13 14:58:38 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ file name must end with '.map'\n"
 // Scene parsing
 # define CE_LINE		"Scene parsing error at line %d: %s\n"
 # define CE_TEXTURE_PATH	"Invalid texture path"
+# define CE_TEXTURE_FORMAT	"Invalid texture format. Need XPM file"
 # define CE_TEXTURE_DUP		"Duplicate texture assignment"
 # define CE_PROP_UNKNOWN	"Unknown property"
 # define CE_PROP_MAP		"Missing properties before map start"
@@ -47,8 +48,9 @@ file name must end with '.map'\n"
 # define CE_PLAYER_NONE		"No player found\n"
 
 // MLX errors
-# define CE_MLX_PTR		"Failed to initialize mlx\n"
-# define CE_MLX_WIN		"Failed to create new mlx window\n"
-# define CE_MLX_IMG		"Failed to create new mlx image\n"
+# define CE_MLX_PTR			"Failed to initialize mlx\n"
+# define CE_MLX_WIN			"Failed to create new mlx window\n"
+# define CE_MLX_IMG			"Failed to create new mlx image\n"
+# define CE_TEXTURE_OPEN	"Failed to open/read texture `%s'\n"
 
 #endif

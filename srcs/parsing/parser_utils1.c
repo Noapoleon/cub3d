@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser2.c                                          :+:      :+:    :+:   */
+/*   parser_utils1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 18:25:34 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/21 21:34:56 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:02:23 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*get_line_end(const char *line)
 // Checks t_props struct to see if all properties have been found
 int	has_all_props(t_props *props)
 {
-	return (props->no && props->so && props->we && props->ea && 
+	return (props->no.path && props->so.path && props->we.path && props->ea.path && 
 			props->col_f[0] != -1 && props->col_c[0] != -1);
 }
 
@@ -64,13 +64,13 @@ int	is_map_str(const char *s)
 // Prints missing properties after CE_PROP_MAP error
 void	print_missing_props(t_props *prop)
 {
-	if (prop->no == NULL)
+	if (prop->no.path == NULL)
 		ft_printf(" - North texture\n");
-	if (prop->so == NULL)
+	if (prop->so.path == NULL)
 		ft_printf(" - South texture\n");
-	if (prop->we == NULL)
+	if (prop->we.path == NULL)
 		ft_printf(" - West texture\n");
-	if (prop->ea == NULL)
+	if (prop->ea.path == NULL)
 		ft_printf(" - East texture\n");
 	if (prop->col_f[0] == -1)
 		ft_printf(" - Floor color\n");

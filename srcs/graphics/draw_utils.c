@@ -119,6 +119,7 @@ int	draw_frame(t_cub *cub, t_mlx *mlx, t_player *player)
 	//display_movdir(cub, (int[2]){500, 500});
 	//display_rot(cub, (int[2]){500, 500}); // remove later
 	mlx_put_image_to_window(mlx->ptr, mlx->win, mlx->img.ptr, 0, 0);
+	mlx_put_image_to_window(mlx->ptr, mlx->win, cub->props.no.img.ptr, 0, 0);
 	return (0);
 }
 

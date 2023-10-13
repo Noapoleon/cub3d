@@ -6,27 +6,30 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 16:20:00 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/09/07 14:10:03 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:01:12 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // Copies the texture path into dst
+// All spaces after the identifier and initial space separation count towards
+// the name of the file, meaning spaces at the end are not trimmed
 static int	get_texture(char **dst, const char *src, int count)
 {
-	// check if it's an xpm texture or not
 	int	i;
+	int	len;
 
 	if (*dst)
 		return (ft_perr(CUB_ERR CE_LINE, count, CE_TEXTURE_DUP), -1);
 	i = 0;
-	while (src[i] != ' ')
-		++i;
 	while (src[i] == ' ')
 		++i;
-	if (src[i] == '\0')
+	len = ft_strlen(src + i);
+	if (len < 5)
 		return (ft_perr(CUB_ERR CE_LINE, count, CE_TEXTURE_PATH), -1);
+	if (ft_strncmp(&src[i + len - 4], ".xpm\0", 5) != 0)
+		return (ft_perr(CUB_ERR CE_LINE, count, CE_TEXTURE_FORMAT), -1);
 	*dst = ft_strdup(src + i);
 	if (*dst == NULL)
 		return (ft_perr(CUB_ERR CE_LINE, count, strerror(errno)), -1);
@@ -60,8 +63,6 @@ static int	get_color(int col[3], const char *tmp, int count)
 	int	j;
 
 	i = 0;
-	while (tmp[i] != ' ')
-		++i;
 	j = 0;
 	while (j < 3)
 	{
@@ -84,17 +85,17 @@ static int	get_color(int col[3], const char *tmp, int count)
 static int	get_prop(t_props *props, const char *tmp, int count)
 {
 	if (ft_strncmp("NO ", tmp, 3) == 0)
-		return (get_texture(&props->no, tmp, count));
+		return (get_texture(&props->no.path, tmp + 3, count));
 	else if (ft_strncmp("SO ", tmp, 3) == 0)
-		return (get_texture(&props->so, tmp, count));
+		return (get_texture(&props->so.path, tmp + 3, count));
 	else if (ft_strncmp("WE ", tmp, 3) == 0)
-		return (get_texture(&props->we, tmp, count));
+		return (get_texture(&props->we.path, tmp + 3, count));
 	else if (ft_strncmp("EA ", tmp, 3) == 0)
-		return (get_texture(&props->ea, tmp, count));
+		return (get_texture(&props->ea.path, tmp + 3, count));
 	else if (ft_strncmp("F ", tmp, 2) == 0)
-		return (get_color(props->col_f, tmp, count));
+		return (get_color(props->col_f, tmp + 2, count));
 	else if (ft_strncmp("C ", tmp, 2) == 0)
-		return (get_color(props->col_c, tmp, count));
+		return (get_color(props->col_c, tmp + 2, count));
 	else
 	{
 		if (is_map_str(tmp))

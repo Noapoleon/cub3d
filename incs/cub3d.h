@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/09 03:09:30 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:03:55 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,10 @@
 # define RENDER_DIST	100.0 // secure later // try really low and really high or protect higher than would be 1 pixel
 # define FOV			90.0 // secure later
 
-typedef struct s_ray	t_ray;
+typedef struct s_ray		t_ray;
 typedef struct s_inputs		t_inputs;
 typedef struct s_imgbuf		t_imgbuf;
+typedef struct s_texture	t_texture;
 typedef struct s_mlx		t_mlx;
 typedef struct s_props		t_props;
 typedef struct s_map		t_map;
@@ -73,6 +74,13 @@ struct s_imgbuf
 	int		ll;
 	int		endian;
 };
+struct s_texture
+{
+	char		*path;
+	t_imgbuf	img;
+	int			w;
+	int			h;
+};
 struct s_mlx
 {
 	void		*ptr;
@@ -86,12 +94,11 @@ struct s_mlx
 };
 struct s_props
 {
-	// not sure how to store images yet, probably an mlx thing
-	// but for now let's just store the path
-	char	*no;
-	char	*so;
-	char	*we;
-	char	*ea;
+	// CHECK INIT FUNCTIONS FOR ALL STRUCTS
+	t_texture	no;
+	t_texture	so;
+	t_texture	we;
+	t_texture	ea;
 	int		col_f[3];
 	int		col_c[3];
 };
@@ -116,7 +123,7 @@ struct s_cub
 	t_player	player;
 	t_mlx		mlx;
 	t_inputs	inputs;
-	long		dt;
+	long		dt; // where init?
 };
 
 // ---- //
@@ -135,6 +142,9 @@ void	init_vars_map(t_map *map);
 void	init_vars_player(t_player *player);
 void	init_vars_mlx(t_mlx *mlx);
 void	init_vars_inputs(t_inputs *inputs);
+// setup_init_2.c
+void	init_vars_imgbuf(t_imgbuf *img);
+void	init_vars_texture(t_texture *t);
 // setup_mlx.c
 int		setup_mlx(t_cub *cub, t_mlx *mlx);
 
@@ -167,7 +177,7 @@ void	alloc_map_size(t_map *map, int width, int height);
 void	set_int_arr(int *arr, int size, int val);
 void	free_props(t_props *props);
 void	free_map(t_map *map);
-void	free_mlx(t_mlx *mlx);
+void	free_mlx(t_mlx *mlx, t_props *props);
 void	free_cub(t_cub *cub);
 // utils2.c
 void	clear_imgbuf(t_cub *cub, int col);
