@@ -26,8 +26,9 @@ SRCS	:=	main.c \
 			parsing/parser_map.c \
 			parsing/parser_utils1.c \
 			parsing/parser_utils2.c \
-			utils1.c \
-			utils2.c \
+			utils/utils1.c \
+			utils/utils_free.c \
+			utils/utils_vec.c \
 			hooking/hooks.c \
 			hooking/hooks_keys.c \
 			graphics/draw_utils.c \

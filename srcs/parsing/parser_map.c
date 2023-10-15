@@ -6,14 +6,14 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 16:52:56 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/09/22 13:47:42 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/16 00:16:17 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // Safely allocates the map 2D array
-static int	alloc_map(t_map *map, t_list *cur, int count)
+static int	alloc_map(t_map *map, t_list *cur, int count, int *offset)
 {
 	int		min_width;
 	int		max_width;
@@ -39,17 +39,16 @@ static int	alloc_map(t_map *map, t_list *cur, int count)
 		cur = cur->next;
 	}
 	alloc_map_size(map, max_width - min_width, map->h);
-	return ((map->x_offset = min_width), (map->tiles == NULL) * -1);
+	return ((*offset = min_width), (map->tiles == NULL) * -1);
 }
 
 // If player tile is found sets the properties of player struct and replaces it
 // it in the map with an air tile
 static int	set_player(t_player *player, int x, int y, char c)
 {
-	if (player->x != -1.0f)
+	if (player->pos.x != -1.0)
 		return (-1);
-	player->x = (float)x + 0.5f;
-	player->y = (float)y + 0.5f;
+	set_vec2df(&player->pos, x + 0.5, y + 0.5);
 	if (c == 'N')
 		player->rot = M_PI_2;
 	else if (c == 'S')
@@ -62,7 +61,7 @@ static int	set_player(t_player *player, int x, int y, char c)
 }
 
 // Using linked list for map fills the array with correct tiles
-static int	fill_map(t_map *map, t_player *player, t_list *cur, int count)
+static int	fill_map(t_cub *cub, t_list *cur, int count, int offset)
 {
 	int		x;
 	int		y;
@@ -70,23 +69,23 @@ static int	fill_map(t_map *map, t_player *player, t_list *cur, int count)
 	int		len_cur;
 
 	y = 0;
-	while (y < map->h)
+	while (y < cub->map.h)
 	{
 		++count;
 		x = 0;
 		len_cur = ft_strlen(cur->data);
-		while (x < map->w && x < len_cur)
+		while (x < cub->map.w && x < len_cur)
 		{
-			c = ((char *)cur->data)[map->x_offset + x];
-			map->tiles[y][x] = get_tile_val(c);
-			if (ft_isalpha(c) && set_player(player, x, y, c) != 0)
+			c = ((char *)cur->data)[offset + x];
+			cub->map.tiles[y][x] = get_tile_val(c);
+			if (ft_isalpha(c) && set_player(&cub->player, x, y, c) != 0)
 				return (ft_perr(CUB_ERR CE_LINE, count, CE_PLAYER_DUP), -1);
 			++x;
 		}
 		cur = cur->next;
 		++y;
 	}
-	if (player->x == -1.0f)
+	if (cub->player.pos.x == -1.0)
 		return (ft_perr(CUB_ERR CE_PLAYER_NONE), -1);
 	return (0);
 }
@@ -115,9 +114,10 @@ static int	check_map(t_map *map, int count)
 
 // Reads chained list of lines, allocates and fills the map, also checks for
 // errors in the map
-int	get_map(t_map *map, t_player *player, t_list *cur, int count)
+int	get_map(t_cub *cub, t_list *cur, int count)
 {
 	char	*tmp;
+	int		offset;
 
 	while (cur)
 	{
@@ -128,11 +128,11 @@ int	get_map(t_map *map, t_player *player, t_list *cur, int count)
 	}
 	if (cur == NULL)
 		return (ft_perr(CUB_ERR CE_MAP_NONE), -1);
-	if (alloc_map(map, cur, count) != 0)
+	if (alloc_map(&cub->map, cur, count, &offset) != 0)
 		return (-1);
-	if (fill_map(map, player, cur, count) != 0)
-		return (free_map(map), -1);
-	if (check_map(map, count) != 0)
-		return (free_map(map), -1); // free_allocated map
+	if (fill_map(cub, cur, count, offset) != 0)
+		return (free_map(&cub->map), -1);
+	if (check_map(&cub->map, count) != 0)
+		return (free_map(&cub->map), -1); // free_allocated map
 	return (0);
 }

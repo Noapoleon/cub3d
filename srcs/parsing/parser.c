@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 16:18:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/13 14:59:47 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/16 00:08:46 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 
 // Parses lines into map and player struct
 // Returns 0 on success, or the line number in case of error
-static int	parse_lines(t_props *props, t_map *map, t_player *player,
-		t_list *lines)
+static int	parse_lines(t_cub *cub, t_list *lines)
 {
 	t_list	*cur;
 	int		count;
@@ -25,10 +24,10 @@ static int	parse_lines(t_props *props, t_map *map, t_player *player,
 		return (ft_perr(CUB_ERR CE_SCENE_EMPTY), -1);
 	cur = lines;
 	count = 1;
-	if (get_props(props, &cur, &count) != 0)
+	if (get_props(&cub->props, &cur, &count) != 0)
 		return (-1);
-	if (get_map(map, player, cur, count) != 0)
-		return (free_props(props), -1);
+	if (get_map(cub, cur, count) != 0)
+		return (free_props(&cub->props), -1);
 	return (0);
 }
 
@@ -44,7 +43,7 @@ int	parse_scene(t_cub *cub, const char *map_path)
 	lines = NULL;
 	if (read_map_file(map_path, &lines) != 0)
 		return (-1);
-	if (parse_lines(&cub->props, &cub->map, &cub->player, lines) != 0)
+	if (parse_lines(cub, lines) != 0)
 		return (ft_lstclear(&lines, free), -1); // print line number error message
 	ft_lstclear(&lines, free);
 	return (0);

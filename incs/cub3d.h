@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/15 21:59:33 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/16 00:42:17 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@
 # define T_WALL			1
 # define W_TITLE		"cub3d"
 
+typedef struct s_vec2df		t_vec2df;
+typedef struct s_vec2di		t_vec2di;
 typedef struct s_ray		t_ray;
 typedef struct s_inputs		t_inputs;
 typedef struct s_imgbuf		t_imgbuf;
@@ -48,16 +50,23 @@ typedef struct s_props		t_props;
 typedef struct s_map		t_map;
 typedef struct s_player		t_player;
 typedef struct s_cub		t_cub;
-typedef struct s_vec2df		t_vec2df;
-typedef struct s_vec2di		t_vec2di;
 
+struct s_vec2df
+{
+	double	x;
+	double	y;
+};
+struct s_vec2di
+{
+	int	x;
+	int	y;
+};
 struct s_ray
 {
-	//double	angle; // remove
 	t_vec2df	dir;
 	t_vec2di	step;
 	t_vec2df	step_dist;
-	t_ved2di	map_check;
+	t_vec2di	map_check;
 	t_vec2df	dist;
 	double		last_dist;
 	int		side; // remove? 0 to 3 for index in textures?? idk
@@ -102,21 +111,21 @@ struct s_props
 	t_texture	so;
 	t_texture	we;
 	t_texture	ea;
-	int		col_f[3];
-	int		col_c[3];
+	int			col_f[3];
+	int			col_c[3];
 };
 struct s_map
 {
 	int		w;
 	int		h;
-	int		x_offset; // annoying fucking stupid retard variable
 	int		**tiles;
 };
 struct s_player
 {
-	t_vec2d	pos;
-	double	rot; // array vector or radian? [2] or PI?
-	//double	mov; // array vector or radian? [2] or PI?
+	t_vec2df	pos;
+	double		rot;
+	t_vec2df	dir;
+	t_vec2df	cam;
 };
 struct s_cub
 {
@@ -125,17 +134,7 @@ struct s_cub
 	t_player	player;
 	t_mlx		mlx;
 	t_inputs	inputs;
-	long		dt; // where init?
-};
-struct s_vec2df
-{
-	double	x;
-	double	y;
-};
-struct s_vec2di
-{
-	int	x;
-	int	y;
+	long		dt;
 };
 
 // ---- //
@@ -171,7 +170,7 @@ int		read_map_file(const char *map_path, t_list **lines);
 // parser_props.c
 int		get_props(t_props *props, t_list **cur, int *count);
 // parser_map.c
-int		get_map(t_map *map, t_player *player, t_list *cur, int count);
+int		get_map(t_cub *cub, t_list *cur, int count);
 // parser_utils.c
 char	*get_line_start(const char *line);
 char	*get_line_end(const char *line);
@@ -187,14 +186,17 @@ void	alloc_map_size(t_map *map, int width, int height);
 // ----- //
 // utils1.c
 void	set_int_arr(int *arr, int size, int val);
+void	clear_imgbuf(t_cub *cub, int col);
+void	get_deltatime(t_cub *cub);
+double	get_principal_angle(double angle);
+// utils_free.c
 void	free_props(t_props *props);
 void	free_map(t_map *map);
 void	free_mlx(t_mlx *mlx, t_props *props);
 void	free_cub(t_cub *cub);
-// utils2.c
-void	clear_imgbuf(t_cub *cub, int col);
-void	get_deltatime(t_cub *cub);
-double	get_principal_angle(double angle);
+// utils_vec.c
+void	set_vec2df(t_vec2df *v, double x, double y);
+void	set_vec2di(t_vec2di *v, int x, int y);
 
 
 // ----- //

@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 05:20:42 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/13 15:06:19 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/16 00:27:56 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,11 @@ void	display_scene(t_cub *cub)
 	printf("F -> %d,%d,%d\n", cub->props.col_f[0], cub->props.col_f[1], cub->props.col_f[2]);
 	printf("C -> %d,%d,%d\n", cub->props.col_c[0], cub->props.col_c[1], cub->props.col_c[2]);
 	printf("\nPlayer:\n");
-	printf("x -> %f, y -> %f\n", cub->player.x, cub->player.y);
+	printf("x -> %f, y -> %f\n", cub->player.pos.x, cub->player.pos.y);
 	printf("rot -> %f\n", cub->player.rot);
 	printf("\n");
 	printf("\nMap:\n");
 	printf("w -> %d, h -> %d\n", cub->map.w, cub->map.h);
-	printf("x_offset -> %d\n", cub->map.x_offset);
 	write_map(&cub->map);
 	printf("\n### SCENE END ###\n");
 }
@@ -108,13 +107,13 @@ void	display_map(t_cub *cub)
 		++j;
 	}
 
-	//printf("player: x -> %lf; y -> %lf\n", cub->player.x, cub->player.y);
+	//printf("player: x -> %lf; y -> %lf\n", cub->player.pos.x, cub->player.pos.y);
 	//float useless;
 
-	pos[0] = (int)(cub->player.x * size);
-	pos[1] = (int)(cub->player.y * size);
-	//pos[0] = (int)cub->player.x * size + (int)(modff(cub->player.x, &useless) * (float)size);
-	//pos[1] = (int)cub->player.y * size + (int)(modff(cub->player.y, &useless) * (float)size);
+	pos[0] = (int)(cub->player.pos.x * size);
+	pos[1] = (int)(cub->player.pos.y * size);
+	//pos[0] = (int)cub->player.pos.x * size + (int)(modff(cub->player.pos.x, &useless) * (float)size);
+	//pos[1] = (int)cub->player.pos.y * size + (int)(modff(cub->player.pos.y, &useless) * (float)size);
 	//draw_square(cub, pos, 5, 0x0000ff00);
 	display_rot(cub, pos);
 }

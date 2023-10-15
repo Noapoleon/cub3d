@@ -2,6 +2,18 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   draw_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/15 23:35:33 by nlegrand          #+#    #+#             */
+/*   Updated: 2023/10/16 00:42:56 by nlegrand         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +
  *                                                    :+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
@@ -13,37 +25,28 @@
 
 #include "cub3d.h"
 
-static void	init_ray(t_ray *r, t_player *p, double x)
+static void	init_ray(t_ray *r, t_player *p, double cam_x)
 {
-	x = ((2.0 * x) / (double)W_WIDTH) - 1.0;
-	//r->angle = angle; // remove
-	r->norm[0] = cos(p->rot) + cos(p->rot - M_PI_2) * x; // do outside of here only once for dir vector and perp cam thing
-	r->norm[1] = sin(p->rot) + sin(p->rot - M_PI_2) * x;
-	//r->step_dist[0] = sqrt(1 + (r->norm[1] / r->norm[0]) *
-	//		(r->norm[1] / r->norm[0]));
-	//r->step_dist[1] = sqrt(1 + (r->norm[0] / r->norm[1]) *
-	//		(r->norm[0] / r->norm[1]));
-	r->step_dist[0] = fabs(1.0 / r->norm[0]);
-	r->step_dist[1] = fabs(1.0 / r->norm[1]);
-	r->map_check[0] = (int)(p->x);
-	r->map_check[1] = (int)(p->y);
-	r->step[0] = 1 - (r->norm[0] < 0.0) * 2;
-	r->step[1] = 1 - (r->norm[1] > 0.0) * 2;
-	if (r->norm[0] < 0.0)
-		r->dist[0] = (p->x - (double)r->map_check[0]) * r->step_dist[0];
+	cam_x = ((2.0 * cam_x) / (double)W_WIDTH) - 1.0;
+	set_vec2df(&r->dir, p->dir.x + p->cam.x * cam_x,
+			p->dir.y + p->cam.y * cam_x);
+	set_vec2df(&r->step_dist, fabs(1.0 / r->dir.x), fabs(1.0 / r->dir.y));
+	set_vec2di(&r->map_check, p->pos.x, p->pos.y);
+	set_vec2di(&r->step, 1 - (r->dir.x < 0.0) * 2, 1 - (r->dir.y > 0.0) * 2);
+	if (r->dir.x < 0.0)
+		r->dist.x = (p->pos.x - (double)r->map_check.x) * r->step_dist.x;
 	else
-		r->dist[0] = ((double)(r->map_check[0] + 1) - p->x) * r->step_dist[0];
-	if (r->norm[1] < 0.0)
-		r->dist[1] = ((double)(r->map_check[1] + 1) - p->y) * r->step_dist[1];
+		r->dist.x = ((double)(r->map_check.x + 1) - p->pos.x) * r->step_dist.x;
+	if (r->dir.y < 0.0)
+		r->dist.y = ((double)(r->map_check.y + 1) - p->pos.y) * r->step_dist.y;
 	else
-		r->dist[1] = (p->y - (double)r->map_check[1]) * r->step_dist[1];
-	r->end = 0.0;
+		r->dist.y = (p->pos.y - (double)r->map_check.y) * r->step_dist.y;
+	r->last_dist = 0.0;
 	r->side = 0;
 }
 
 static void	cast_rays(t_cub *cub, t_player *p)
 {
-	double			tmp; // remove
 	static t_ray	ray;
 	int				wall_found;
 	int				line_height;
@@ -53,59 +56,44 @@ static void	cast_rays(t_cub *cub, t_player *p)
 
 	for (int i = 0; i < W_WIDTH; ++i)
 	{
-		init_ray(&ray, p, W_WIDTH - i);
-		//init_ray(&ray, p, p->rot + (((M_PI / 180.0) * FOV) / (double)W_WIDTH) * (double)i - (M_PI / 180.0) * (FOV / 2.0));
+		init_ray(&ray, p, i);
 		wall_found = 0;
 		// ray_loop()
-		while (!wall_found && ray.end <= RENDER_DIST)
+		while (!wall_found && ray.last_dist <= RENDER_DIST)
 		{
-			if (ray.dist[0] < ray.dist[1])
+			if (ray.dist.x < ray.dist.y)
 			{
-				ray.map_check[0] += ray.step[0];
-				ray.end = ray.dist[0];
-				ray.dist[0] += ray.step_dist[0];
+				ray.map_check.x += ray.step.x;
+				ray.last_dist = ray.dist.x;
+				ray.dist.x += ray.step_dist.x;
 				ray.side = 0;
 			}
 			else
 			{
-				ray.map_check[1] += ray.step[1];
-				ray.end = ray.dist[1];
-				ray.dist[1] += ray.step_dist[1];
+				ray.map_check.y += ray.step.y;
+				ray.last_dist = ray.dist.y;
+				ray.dist.y += ray.step_dist.y;
 				ray.side = 1;
 			}
 
-			if ((ray.map_check[0] >= 0 && ray.map_check[0] < cub->map.w) &&
-					(ray.map_check[1] >= 0 && ray.map_check[1] < cub->map.h))
+			if ((ray.map_check.x >= 0 && ray.map_check.x < cub->map.w) &&
+					(ray.map_check.y >= 0 && ray.map_check.y < cub->map.h))
 			{
-				if (cub->map.tiles[ray.map_check[1]][ray.map_check[0]])
+				if (cub->map.tiles[ray.map_check.y][ray.map_check.x])
 					wall_found = 1;
 			}
 		}
 		if (wall_found)
 		{
-			(void)tmp;
 			if (ray.side == 0)
-			{
-				//tmp = ray.dist[0] - ray.step_dist[0];
 				line_col = 0x00bb0000;
-			}
 			else
-			{
-				//tmp = ray.dist[1] - ray.step_dist[1];
 				line_col = 0x000000bb;
-			}
 
-			//tmp = fabs(p->rot - ray.angle);
-			//printf("tmp angle diff -> %lf\n", tmp);
-			//tmp = ray.end * cos(tmp);
-			//line_height = (int)((double)W_HEIGHT / (ray.end * cos(tmp))); // fish eye fix
-			line_height = (int)((double)W_HEIGHT / ray.end);
-			//line_height = (int)((double)W_HEIGHT / tmp);
-			//line_height = (int)((double)W_HEIGHT * (1 / ray.end));
+			line_height = (int)(((double)W_HEIGHT) / ray.last_dist);
 			if (line_height > W_HEIGHT)
 				line_height = W_HEIGHT;
-			//draw_vert_line(&cub->mlx, (int[2]){W_WIDTH - i, (W_HEIGHT - line_height) / 2}, line_height, line_col);
-			draw_vert_line(&cub->mlx, (int[2]){W_WIDTH - i, -line_height / 2 + W_HEIGHT / 2}, line_height, line_col);
+			draw_vert_line(&cub->mlx, (int[2]){i, -line_height / 2 + W_HEIGHT / 2}, line_height, line_col);
 		}
 	}
 }

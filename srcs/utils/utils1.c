@@ -1,16 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils2.c                                           :+:      :+:    :+:   */
+/*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 19:10:09 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/09/22 15:53:27 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/15 22:31:08 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+// Sets array of ints to given val
+// Assumes arr is valid and allocated
+void	set_int_arr(int *arr, int size, int val)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+		arr[i++] = val;
+}
 
 // Clears all the pixels of the image buffer to the specified color
 void	clear_imgbuf(t_cub *cub, int col)

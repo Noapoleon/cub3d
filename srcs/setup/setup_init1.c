@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 15:52:56 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/13 14:53:43 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/16 00:07:22 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,16 @@ void	init_vars_map(t_map *map)
 {
 	map->w = -1;
 	map->h = -1;
-	map->x_offset = -1;
 	map->tiles = NULL;
 }
 
 // Initializes player variables to default values
-void	init_vars_player(t_player *player)
+void	init_vars_player(t_player *p)
 {
-	player->x = -1.0f;
-	player->y = -1.0f;
-	player->rot = 0.0f; // set by map orientation
+	set_vec2df(&p->pos, -1.0f, -1.0f);
+	p->rot = 0.0f; // set by map orientation
+	set_vec2df(&p->dir, -1.0f, -1.0f);
+	set_vec2df(&p->cam, -1.0f, -1.0f);
 	//player->mov = 0.0f; // zero should be for w
 }
 
