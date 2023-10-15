@@ -13,11 +13,12 @@
 
 #include "cub3d.h"
 
-static void	init_ray(t_ray *r, t_player *p, double angle)
+static void	init_ray(t_ray *r, t_player *p, double x)
 {
-	r->angle = angle; // remove
-	r->norm[0] = cos(angle);
-	r->norm[1] = sin(angle);
+	x = ((2.0 * x) / (double)W_WIDTH) - 1.0;
+	//r->angle = angle; // remove
+	r->norm[0] = cos(p->rot) + cos(p->rot - M_PI_2) * x; // do outside of here only once for dir vector and perp cam thing
+	r->norm[1] = sin(p->rot) + sin(p->rot - M_PI_2) * x;
 	//r->step_dist[0] = sqrt(1 + (r->norm[1] / r->norm[0]) *
 	//		(r->norm[1] / r->norm[0]));
 	//r->step_dist[1] = sqrt(1 + (r->norm[0] / r->norm[1]) *
@@ -52,7 +53,8 @@ static void	cast_rays(t_cub *cub, t_player *p)
 
 	for (int i = 0; i < W_WIDTH; ++i)
 	{
-		init_ray(&ray, p, p->rot + (((M_PI / 180.0) * FOV) / (double)W_WIDTH) * (double)i - (M_PI / 180.0) * (FOV / 2.0));
+		init_ray(&ray, p, W_WIDTH - i);
+		//init_ray(&ray, p, p->rot + (((M_PI / 180.0) * FOV) / (double)W_WIDTH) * (double)i - (M_PI / 180.0) * (FOV / 2.0));
 		wall_found = 0;
 		// ray_loop()
 		while (!wall_found && ray.end <= RENDER_DIST)
@@ -93,12 +95,12 @@ static void	cast_rays(t_cub *cub, t_player *p)
 				line_col = 0x000000bb;
 			}
 
-			tmp = fabs(p->rot - ray.angle);
+			//tmp = fabs(p->rot - ray.angle);
 			//printf("tmp angle diff -> %lf\n", tmp);
-			tmp = ray.end * cos(tmp);
+			//tmp = ray.end * cos(tmp);
 			//line_height = (int)((double)W_HEIGHT / (ray.end * cos(tmp))); // fish eye fix
-			//line_height = (int)((double)W_HEIGHT / ray.end);
-			line_height = (int)((double)W_HEIGHT / tmp);
+			line_height = (int)((double)W_HEIGHT / ray.end);
+			//line_height = (int)((double)W_HEIGHT / tmp);
 			//line_height = (int)((double)W_HEIGHT * (1 / ray.end));
 			if (line_height > W_HEIGHT)
 				line_height = W_HEIGHT;

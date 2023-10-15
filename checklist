@@ -4,6 +4,7 @@ to do:
 	- protect render distance
 	- fix fish eye effect
 	- make mouse movement depend on delta time too
+	- make rotation amount a factor of the window's width (or not idk)
 
 done:
 	- init player rotation

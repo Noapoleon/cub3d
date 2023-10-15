@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/13 15:03:55 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/15 21:59:33 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,17 @@
 # include "cub3d_err.h"
 
 // SETTINGS
+# define W_WIDTH		1920
+# define W_HEIGHT		1080
+# define MOUSE_SPEED	1.0 // reversed, make linear, remove commeeeeeeeeeeeeeeeeeeeeeeeeeeent
+# define PLAYER_SPEED	2.5 // blocks per second
+# define RENDER_DIST	100.0 // secure later // try really low and really high or protect higher than would be 1 pixel
+
+// CONSTANTS
 # define T_NONE			-1
 # define T_AIR			0
 # define T_WALL			1
-# define W_WIDTH		1920
-# define W_HEIGHT		1080
 # define W_TITLE		"cub3d"
-# define MOUSE_SPEED	1.0 // reversed, make linear, remove commeeeeeeeeeeeeeeeeeeeeeeeeeeent
-# define PLAYER_SPEED	2.5
-# define RENDER_DIST	100.0 // secure later // try really low and really high or protect higher than would be 1 pixel
-# define FOV			90.0 // secure later
 
 typedef struct s_ray		t_ray;
 typedef struct s_inputs		t_inputs;
@@ -47,17 +48,19 @@ typedef struct s_props		t_props;
 typedef struct s_map		t_map;
 typedef struct s_player		t_player;
 typedef struct s_cub		t_cub;
+typedef struct s_vec2df		t_vec2df;
+typedef struct s_vec2di		t_vec2di;
 
 struct s_ray
 {
-	double	angle; // remove
-	double	norm[2];
-	int		step[2];
-	double	step_dist[2];
-	int		map_check[2];
-	double	dist[2];
-	double	end;
-	int		side;
+	//double	angle; // remove
+	t_vec2df	dir;
+	t_vec2di	step;
+	t_vec2df	step_dist;
+	t_ved2di	map_check;
+	t_vec2df	dist;
+	double		last_dist;
+	int		side; // remove? 0 to 3 for index in textures?? idk
 };
 struct s_inputs
 {
@@ -106,13 +109,12 @@ struct s_map
 {
 	int		w;
 	int		h;
-	int		x_offset;
+	int		x_offset; // annoying fucking stupid retard variable
 	int		**tiles;
 };
 struct s_player
 {
-	double	x;
-	double	y;
+	t_vec2d	pos;
 	double	rot; // array vector or radian? [2] or PI?
 	//double	mov; // array vector or radian? [2] or PI?
 };
@@ -124,6 +126,16 @@ struct s_cub
 	t_mlx		mlx;
 	t_inputs	inputs;
 	long		dt; // where init?
+};
+struct s_vec2df
+{
+	double	x;
+	double	y;
+};
+struct s_vec2di
+{
+	int	x;
+	int	y;
 };
 
 // ---- //
