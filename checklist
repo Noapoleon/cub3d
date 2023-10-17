@@ -1,8 +1,8 @@
 to do:
-	- figure out why we're using prev_dist for casting???
+	- BEFORE SUBMIT, AT THE END:
+		* protect all defines settings
 	- handle collisions to walls
 	- protect render distance
-	- fix fish eye effect
 	- make mouse movement depend on delta time too
 	- make rotation amount a factor of the window's width (or not idk)
 
@@ -16,6 +16,8 @@ done:
 	- cast single ray from player rotation
 	- make clean struct for casting single ray from player rot
 	- w, a and d pressed is going right?
+	- figure out why we're using prev_dist for casting???
+	- fix fish eye effect
 
 not doing:
 	- reverse map coordinates XOR reverse player movement

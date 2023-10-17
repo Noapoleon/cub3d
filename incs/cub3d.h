@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/16 00:42:17 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/17 18:34:15 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 // SETTINGS
 # define W_WIDTH		1920
 # define W_HEIGHT		1080
-# define MOUSE_SPEED	1.0 // reversed, make linear, remove commeeeeeeeeeeeeeeeeeeeeeeeeeeent
+# define MOUSE_SPEED	1.0
 # define PLAYER_SPEED	2.5 // blocks per second
 # define RENDER_DIST	100.0 // secure later // try really low and really high or protect higher than would be 1 pixel
 
@@ -69,7 +69,8 @@ struct s_ray
 	t_vec2di	map_check;
 	t_vec2df	dist;
 	double		last_dist;
-	int		side; // remove? 0 to 3 for index in textures?? idk
+	int			side; // remove? 0 to 3 for index in textures?? idk, -1 no walls
+	int			index;
 };
 struct s_inputs
 {
@@ -107,12 +108,9 @@ struct s_mlx
 struct s_props
 {
 	// CHECK INIT FUNCTIONS FOR ALL STRUCTS
-	t_texture	no;
-	t_texture	so;
-	t_texture	we;
-	t_texture	ea;
-	int			col_f[3];
-	int			col_c[3];
+	t_texture	walls[4];
+	int			col_f;
+	int			col_c;
 };
 struct s_map
 {
@@ -217,7 +215,6 @@ int		mouse_move_hook(int x, int y, t_cub *cub);
 int		draw_frame(t_cub *cub, t_mlx *mlx, t_player *player);
 // draw_utils.c
 void	my_pixel_put(t_mlx *mlx, int pos[2], int col);
-void	draw_vert_line(t_mlx *mlx, int pos[2], int height, int col);
 
 // movement.c
 void	do_player_movement(t_cub *cub);

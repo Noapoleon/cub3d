@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 17:20:54 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/13 15:10:42 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/17 17:19:13 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,17 @@ int	open_texture(t_mlx *mlx, t_texture *t)
 	return (0);
 }
 
-int	open_textures(t_mlx *mlx, t_props *props)
+static int	open_wall_textures(t_mlx *mlx, t_props *props)
 {
-	// make static or put in utils file
-	if (open_texture(mlx, &props->no) == -1)
-		return (ft_perr(CUB_ERR CE_TEXTURE_OPEN, props->no.path), -1);
-	if (open_texture(mlx, &props->so) == -1)
-		return (ft_perr(CUB_ERR CE_TEXTURE_OPEN, props->so.path), -1);
-	if (open_texture(mlx, &props->we) == -1)
-		return (ft_perr(CUB_ERR CE_TEXTURE_OPEN, props->we.path), -1);
-	if (open_texture(mlx, &props->ea) == -1)
-		return (ft_perr(CUB_ERR CE_TEXTURE_OPEN, props->ea.path), -1);
+	int	i;
+
+	i = 0;
+	while (i < 4)
+	{
+		if (open_texture(mlx, &props->walls[i]) == -1)
+			return (ft_perr(CUB_ERR CE_TEXTURE_OPEN, props->walls[i].path), -1);
+		++i;
+	}
 	return (0);
 }
 
@@ -53,7 +53,7 @@ int	setup_mlx(t_cub *cub, t_mlx *mlx)
 		return (ft_perr(CUB_ERR CE_MLX_IMG), free_mlx(&cub->mlx, &cub->props), -1);
 	mlx->img.addr = mlx_get_data_addr(mlx->img.ptr, &mlx->img.bpp, &mlx->img.ll,
 			&mlx->img.endian);
-	if (open_textures(mlx, &cub->props) == -1)
+	if (open_wall_textures(mlx, &cub->props) == -1)
 		return (free_mlx(&cub->mlx, &cub->props), -1);
 	mlx->w = W_WIDTH;
 	mlx->h = W_HEIGHT;

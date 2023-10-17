@@ -3,31 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   draw_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/15 23:35:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/16 00:42:56 by nlegrand         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   draw_utils.c                                       :+:      :+:    :+:   */
-/*                                                    +
- *                                                    :+ +:+         +:+     */
-/*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/07 09:17:05 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/08 23:12:03 by nlegrand         ###   ########.fr       */
+/*   Created: 2023/10/17 16:32:27 by nlegrand          #+#    #+#             */
+/*   Updated: 2023/10/17 18:54:27 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	init_ray(t_ray *r, t_player *p, double cam_x)
+static void	init_ray(t_ray *r, t_player *p, int	index)
 {
-	cam_x = ((2.0 * cam_x) / (double)W_WIDTH) - 1.0;
+	double	cam_x;
+
+	r->index = index;
+	cam_x = ((2.0 * (double)index) / (double)W_WIDTH) - 1.0;
 	set_vec2df(&r->dir, p->dir.x + p->cam.x * cam_x,
 			p->dir.y + p->cam.y * cam_x);
 	set_vec2df(&r->step_dist, fabs(1.0 / r->dir.x), fabs(1.0 / r->dir.y));
@@ -42,59 +32,79 @@ static void	init_ray(t_ray *r, t_player *p, double cam_x)
 	else
 		r->dist.y = (p->pos.y - (double)r->map_check.y) * r->step_dist.y;
 	r->last_dist = 0.0;
-	r->side = 0;
+	r->side = -1;
 }
 
+static int	ray_hit_detection(t_ray *r, t_cub *cub)
+{
+	while (r->last_dist <= RENDER_DIST)
+	{
+		if (r->dist.x < r->dist.y)
+		{
+			r->map_check.x += r->step.x;
+			r->last_dist = r->dist.x;
+			r->dist.x += r->step_dist.x;
+			r->side = (r->step.x > 0) + 2;
+		}
+		else
+		{
+			r->map_check.y += r->step.y;
+			r->last_dist = r->dist.y;
+			r->dist.y += r->step_dist.y;
+			r->side = r->step.y > 0;
+		}
+
+		if ((r->map_check.x >= 0 && r->map_check.x < cub->map.w) &&
+				(r->map_check.y >= 0 && r->map_check.y < cub->map.h))
+		{
+			if (cub->map.tiles[r->map_check.y][r->map_check.x])
+				return (1);
+		}
+	}
+	return (0);
+}
+
+// Prints vertical line with texture
+static void	draw_vert_line(t_mlx *mlx, t_props *props, t_ray *r)
+{
+	int	height;
+	//const t_texture *t = cub->props.walls[r->side];
+	int	tx_pos[2];
+	int	pos[2];
+
+	height = (int)((double)W_HEIGHT / r->last_dist);
+	if (height > W_HEIGHT) // remove
+		height = W_HEIGHT;
+	tx_pos[0] = (double)(W_HEIGHT - height) / 2.0;
+	tx_pos[1] = W_HEIGHT - tx_pos[0];
+	pos[0] = r->index;
+	pos[1] = 0;
+	while (pos[1] < W_HEIGHT)
+	{
+		if (pos[1] < tx_pos[0])
+			my_pixel_put(mlx, pos, props->col_c);
+		else if (pos[1] > tx_pos[1])
+			my_pixel_put(mlx, pos, props->col_f);
+		else
+		{
+			// jsp mdr
+			my_pixel_put(mlx, pos, 0x00ff0000);
+		}
+		++pos[1];
+	}
+}
+
+// Casts one ray per horizontal pixel of the window and draws the vertical
+// texture sprites
 static void	cast_rays(t_cub *cub, t_player *p)
 {
 	static t_ray	ray;
-	int				wall_found;
-	int				line_height;
-	int				line_col;
-
-	// refresh_ray() -> loop of different angle rays but same position
 
 	for (int i = 0; i < W_WIDTH; ++i)
 	{
 		init_ray(&ray, p, i);
-		wall_found = 0;
-		// ray_loop()
-		while (!wall_found && ray.last_dist <= RENDER_DIST)
-		{
-			if (ray.dist.x < ray.dist.y)
-			{
-				ray.map_check.x += ray.step.x;
-				ray.last_dist = ray.dist.x;
-				ray.dist.x += ray.step_dist.x;
-				ray.side = 0;
-			}
-			else
-			{
-				ray.map_check.y += ray.step.y;
-				ray.last_dist = ray.dist.y;
-				ray.dist.y += ray.step_dist.y;
-				ray.side = 1;
-			}
-
-			if ((ray.map_check.x >= 0 && ray.map_check.x < cub->map.w) &&
-					(ray.map_check.y >= 0 && ray.map_check.y < cub->map.h))
-			{
-				if (cub->map.tiles[ray.map_check.y][ray.map_check.x])
-					wall_found = 1;
-			}
-		}
-		if (wall_found)
-		{
-			if (ray.side == 0)
-				line_col = 0x00bb0000;
-			else
-				line_col = 0x000000bb;
-
-			line_height = (int)(((double)W_HEIGHT) / ray.last_dist);
-			if (line_height > W_HEIGHT)
-				line_height = W_HEIGHT;
-			draw_vert_line(&cub->mlx, (int[2]){i, -line_height / 2 + W_HEIGHT / 2}, line_height, line_col);
-		}
+		if (ray_hit_detection(&ray, cub))
+			draw_vert_line(&cub->mlx, &cub->props, &ray);
 	}
 }
 
@@ -109,7 +119,7 @@ int	draw_frame(t_cub *cub, t_mlx *mlx, t_player *player)
 	//display_movdir(cub, (int[2]){500, 500});
 	//display_rot(cub, (int[2]){500, 500}); // remove later
 	mlx_put_image_to_window(mlx->ptr, mlx->win, mlx->img.ptr, 0, 0);
-	mlx_put_image_to_window(mlx->ptr, mlx->win, cub->props.no.img.ptr, 0, 0);
+	//mlx_put_image_to_window(mlx->ptr, mlx->win, cub->props.no.img.ptr, 0, 0);
 	return (0);
 }
 
@@ -126,20 +136,5 @@ void	my_pixel_put(t_mlx *mlx, int pos[2], int col)
 		dst = mlx->img.addr +
 			(pos[1] * mlx->img.ll + pos[0] * (mlx->img.bpp / 8));
 		*(unsigned int *)dst = col;
-	}
-}
-
-// Prints vertical line
-void	draw_vert_line(t_mlx *mlx, int pos[2], int height, int col) // change for texture later
-{
-	int	i;
-
-	i = 0;
-	while (i < height)
-	{
-		if (i >= 0 && i < W_HEIGHT)
-			my_pixel_put(mlx, pos, col);
-		pos[1]++;
-		++i;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 15:52:56 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/16 00:07:22 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/17 18:39:38 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 // Initializes properties variables to default values
 void	init_vars_props(t_props *props)
 {
-	set_int_arr(props->col_f, 3, -1);
-	set_int_arr(props->col_c, 3, -1);
-	init_vars_texture(&props->no);
-	init_vars_texture(&props->so);
-	init_vars_texture(&props->we);
-	init_vars_texture(&props->ea);
+	props->col_f = -1;
+	props->col_c = -1;
+	init_vars_texture(&props->walls[0]);
+	init_vars_texture(&props->walls[1]);
+	init_vars_texture(&props->walls[2]);
+	init_vars_texture(&props->walls[3]);
 }
 
 // Initializes map variables to default values

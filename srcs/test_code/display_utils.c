@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 05:20:42 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/16 00:27:56 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/17 18:47:46 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,14 @@ void	display_scene(t_cub *cub)
 {
 	printf("### SCENE BEG ###\n");
 	printf("\nProperties:\n");
-	printf("NO -> %s\n", cub->props.no.path);
-	printf("SO -> %s\n", cub->props.so.path);
-	printf("WE -> %s\n", cub->props.we.path);
-	printf("EA -> %s\n", cub->props.ea.path);
-	printf("F -> %d,%d,%d\n", cub->props.col_f[0], cub->props.col_f[1], cub->props.col_f[2]);
-	printf("C -> %d,%d,%d\n", cub->props.col_c[0], cub->props.col_c[1], cub->props.col_c[2]);
+	printf("NO -> %s\n", cub->props.walls[0].path);
+	printf("SO -> %s\n", cub->props.walls[1].path);
+	printf("WE -> %s\n", cub->props.walls[2].path);
+	printf("EA -> %s\n", cub->props.walls[3].path);
+	printf("F -> #%x\n", cub->props.col_f);
+	printf("C -> #%x\n", cub->props.col_c);
+	//printf("F (dec)-> %d,%d,%d\n", cub->props.col_f[0], cub->props.col_f[1], cub->props.col_f[2]);
+	//printf("C (dec)-> %d,%d,%d\n", cub->props.col_c[0], cub->props.col_c[1], cub->props.col_c[2]);
 	printf("\nPlayer:\n");
 	printf("x -> %f, y -> %f\n", cub->player.pos.x, cub->player.pos.y);
 	printf("rot -> %f\n", cub->player.rot);
