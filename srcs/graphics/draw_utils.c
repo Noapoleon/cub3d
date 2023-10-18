@@ -6,7 +6,7 @@
 /*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:32:27 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/17 18:54:27 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/18 23:35:19 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,31 +64,83 @@ static int	ray_hit_detection(t_ray *r, t_cub *cub)
 	return (0);
 }
 
-// Prints vertical line with texture
-static void	draw_vert_line(t_mlx *mlx, t_props *props, t_ray *r)
+static int	get_tex_col(t_texture *t, int pos[2])
 {
-	int	height;
-	//const t_texture *t = cub->props.walls[r->side];
-	int	tx_pos[2];
-	int	pos[2];
+	char	*dst;
+
+	if (pos[0] >= 0 && pos[0] < t->w
+			&& pos[1] >= 0 && pos[1] < t->h)
+	{
+		dst = t->img.addr + (pos[1] * t->img.ll + pos[0] * (t->img.bpp / 8));
+		return (*(unsigned int *)dst);
+	}
+	return (0);
+}
+
+static double	get_wall_x(t_ray *r, t_player *p)
+{
+	double wall_x;
+
+	if (r->side < 2)
+	{
+		wall_x = p->pos.x + (r->dir.x * r->last_dist);
+		wall_x -= (int)wall_x;
+	}
+	else
+	{
+		wall_x = p->pos.y - (r->dir.y * r->last_dist);
+		wall_x -= (int)wall_x;
+	}
+	if (r->side == 1 || r->side == 2)
+		return (1.0 - wall_x);
+	return (wall_x);
+}
+
+// Prints vertical line with texture
+static void	draw_vert_line(t_mlx *mlx, t_props *props, t_ray *r, t_player *p)
+{
+	int		height;
+	int		pos[2];
+	int		tx_range[2];
+	double	tx_step[2];
+	int		tx_pos[2];
+	//int	col;
 
 	height = (int)((double)W_HEIGHT / r->last_dist);
-	if (height > W_HEIGHT) // remove
-		height = W_HEIGHT;
-	tx_pos[0] = (double)(W_HEIGHT - height) / 2.0;
-	tx_pos[1] = W_HEIGHT - tx_pos[0];
+	tx_range[0] = (W_HEIGHT - height) / 2;
+	tx_range[1] = W_HEIGHT - tx_range[0]; //what? yes
+	tx_step[0] = (double)props->walls[r->side].h / (double)height; // rename
+	if (tx_range[0] >= 0)
+		tx_step[1] =  0;
+	else
+		tx_step[1]  = ((height - W_HEIGHT) / 2) * tx_step[0];
+	tx_pos[0] = (get_wall_x(r, p) * (double)props->walls[r->side].w);
+
+	if (r->index == 940)
+	{
+		//printf("tx_range -> %d;%d\n", tx_range[0], tx_range[1]);
+		printf("thing -> %lf\n", tx_step[1]);
+		printf("thing2 -> %lf\n", (double)W_HEIGHT / (double)height);
+	}
+
+	if (r->index == 940)
+		printf("tx_step -> %lf ; %lf\n", tx_step[0], tx_step[1]);
+
 	pos[0] = r->index;
 	pos[1] = 0;
 	while (pos[1] < W_HEIGHT)
 	{
-		if (pos[1] < tx_pos[0])
+		if (pos[1] < tx_range[0])
 			my_pixel_put(mlx, pos, props->col_c);
-		else if (pos[1] > tx_pos[1])
+		else if (pos[1] >= tx_range[1])
 			my_pixel_put(mlx, pos, props->col_f);
 		else
 		{
-			// jsp mdr
-			my_pixel_put(mlx, pos, 0x00ff0000);
+			//my_pixel_put(mlx, pos, 0x00ff0000);
+
+			tx_pos[1] = tx_step[1];
+			my_pixel_put(mlx, pos, get_tex_col(&props->walls[r->side], tx_pos));
+			tx_step[1] += tx_step[0];
 		}
 		++pos[1];
 	}
@@ -104,7 +156,7 @@ static void	cast_rays(t_cub *cub, t_player *p)
 	{
 		init_ray(&ray, p, i);
 		if (ray_hit_detection(&ray, cub))
-			draw_vert_line(&cub->mlx, &cub->props, &ray);
+			draw_vert_line(&cub->mlx, &cub->props, &ray, p);
 	}
 }
 
@@ -126,15 +178,14 @@ int	draw_frame(t_cub *cub, t_mlx *mlx, t_player *player)
 // Substitute function for mlx_pixel_put
 // Writes pixels into the image buffer instead of directly to the screen for
 // much better performance
-void	my_pixel_put(t_mlx *mlx, int pos[2], int col)
+void	my_pixel_put(t_mlx *m, int pos[2], int col)
 {
 	char	*dst;
 
-	if (pos[0] >= 0 && pos[0] < mlx->w
-			&& pos[1] >= 0 && pos[1] < mlx->h)
+	if (pos[0] >= 0 && pos[0] < m->w
+			&& pos[1] >= 0 && pos[1] < m->h)
 	{
-		dst = mlx->img.addr +
-			(pos[1] * mlx->img.ll + pos[0] * (mlx->img.bpp / 8));
+		dst = m->img.addr + (pos[1] * m->img.ll + pos[0] * (m->img.bpp / 8));
 		*(unsigned int *)dst = col;
 	}
 }
