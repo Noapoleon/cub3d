@@ -6,7 +6,7 @@
 /*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:32:27 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/18 23:35:19 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/19 10:48:41 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,27 +104,19 @@ static void	draw_vert_line(t_mlx *mlx, t_props *props, t_ray *r, t_player *p)
 	int		tx_range[2];
 	double	tx_step[2];
 	int		tx_pos[2];
-	//int	col;
+	int	col;
 
 	height = (int)((double)W_HEIGHT / r->last_dist);
 	tx_range[0] = (W_HEIGHT - height) / 2;
-	tx_range[1] = W_HEIGHT - tx_range[0]; //what? yes
+	tx_range[1] = W_HEIGHT - tx_range[0];
 	tx_step[0] = (double)props->walls[r->side].h / (double)height; // rename
 	if (tx_range[0] >= 0)
 		tx_step[1] =  0;
 	else
 		tx_step[1]  = ((height - W_HEIGHT) / 2) * tx_step[0];
 	tx_pos[0] = (get_wall_x(r, p) * (double)props->walls[r->side].w);
-
-	if (r->index == 940)
-	{
-		//printf("tx_range -> %d;%d\n", tx_range[0], tx_range[1]);
-		printf("thing -> %lf\n", tx_step[1]);
-		printf("thing2 -> %lf\n", (double)W_HEIGHT / (double)height);
-	}
-
-	if (r->index == 940)
-		printf("tx_step -> %lf ; %lf\n", tx_step[0], tx_step[1]);
+	if (tx_pos[0] >= props->walls[r->side].w)
+		tx_pos[0] = props->walls[r->side].w - 1;
 
 	pos[0] = r->index;
 	pos[1] = 0;
@@ -136,10 +128,13 @@ static void	draw_vert_line(t_mlx *mlx, t_props *props, t_ray *r, t_player *p)
 			my_pixel_put(mlx, pos, props->col_f);
 		else
 		{
-			//my_pixel_put(mlx, pos, 0x00ff0000);
-
 			tx_pos[1] = tx_step[1];
-			my_pixel_put(mlx, pos, get_tex_col(&props->walls[r->side], tx_pos));
+			if (tx_pos[1] >= props->walls[r->side].h)
+				tx_pos[1] = props->walls[r->side].h - 1;
+			col = get_tex_col(&props->walls[r->side], tx_pos);
+			if (r->side < 2)
+				col = (col >> 1) & 0x007f7f7f;
+			my_pixel_put(mlx, pos, col);
 			tx_step[1] += tx_step[0];
 		}
 		++pos[1];

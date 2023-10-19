@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 19:29:12 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/16 00:27:44 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/19 11:06:41 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static void	set_player_rotation(t_player *p, t_cub *cub)
 	mlx_mouse_get_pos(cub->mlx.ptr, cub->mlx.win, &pos[0], &pos[1]);
 	if (pos[0] != cub->mlx.w_mid)
 	{
-		p->rot += (((double)(cub->mlx.w_mid - pos[0]) * MOUSE_SPEED) / 1000.0)
-			* M_PI;
+		p->rot += ((double)cub->dt / 1000000.0)  *
+			(((double)(cub->mlx.w_mid - pos[0]) / 10.0) * M_PI) * MOUSE_SPEED;
 		p->rot = get_principal_angle(p->rot);
 	}
 	set_vec2df(&p->dir, cos(p->rot), sin(p->rot));
@@ -58,9 +58,9 @@ static void	set_player_location(t_player *player, t_cub *cub)
 	if (cub->inputs.s - cub->inputs.w || cub->inputs.d - cub->inputs.a)
 	{
 		mov_angle = get_mov_angle(player->rot, &cub->inputs);
-		player->pos.x += ((double)cub->dt / 1000000) * PLAYER_SPEED
+		player->pos.x += ((double)cub->dt / 1000000.0) * PLAYER_SPEED
 			* cos(mov_angle);
-		player->pos.y -= ((double)cub->dt / 1000000) * PLAYER_SPEED
+		player->pos.y -= ((double)cub->dt / 1000000.0) * PLAYER_SPEED
 			* sin(mov_angle);
 	}
 }

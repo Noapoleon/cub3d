@@ -3,7 +3,6 @@ to do:
 		* protect all defines settings
 	- handle collisions to walls
 	- protect render distance
-	- make mouse movement depend on delta time too
 	- make rotation amount a factor of the window's width (or not idk)
 
 done:
@@ -18,6 +17,7 @@ done:
 	- w, a and d pressed is going right?
 	- figure out why we're using prev_dist for casting???
 	- fix fish eye effect
+	- make mouse movement depend on delta time too
 
 not doing:
 	- reverse map coordinates XOR reverse player movement
