@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 20:41:09 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/09/07 16:30:12 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/19 15:18:14 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	disable_focus_hook(t_cub *cub)
 {
 	cub->mlx.focused = 0;
 	init_vars_inputs(&cub->inputs);
-	mlx_mouse_show(cub->mlx.ptr, cub->mlx.win);
+	//mlx_mouse_show(cub->mlx.ptr, cub->mlx.win);
 	return (0);
 }
 
@@ -25,7 +25,7 @@ static int	disable_focus_hook(t_cub *cub)
 static int	enable_focus_hook(t_cub *cub)
 {
 	cub->mlx.focused = 1;
-	mlx_mouse_hide(cub->mlx.ptr, cub->mlx.win); // leaks
+	//mlx_mouse_hide(cub->mlx.ptr, cub->mlx.win); // leaks
 	return (0);
 }
 

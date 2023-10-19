@@ -4,6 +4,7 @@ to do:
 	- handle collisions to walls
 	- protect render distance
 	- make rotation amount a factor of the window's width (or not idk)
+	- make keys rotate view (MANDATORY)
 
 done:
 	- init player rotation

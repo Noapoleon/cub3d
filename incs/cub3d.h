@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/19 11:05:43 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/19 15:11:33 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,7 +212,7 @@ int		mouse_move_hook(int x, int y, t_cub *cub);
 // GRAHICS //
 // ------- //
 // draw_frame.c
-int		draw_frame(t_cub *cub, t_mlx *mlx, t_player *player);
+void	draw_frame(t_cub *cub, t_mlx *mlx, t_player *player);
 // draw_utils.c
 void	my_pixel_put(t_mlx *mlx, int pos[2], int col);
 

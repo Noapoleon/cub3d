@@ -6,12 +6,13 @@
 /*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:32:27 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/19 10:48:41 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/19 15:30:38 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+// Sets ray struct variables for DDA loop
 static void	init_ray(t_ray *r, t_player *p, int	index)
 {
 	double	cam_x;
@@ -35,7 +36,9 @@ static void	init_ray(t_ray *r, t_player *p, int	index)
 	r->side = -1;
 }
 
-static int	ray_hit_detection(t_ray *r, t_cub *cub)
+// Loops on the DDA algorithm, stores info in ray struct
+// Returns 1 if a wall is hit, returns 0 otherwise
+static int	ray_dda_loop(t_ray *r, t_cub *cub)
 {
 	while (r->last_dist <= RENDER_DIST)
 	{
@@ -53,17 +56,17 @@ static int	ray_hit_detection(t_ray *r, t_cub *cub)
 			r->dist.y += r->step_dist.y;
 			r->side = r->step.y > 0;
 		}
-
 		if ((r->map_check.x >= 0 && r->map_check.x < cub->map.w) &&
 				(r->map_check.y >= 0 && r->map_check.y < cub->map.h))
-		{
 			if (cub->map.tiles[r->map_check.y][r->map_check.x])
 				return (1);
-		}
 	}
+	r->side = -1; // check later if setting this here doesn't cause problems
 	return (0);
 }
 
+// Returns the color of pixel in the texture at coordinates pos
+// Returns 0 if outside of texture range
 static int	get_tex_col(t_texture *t, int pos[2])
 {
 	char	*dst;
@@ -77,6 +80,7 @@ static int	get_tex_col(t_texture *t, int pos[2])
 	return (0);
 }
 
+// Returns X coord of ray hit on wall
 static double	get_wall_x(t_ray *r, t_player *p)
 {
 	double wall_x;
@@ -141,8 +145,7 @@ static void	draw_vert_line(t_mlx *mlx, t_props *props, t_ray *r, t_player *p)
 	}
 }
 
-// Casts one ray per horizontal pixel of the window and draws the vertical
-// texture sprites
+// Casts one ray per horizontal pixel of the window and draws textures on walls
 static void	cast_rays(t_cub *cub, t_player *p)
 {
 	static t_ray	ray;
@@ -150,24 +153,17 @@ static void	cast_rays(t_cub *cub, t_player *p)
 	for (int i = 0; i < W_WIDTH; ++i)
 	{
 		init_ray(&ray, p, i);
-		if (ray_hit_detection(&ray, cub))
-			draw_vert_line(&cub->mlx, &cub->props, &ray, p);
+		ray_dda_loop(&ray,cub);
+		draw_vert_line(&cub->mlx, &cub->props, &ray, p);
 	}
 }
 
 // Main draw function
-int	draw_frame(t_cub *cub, t_mlx *mlx, t_player *player)
+void	draw_frame(t_cub *cub, t_mlx *mlx, t_player *player)
 {
-	(void)player; // remove
 	clear_imgbuf(cub, 0x0);
-	//display_inputs(cub, (int[2]){20, 20}); // remove later
-	//display_map(cub);
 	cast_rays(cub, player);
-	//display_movdir(cub, (int[2]){500, 500});
-	//display_rot(cub, (int[2]){500, 500}); // remove later
 	mlx_put_image_to_window(mlx->ptr, mlx->win, mlx->img.ptr, 0, 0);
-	//mlx_put_image_to_window(mlx->ptr, mlx->win, cub->props.no.img.ptr, 0, 0);
-	return (0);
 }
 
 // Substitute function for mlx_pixel_put
