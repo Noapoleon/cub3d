@@ -6,7 +6,7 @@
 /*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:32:27 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/20 13:36:38 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/20 13:45:53 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,12 +123,24 @@ static void	init_texline(t_texline *tl, t_cub *cub, t_ray *r)
 		tl->pos[0] = cub->props.walls[r->side].w - 1;
 }
 
+static int	tex_sample_wall(t_texline *tl, t_cub *cub,  t_ray *r)
+{
+	int	col;
+
+	tl->pos[1] = tl->step[1];
+	if (tl->pos[1] >= cub->props.walls[r->side].h)
+		tl->pos[1] = cub->props.walls[r->side].h - 1;
+	col = get_tex_col(&cub->props.walls[r->side], tl->pos);
+	if (r->side < 2)
+		col = (col >> 1) & 0x007f7f7f;
+	return (col);
+}
+
 // Prints vertical line with texture
 static void	draw_vert_line(t_cub *cub, t_ray *r)
 {
 	static t_texline	tl;
 	int					pos[2];
-	int					col;
 
 	init_texline(&tl, cub, r);
 	pos[0] = r->index;
@@ -141,13 +153,7 @@ static void	draw_vert_line(t_cub *cub, t_ray *r)
 			my_pixel_put(&cub->mlx, pos, cub->props.col_f);
 		else
 		{
-			tl.pos[1] = tl.step[1];
-			if (tl.pos[1] >= cub->props.walls[r->side].h)
-				tl.pos[1] = cub->props.walls[r->side].h - 1;
-			col = get_tex_col(&cub->props.walls[r->side], tl.pos);
-			if (r->side < 2)
-				col = (col >> 1) & 0x007f7f7f;
-			my_pixel_put(&cub->mlx, pos, col);
+			my_pixel_put(&cub->mlx, pos, tex_sample_wall(&tl, cub, r));
 			tl.step[1] += tl.step[0];
 		}
 		++pos[1];
