@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/19 15:11:33 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/20 13:41:14 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # include "cub3d_err.h"
 
 // SETTINGS
-# define W_WIDTH		1920
-# define W_HEIGHT		1080
+# define W_WIDTH		640
+# define W_HEIGHT		480
 # define MOUSE_SPEED	1.0
 # define PLAYER_SPEED	2.5 // blocks per second
 # define RENDER_DIST	100.0 // secure later // try really low and really high or protect higher than would be 1 pixel
@@ -39,6 +39,7 @@
 # define T_WALL			1
 # define W_TITLE		"cub3d"
 
+typedef struct s_texline	t_texline;
 typedef struct s_vec2df		t_vec2df;
 typedef struct s_vec2di		t_vec2di;
 typedef struct s_ray		t_ray;
@@ -51,6 +52,14 @@ typedef struct s_map		t_map;
 typedef struct s_player		t_player;
 typedef struct s_cub		t_cub;
 
+struct s_texline
+{
+	int		height;
+	int		h_mid;
+	int		range[2];
+	double	step[2];
+	int		pos[2];
+};
 struct s_vec2df
 {
 	double	x;

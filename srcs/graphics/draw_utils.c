@@ -6,7 +6,7 @@
 /*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:32:27 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/19 15:30:38 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/20 13:36:38 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,46 +100,55 @@ static double	get_wall_x(t_ray *r, t_player *p)
 	return (wall_x);
 }
 
-// Prints vertical line with texture
-static void	draw_vert_line(t_mlx *mlx, t_props *props, t_ray *r, t_player *p)
+static void	init_texline(t_texline *tl, t_cub *cub, t_ray *r)
 {
-	int		height;
-	int		pos[2];
-	int		tx_range[2];
-	double	tx_step[2];
-	int		tx_pos[2];
-	int	col;
-
-	height = (int)((double)W_HEIGHT / r->last_dist);
-	tx_range[0] = (W_HEIGHT - height) / 2;
-	tx_range[1] = W_HEIGHT - tx_range[0];
-	tx_step[0] = (double)props->walls[r->side].h / (double)height; // rename
-	if (tx_range[0] >= 0)
-		tx_step[1] =  0;
+	if (r->side == -1)
+	{
+		tl->range[0] = cub->mlx.h_mid;
+		tl->range[1] = cub->mlx.h_mid;
+		return ;
+	}
+	tl->height = (int)((double)W_HEIGHT / r->last_dist);
+	tl->h_mid = tl->height / 2;
+	tl->range[0] = cub->mlx.h_mid - tl->h_mid;
+	tl->range[1] = W_HEIGHT - tl->range[0];
+	tl->step[0] = (double)cub->props.walls[r->side].h / (double)tl->height; // parentheses?
+	if (tl->range[0] >= 0)
+		tl->step[1] =  0;
 	else
-		tx_step[1]  = ((height - W_HEIGHT) / 2) * tx_step[0];
-	tx_pos[0] = (get_wall_x(r, p) * (double)props->walls[r->side].w);
-	if (tx_pos[0] >= props->walls[r->side].w)
-		tx_pos[0] = props->walls[r->side].w - 1;
+		tl->step[1]  = (tl->h_mid - cub->mlx.h_mid) * tl->step[0];
+	tl->pos[0] = (get_wall_x(r, &cub->player) *
+			(double)cub->props.walls[r->side].w);
+	if (tl->pos[0] >= cub->props.walls[r->side].w)
+		tl->pos[0] = cub->props.walls[r->side].w - 1;
+}
 
+// Prints vertical line with texture
+static void	draw_vert_line(t_cub *cub, t_ray *r)
+{
+	static t_texline	tl;
+	int					pos[2];
+	int					col;
+
+	init_texline(&tl, cub, r);
 	pos[0] = r->index;
 	pos[1] = 0;
 	while (pos[1] < W_HEIGHT)
 	{
-		if (pos[1] < tx_range[0])
-			my_pixel_put(mlx, pos, props->col_c);
-		else if (pos[1] >= tx_range[1])
-			my_pixel_put(mlx, pos, props->col_f);
+		if (pos[1] < tl.range[0])
+			my_pixel_put(&cub->mlx, pos, cub->props.col_c);
+		else if (pos[1] >= tl.range[1])
+			my_pixel_put(&cub->mlx, pos, cub->props.col_f);
 		else
 		{
-			tx_pos[1] = tx_step[1];
-			if (tx_pos[1] >= props->walls[r->side].h)
-				tx_pos[1] = props->walls[r->side].h - 1;
-			col = get_tex_col(&props->walls[r->side], tx_pos);
+			tl.pos[1] = tl.step[1];
+			if (tl.pos[1] >= cub->props.walls[r->side].h)
+				tl.pos[1] = cub->props.walls[r->side].h - 1;
+			col = get_tex_col(&cub->props.walls[r->side], tl.pos);
 			if (r->side < 2)
 				col = (col >> 1) & 0x007f7f7f;
-			my_pixel_put(mlx, pos, col);
-			tx_step[1] += tx_step[0];
+			my_pixel_put(&cub->mlx, pos, col);
+			tl.step[1] += tl.step[0];
 		}
 		++pos[1];
 	}
@@ -154,7 +163,7 @@ static void	cast_rays(t_cub *cub, t_player *p)
 	{
 		init_ray(&ray, p, i);
 		ray_dda_loop(&ray,cub);
-		draw_vert_line(&cub->mlx, &cub->props, &ray, p);
+		draw_vert_line(cub, &ray);
 	}
 }
 

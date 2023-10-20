@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:01 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/18 22:45:13 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/20 12:54:15 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,18 @@ int	main(int ac, char **av)
 // main game loop
 int	game_loop(t_cub *cub)
 {
+	static long	elapsed;
+	static int	frames;
+
 	get_deltatime(cub);
+	elapsed += cub->dt;
+	++frames;
+	if (elapsed >= 1000000)
+	{
+		printf("%d fps\n", frames);
+		elapsed = 0;
+		frames = 0;
+	}
 	if (cub->mlx.focused)
 	{
 		do_player_movement(cub);
