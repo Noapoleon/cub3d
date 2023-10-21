@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 15:52:56 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/17 18:39:38 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/21 18:06:32 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,6 @@ void	init_vars_inputs(t_inputs *inputs)
 	inputs->s = 0;
 	inputs->a = 0;
 	inputs->d = 0;
+	inputs->la = 0;
+	inputs->ra = 0;
 }

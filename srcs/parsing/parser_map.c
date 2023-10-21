@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 16:52:56 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/16 00:16:17 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/21 18:52:41 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,21 @@ static int	alloc_map(t_map *map, t_list *cur, int count, int *offset)
 
 // If player tile is found sets the properties of player struct and replaces it
 // it in the map with an air tile
-static int	set_player(t_player *player, int x, int y, char c)
+static int	set_player(t_player *p, int x, int y, char c)
 {
-	if (player->pos.x != -1.0)
+	if (p->pos.x != -1.0)
 		return (-1);
-	set_vec2df(&player->pos, x + 0.5, y + 0.5);
+	set_vec2df(&p->pos, x + 0.5, y + 0.5);
 	if (c == 'N')
-		player->rot = M_PI_2;
+		p->rot = M_PI_2;
 	else if (c == 'S')
-		player->rot = M_PI_2 * 3.0;
+		p->rot = M_PI_2 * 3.0;
 	else if (c == 'W')
-		player->rot = M_PI;
+		p->rot = M_PI;
 	else
-		player->rot = 0;
+		p->rot = 0;
+	set_vec2df(&p->dir, cos(p->rot), sin(p->rot));
+	set_vec2df(&p->cam, cos(p->rot - M_PI_2), sin(p->rot - M_PI_2));
 	return (0);
 }
 

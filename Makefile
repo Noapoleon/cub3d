@@ -29,6 +29,7 @@ SRCS	:=	main.c \
 			utils/utils1.c \
 			utils/utils_free.c \
 			utils/utils_vec.c \
+			utils/utils_debug.c \
 			hooking/hooks.c \
 			hooking/hooks_keys.c \
 			graphics/draw_utils.c \

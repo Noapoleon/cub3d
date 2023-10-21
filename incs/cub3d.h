@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/20 13:41:14 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/21 20:49:00 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@
 # include "cub3d_err.h"
 
 // SETTINGS
-# define W_WIDTH		640
-# define W_HEIGHT		480
+# define W_WIDTH		1600
+# define W_HEIGHT		800
 # define MOUSE_SPEED	1.0
-# define PLAYER_SPEED	2.5 // blocks per second
+# define PLAYER_SPEED	5.0 // blocks per second
 # define RENDER_DIST	100.0 // secure later // try really low and really high or protect higher than would be 1 pixel
 
 // CONSTANTS
@@ -87,6 +87,8 @@ struct s_inputs
 	int	s;
 	int	a;
 	int	d;
+	int	la; // init
+	int	ra;
 };
 struct s_imgbuf
 {
@@ -204,6 +206,9 @@ void	free_cub(t_cub *cub);
 // utils_vec.c
 void	set_vec2df(t_vec2df *v, double x, double y);
 void	set_vec2di(t_vec2di *v, int x, int y);
+// utils_debug.c
+void	print_fps(t_cub *cub);
+void	print_mouse_pos(t_mlx *mlx);
 
 
 // ----- //

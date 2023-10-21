@@ -1,10 +1,13 @@
 to do:
 	- BEFORE SUBMIT, AT THE END:
 		* protect all defines settings
+		* use ft_printf instead of printf where possible
+		* check all inits
 	- handle collisions to walls
 	- protect render distance
-	- make rotation amount a factor of the window's width (or not idk)
-	- make keys rotate view (MANDATORY)
+	- make a menu with 'esc' key
+		* "continue" and "quit" options
+		* maybe an "options" menu with toggles and sliders
 
 done:
 	- init player rotation
@@ -19,8 +22,15 @@ done:
 	- figure out why we're using prev_dist for casting???
 	- fix fish eye effect
 	- make mouse movement depend on delta time too
+	- make keys rotate view (MANDATORY)
+	- moved mlx_mouse_move inside of set_player_rotation because it was causing
+	  lag
 
 not doing:
 	- reverse map coordinates XOR reverse player movement
-		* reversing the map would be better for the long run but annoying for displaying the map
+		* reversing the map would be better for the long run but annoying for
+		  displaying the map
 	- allow quitting the game with q
+		* nah, let's make an escape menu
+	- make rotation amount a factor of the window's width (or not idk)
+		* stupid, dont change rotation speed based on resolution
