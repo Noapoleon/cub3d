@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:01 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/21 20:51:10 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/21 21:14:54 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,13 @@ int	main(int ac, char **av)
 // main game loop
 int	game_loop(t_cub *cub)
 {
+	get_deltatime(cub);
 	//print_fps(cub); // remove
 	//print_mouse_pos(&cub->mlx); // remove
 	if (cub->mlx.focused)
+	{
 		do_player_movement(cub);
-	draw_frame(cub, &cub->mlx, &cub->player);
+		draw_frame(cub, &cub->mlx, &cub->player);
+	}
 	return (0);
 }

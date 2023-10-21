@@ -6,7 +6,7 @@
 /*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:32:27 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/20 13:45:53 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/21 21:14:48 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,7 @@ void	draw_frame(t_cub *cub, t_mlx *mlx, t_player *player)
 {
 	clear_imgbuf(cub, 0x0);
 	cast_rays(cub, player);
+	//display_inputs(cub, (int[2]){0,0}); // remove
 	mlx_put_image_to_window(mlx->ptr, mlx->win, mlx->img.ptr, 0, 0);
 }
 
