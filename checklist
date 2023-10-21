@@ -3,6 +3,7 @@ to do:
 		* protect all defines settings
 		* use ft_printf instead of printf where possible
 		* check all inits
+		* figure out what the weird visual bug is when going out of bounds
 	- handle collisions to walls
 	- protect render distance
 	- make a menu with 'esc' key
