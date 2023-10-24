@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:01 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/21 21:32:17 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/22 18:14:57 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	main(int ac, char **av)
 int	game_loop(t_cub *cub)
 {
 	get_deltatime(cub);
-	//print_fps(cub); // remove
+	print_fps(cub); // remove
 	//print_mouse_pos(&cub->mlx); // remove
 	if (cub->mlx.focused)
 	{
