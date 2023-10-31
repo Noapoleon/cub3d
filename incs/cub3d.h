@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/22 18:39:12 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/31 17:43:18 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define W_WIDTH		2160
 # define W_HEIGHT		1080
 # define MOUSE_SPEED	1.0
-# define PLAYER_SPEED	100.0 // blocks per second
+# define PLAYER_SPEED	3.0 // blocks per second
 # define RENDER_DIST	100.0 // secure later // try really low and really high or protect higher than would be 1 pixel
 
 // CONSTANTS
@@ -87,6 +87,8 @@ struct s_inputs
 	int	s;
 	int	a;
 	int	d;
+	int	e;
+	int	m;
 	int	la; // init
 	int	ra;
 };
@@ -144,6 +146,7 @@ struct s_cub
 	t_mlx		mlx;
 	t_inputs	inputs;
 	long		dt;
+	int			minimap;
 };
 
 // ---- //
@@ -227,8 +230,12 @@ int		mouse_move_hook(int x, int y, t_cub *cub);
 // ------- //
 // draw_frame.c
 void	draw_frame(t_cub *cub, t_mlx *mlx, t_player *player);
-// draw_utils.c
+// draw_vert_line.c
+void	draw_vert_line(t_cub *cub, t_ray *r);
+// graphic_utils.c
+int		get_tex_col(t_texture *t, int pos[2]);
 void	my_pixel_put(t_mlx *mlx, int pos[2], int col);
+void	my_rect_put(t_mlx *m, int pos[2], int size[2], int col);
 
 // movement.c
 void	do_player_movement(t_cub *cub);

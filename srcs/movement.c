@@ -6,14 +6,13 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 19:29:12 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/21 21:07:03 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/31 16:38:42 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-
-
+// calculates player rotation from mouse movement and/or keypress
 static void	set_player_rotation(t_player *p, t_cub *cub)
 {
 	int		pos[2];
@@ -23,13 +22,13 @@ static void	set_player_rotation(t_player *p, t_cub *cub)
 	mlx_mouse_get_pos(cub->mlx.ptr, cub->mlx.win, &pos[0], &pos[1]);
 	if (pos[0] != cub->mlx.w_mid)
 	{
-		p->rot += (double)(cub->mlx.w_mid - pos[0]) / 1000.0
+		p->rot += ((double)(cub->mlx.w_mid - pos[0]) * 0.001)
 			* M_PI * MOUSE_SPEED;
 		mlx_mouse_move(cub->mlx.ptr, cub->mlx.win, cub->mlx.w_mid,
 				cub->mlx.h_mid);
 	}
-	else if (cub->inputs.la - cub->inputs.ra)
-		p->rot += ((double)cub->dt / 1000000.0) *
+	if (cub->inputs.la - cub->inputs.ra)
+		p->rot += ((double)cub->dt * 0.000001) *
 			(cub->inputs.la - cub->inputs.ra) * M_PI * MOUSE_SPEED;
 	if (prev_rot != p->rot)
 	{
@@ -39,6 +38,7 @@ static void	set_player_rotation(t_player *p, t_cub *cub)
 	}
 }
 
+// compute movement angle from inputs
 static double get_mov_angle(double rot, t_inputs *inputs)
 {
 	if (inputs->w - inputs->s && inputs->a - inputs->d)
@@ -61,20 +61,24 @@ static double get_mov_angle(double rot, t_inputs *inputs)
 	return (rot);
 }
 
+// move player using input keys and delta time
 static void	set_player_location(t_player *p, t_cub *cub)
 {
 	double	mov_angle;
+	double	dt_sec;
 
 	if (cub->inputs.s - cub->inputs.w || cub->inputs.d - cub->inputs.a)
 	{
 		mov_angle = get_mov_angle(p->rot, &cub->inputs);
-		p->pos.x += ((double)cub->dt / 1000000.0) * PLAYER_SPEED
+		dt_sec = (double)cub->dt * 0.000001;
+		p->pos.x += dt_sec * PLAYER_SPEED
 			* cos(mov_angle);
-		p->pos.y -= ((double)cub->dt / 1000000.0) * PLAYER_SPEED
+		p->pos.y -= dt_sec * PLAYER_SPEED
 			* sin(mov_angle);
 	}
 }
 
+// move and rotate player
 void	do_player_movement(t_cub *cub)
 {
 	set_player_rotation(&cub->player, cub);

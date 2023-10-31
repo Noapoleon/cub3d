@@ -9,6 +9,11 @@ to do:
 	- make a menu with 'esc' key
 		* "continue" and "quit" options
 		* maybe an "options" menu with toggles and sliders
+	- add simple door, no texture
+	- make door reopenable
+	- add door texture
+	- if shift key is pressed double player speed
+	- add cursor
 
 done:
 	- init player rotation

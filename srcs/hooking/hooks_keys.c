@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 15:35:16 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/21 21:05:41 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/31 17:02:37 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ int	keypress_hook(int keycode, t_cub *cub)
 		cub->inputs.a = 1;
 	if (keycode == XK_d)
 		cub->inputs.d = 1;
+	if (keycode == XK_e)
+		cub->inputs.e = 1;
+	if (keycode == XK_m)
+		cub->minimap = !cub->minimap;
 	if (keycode == XK_Left)
 		cub->inputs.la = 1;
 	if (keycode == XK_Right)
@@ -43,6 +47,8 @@ int	keyrelease_hook(int keycode, t_cub *cub)
 		cub->inputs.a = 0;
 	if (keycode == XK_d)
 		cub->inputs.d = 0;
+	if (keycode == XK_e)
+		cub->inputs.e = 0;
 	if (keycode == XK_Left)
 		cub->inputs.la = 0;
 	if (keycode == XK_Right)

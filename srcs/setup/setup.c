@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:45:29 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/13 14:33:43 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/10/31 16:55:40 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static void	init_vars(t_cub *cub)
 	init_vars_mlx(&cub->mlx);
 	init_vars_inputs(&cub->inputs);
 	cub->dt = 0;
+	cub->minimap = 1;
 }
 
 // Reads scene, allocates resources and sets up the player

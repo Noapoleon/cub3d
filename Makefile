@@ -33,6 +33,8 @@ SRCS	:=	main.c \
 			hooking/hooks.c \
 			hooking/hooks_keys.c \
 			graphics/draw_utils.c \
+			graphics/draw_vert_line.c \
+			graphics/graphic_utils.c \
 			movement.c \
 			test_code/display_utils.c
 OBJS	:=	$(SRCS:.c=.o)
