@@ -6,7 +6,7 @@
 /*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:32:27 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/31 17:42:54 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/01 12:31:10 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ static void	cast_rays(t_cub *cub, t_player *p)
 	}
 }
 
+// Draws minimap in corner
 static void	draw_minimap(t_mlx *mlx, t_map *map, t_player *p)
 {
 	int	x;
@@ -90,15 +91,15 @@ static void	draw_minimap(t_mlx *mlx, t_map *map, t_player *p)
 		while (x < map->w)
 		{
 			if (map->tiles[y][x] == T_AIR)
-				my_rect_put(mlx, (int[2]){20 + x * 20, 20 + y * 20},
-						(int[2]){20, 20}, 0x00ffffff);
+				my_rect_put(mlx, (int[2]){10 + x * 10, 10 + y * 10},
+						(int[2]){10, 10}, 0x00ffffff);
 			++x;
 		}
 		++y;
 	}
 	my_rect_put(mlx,
-			(int[2]){20 + p->pos.x * 20.0 - 4, 20 + p->pos.y * 20.0 - 4},
-			(int[2]){8, 8}, 0x00ff0000);
+			(int[2]){10 + p->pos.x * 10.0 - 2, 10 + p->pos.y * 10.0 - 2},
+			(int[2]){4, 4}, 0x00ff0000);
 }
 
 // Main draw function
