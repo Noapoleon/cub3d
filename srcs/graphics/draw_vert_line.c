@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:20:05 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/01 15:02:14 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/09 10:33:55 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,17 @@ static void	init_texline(t_texline *tl, t_cub *cub, t_ray *r)
 		tl->fog = 1.0;
 }
 
-static int	tex_apply_fog(int col, int col_f, double fog)
-{
-	int		r;
-	int		g;
-	int		b;
-
-	r = ((col >> 16) & 0xff) - ((double)((((col >> 16) & 0xff) - ((col_f >> 16) & 0xff)) * fog));
-	g = ((col >> 8) & 0xff) - ((double)(((col >> 8) & 0xff) - ((col_f >> 8) & 0xff)) * fog);
-	b = (col & 0xff) - ((double)((col & 0xff) - (col_f & 0xff)) * fog);
-	return ((r << 16) | (g << 8) | b);
-}
+//static int	tex_apply_fog(int col, int col_f, double fog)
+//{
+//	int		r;
+//	int		g;
+//	int		b;
+//
+//	r = ((col >> 16) & 0xff) - ((double)((((col >> 16) & 0xff) - ((col_f >> 16) & 0xff)) * fog));
+//	g = ((col >> 8) & 0xff) - ((double)(((col >> 8) & 0xff) - ((col_f >> 8) & 0xff)) * fog);
+//	b = (col & 0xff) - ((double)((col & 0xff) - (col_f & 0xff)) * fog);
+//	return ((r << 16) | (g << 8) | b);
+//}
 
 static int	tex_sample_wall(t_texline *tl, t_cub *cub,  t_ray *r)
 {
@@ -78,7 +78,8 @@ static int	tex_sample_wall(t_texline *tl, t_cub *cub,  t_ray *r)
 	if (tl->pos[1] >= cub->props.walls[r->side].h)
 		tl->pos[1] = cub->props.walls[r->side].h - 1;
 	col = get_tex_col(&cub->props.walls[r->side], tl->pos);
-	return (tex_apply_fog(col, cub->props.col_f, tl->fog));
+	return (col); // remove
+	//return (tex_apply_fog(col, cub->props.col_f, tl->fog));
 }
 
 // Prints vertical line with texture

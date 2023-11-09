@@ -6,7 +6,7 @@
 /*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:32:27 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/01 12:31:10 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/09 12:47:24 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,15 @@ static int	ray_dda_loop(t_ray *r, t_cub *cub)
 static void	cast_rays(t_cub *cub, t_player *p)
 {
 	static t_ray	ray;
+	int				i;
 
-	for (int i = 0; i < W_WIDTH; ++i)
+	i = 0;
+	while (i < W_WIDTH)
 	{
 		init_ray(&ray, p, i);
 		ray_dda_loop(&ray, cub);
 		draw_vert_line(cub, &ray);
+		++i;
 	}
 }
 

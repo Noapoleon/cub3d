@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/01 15:02:35 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/09 13:19:51 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define W_HEIGHT		800
 # define MOUSE_SPEED	1.0
 # define PLAYER_SPEED	3.0 // blocks per second
-# define RENDER_DIST	4.0 // secure later // try really low and really high or protect higher than would be 1 pixel
+# define RENDER_DIST	100.0 // secure later // try really low and really high or protect higher than would be 1 pixel
 
 // CONSTANTS
 # define T_NONE			-1
@@ -51,6 +51,14 @@ typedef struct s_props		t_props;
 typedef struct s_map		t_map;
 typedef struct s_player		t_player;
 typedef struct s_cub		t_cub;
+
+struct s_sprite
+{
+	int			n;
+	t_texture	*frames; //tex[]
+	t_texture	*cur;
+	long		uspf; // usec = 200
+};
 
 struct s_texline
 {
