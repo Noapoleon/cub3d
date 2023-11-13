@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:21:17 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/31 17:29:59 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/13 15:20:44 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,3 +59,25 @@ void	my_rect_put(t_mlx *m, int pos[2], int size[2], int col)
 		++y;
 	}
 }
+
+// Draws texture to buffer at native resolution
+void	my_texture_put(t_mlx *mlx, int pos[2], t_texture *t)
+{
+	int	coord[2];
+	int	cur[2];
+
+	coord[1] = 0;
+	while (coord[1] < t->h)
+	{
+		coord[0] = 0;
+		while (coord[0] < t->w)
+		{
+			cur[0] = pos[0] + coord[0];
+			cur[1] = pos[1] + coord[1];
+			my_pixel_put(mlx, cur, get_tex_col(t, coord));
+			++(coord[0]);
+		}
+		++(coord[1]);
+	}
+}
+

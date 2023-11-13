@@ -6,7 +6,7 @@
 /*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:32:27 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/09 12:47:24 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/13 15:32:51 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ static void	init_ray(t_ray *r, t_player *p, int	index)
 // Returns 1 if a wall is hit, returns 0 otherwise
 static int	ray_dda_loop(t_ray *r, t_cub *cub)
 {
+	if (r->index == cub->mlx.w_mid)
+		cub->player.cursor = 0;
 	while (r->last_dist <= RENDER_DIST)
 	{
 		if (r->dist.x < r->dist.y)
@@ -57,9 +59,14 @@ static int	ray_dda_loop(t_ray *r, t_cub *cub)
 			r->side = r->step.y > 0;
 		}
 		if ((r->map_check.x >= 0 && r->map_check.x < cub->map.w) &&
-				(r->map_check.y >= 0 && r->map_check.y < cub->map.h))
+				(r->map_check.y >= 0 && r->map_check.y < cub->map.h)) // clean this later
 			if (cub->map.tiles[r->map_check.y][r->map_check.x])
+			{
+				if (r->index == cub->mlx.w_mid)
+					cub->player.cursor
+						= cub->map.tiles[r->map_check.y][r->map_check.x];
 				return (1);
+			}
 	}
 	r->side = -1; // check later if setting this here doesn't cause problems
 	return (0);
@@ -77,6 +84,7 @@ static void	cast_rays(t_cub *cub, t_player *p)
 		init_ray(&ray, p, i);
 		ray_dda_loop(&ray, cub);
 		draw_vert_line(cub, &ray);
+		printf("looking at -> %d\n", p->cursor);
 		++i;
 	}
 }
@@ -95,7 +103,7 @@ static void	draw_minimap(t_mlx *mlx, t_map *map, t_player *p)
 		{
 			if (map->tiles[y][x] == T_AIR)
 				my_rect_put(mlx, (int[2]){10 + x * 10, 10 + y * 10},
-						(int[2]){10, 10}, 0x00ffffff);
+						(int[2]){10, 10}, 0x00ffffff); // remove literal array
 			++x;
 		}
 		++y;
@@ -103,6 +111,23 @@ static void	draw_minimap(t_mlx *mlx, t_map *map, t_player *p)
 	my_rect_put(mlx,
 			(int[2]){10 + p->pos.x * 10.0 - 2, 10 + p->pos.y * 10.0 - 2},
 			(int[2]){4, 4}, 0x00ff0000);
+}
+
+void draw_clock(t_mlx *mlx, t_cub *cub, t_sprite *clock)
+{
+	static int	n;
+	static long	sum;
+
+	sum += cub->dt;
+	if (sum >= clock->uspf)
+	{
+		++n;
+		if (n == clock->n)
+			n = 0;
+		clock->cur = &clock->frames[n];
+		sum = 0;
+	}
+	my_texture_put(mlx, (int[2]){W_WIDTH - 64, 0}, clock->cur);
 }
 
 // Main draw function
@@ -114,5 +139,6 @@ void	draw_frame(t_cub *cub, t_mlx *mlx, t_player *player)
 		draw_minimap(mlx, &cub->map, player);
 	//my_pixel_put(mlx, (int[2]){mlx->w_mid, mlx->h_mid}, 0x00ffffff); // cursor
 	//display_inputs(cub, (int[2]){0,0}); // remove
+	draw_clock(mlx, cub, &cub->clock); // remoe later
 	mlx_put_image_to_window(mlx->ptr, mlx->win, mlx->img.ptr, 0, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/09 13:19:51 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/13 15:45:23 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include "cub3d_err.h"
 
 // SETTINGS
-# define W_WIDTH		1600
+# define W_WIDTH		500
 # define W_HEIGHT		800
 # define MOUSE_SPEED	1.0
 # define PLAYER_SPEED	3.0 // blocks per second
@@ -39,6 +39,7 @@
 # define T_WALL			1
 # define W_TITLE		"cub3d"
 
+typedef struct s_sprite		t_sprite;
 typedef struct s_texline	t_texline;
 typedef struct s_vec2df		t_vec2df;
 typedef struct s_vec2di		t_vec2di;
@@ -146,6 +147,7 @@ struct s_player
 	double		rot;
 	t_vec2df	dir;
 	t_vec2df	cam;
+	int			cursor;
 };
 struct s_cub
 {
@@ -156,6 +158,7 @@ struct s_cub
 	t_inputs	inputs;
 	long		dt;
 	int			minimap;
+	t_sprite	clock;
 };
 
 // ---- //
@@ -178,6 +181,7 @@ void	init_vars_inputs(t_inputs *inputs);
 void	init_vars_imgbuf(t_imgbuf *img);
 void	init_vars_texture(t_texture *t);
 // setup_mlx.c
+int		open_texture(t_mlx *mlx, t_texture *t);
 int		setup_mlx(t_cub *cub, t_mlx *mlx);
 
 // ------ //
@@ -245,6 +249,7 @@ void	draw_vert_line(t_cub *cub, t_ray *r);
 int		get_tex_col(t_texture *t, int pos[2]);
 void	my_pixel_put(t_mlx *mlx, int pos[2], int col);
 void	my_rect_put(t_mlx *m, int pos[2], int size[2], int col);
+void	my_texture_put(t_mlx *mlx, int pos[2], t_texture *t);
 
 // movement.c
 void	do_player_movement(t_cub *cub);
