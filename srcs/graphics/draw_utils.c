@@ -6,7 +6,7 @@
 /*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:32:27 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/13 15:32:51 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/13 16:46:57 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,24 @@ static void	init_ray(t_ray *r, t_player *p, int	index)
 	r->side = -1;
 }
 
+void	dda_increment(t_ray *r)
+{
+	if (r->dist.x < r->dist.y)
+	{
+		r->map_check.x += r->step.x;
+		r->last_dist = r->dist.x;
+		r->dist.x += r->step_dist.x;
+		r->side = (r->step.x > 0) + 2;
+	}
+	else
+	{
+		r->map_check.y += r->step.y;
+		r->last_dist = r->dist.y;
+		r->dist.y += r->step_dist.y;
+		r->side = r->step.y > 0;
+	}
+}
+
 // Loops on the DDA algorithm, stores info in ray struct
 // Returns 1 if a wall is hit, returns 0 otherwise
 static int	ray_dda_loop(t_ray *r, t_cub *cub)
@@ -44,20 +62,7 @@ static int	ray_dda_loop(t_ray *r, t_cub *cub)
 		cub->player.cursor = 0;
 	while (r->last_dist <= RENDER_DIST)
 	{
-		if (r->dist.x < r->dist.y)
-		{
-			r->map_check.x += r->step.x;
-			r->last_dist = r->dist.x;
-			r->dist.x += r->step_dist.x;
-			r->side = (r->step.x > 0) + 2;
-		}
-		else
-		{
-			r->map_check.y += r->step.y;
-			r->last_dist = r->dist.y;
-			r->dist.y += r->step_dist.y;
-			r->side = r->step.y > 0;
-		}
+		dda_increment(r);
 		if ((r->map_check.x >= 0 && r->map_check.x < cub->map.w) &&
 				(r->map_check.y >= 0 && r->map_check.y < cub->map.h)) // clean this later
 			if (cub->map.tiles[r->map_check.y][r->map_check.x])
@@ -84,7 +89,6 @@ static void	cast_rays(t_cub *cub, t_player *p)
 		init_ray(&ray, p, i);
 		ray_dda_loop(&ray, cub);
 		draw_vert_line(cub, &ray);
-		printf("looking at -> %d\n", p->cursor);
 		++i;
 	}
 }

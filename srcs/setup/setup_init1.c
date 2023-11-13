@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 15:52:56 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/31 16:53:31 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/13 16:19:15 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	init_vars_player(t_player *p)
 	p->rot = 0.0f; // set by map orientation
 	set_vec2df(&p->dir, -1.0f, -1.0f);
 	set_vec2df(&p->cam, -1.0f, -1.0f);
-	//player->mov = 0.0f; // zero should be for w
+	p->ratio_fix = ((double)W_WIDTH / (double)W_HEIGHT) / 2.0;
 }
 
 // Initializes mlx variables to default values

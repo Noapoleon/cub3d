@@ -15,6 +15,7 @@ to do:
 	- add door texture
 	- if shift key is pressed double player speed
 	- add cursor
+	- multithreading
 
 done:
 	- init player rotation

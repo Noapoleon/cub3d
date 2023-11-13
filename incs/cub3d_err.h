@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 15:28:17 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/13 14:58:38 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/13 16:43:06 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 # define CUB_ERR				"Error\n"
 
 // Settings errors
-# define CE_BAD_RES			"Resolution cannot be inferior to 100x100\n"
+# define CE_BAD_RES			"Resolution cannot be inferior to 128x128\
+ or superior to 4096x4096\n"
 # define CE_BAD_MOUSESPEED	"Mouse speed must be positive\n"
 # define CE_BAD_PLAYERSPEED	"Player speed must be positive\n"
 # define CE_BAD_RENDERDIST	"Render distance must be positive\n"

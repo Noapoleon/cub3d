@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 16:52:56 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/21 18:52:41 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/13 16:23:50 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ static int	set_player(t_player *p, int x, int y, char c)
 	else
 		p->rot = 0;
 	set_vec2df(&p->dir, cos(p->rot), sin(p->rot));
-	set_vec2df(&p->cam, cos(p->rot - M_PI_2), sin(p->rot - M_PI_2));
+	set_vec2df(&p->cam, cos(p->rot - M_PI_2) * p->ratio_fix,
+		sin(p->rot - M_PI_2) * p->ratio_fix);
 	return (0);
 }
 

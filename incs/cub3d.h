@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/13 15:45:23 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/13 16:49:13 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # include "cub3d_err.h"
 
 // SETTINGS
-# define W_WIDTH		500
+# define W_WIDTH		1600
 # define W_HEIGHT		800
 # define MOUSE_SPEED	1.0
 # define PLAYER_SPEED	3.0 // blocks per second
@@ -147,6 +147,7 @@ struct s_player
 	double		rot;
 	t_vec2df	dir;
 	t_vec2df	cam;
+	double		ratio_fix;
 	int			cursor;
 };
 struct s_cub

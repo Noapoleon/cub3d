@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:01 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/13 15:13:43 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/13 16:40:12 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,21 @@ int	main(int ac, char **av)
 	if (setup_cub(&cub, ac, av) != 0)
 		return (1);
 	//display_scene(&cub); // remove
-	printf("coucou\n");
 	if (init_clock(&cub, &cub.clock) == -1) // remoe later
 		return (printf("failed to init clock frames\n"));
-	printf("lalala\n");
 	mlx_loop(cub.mlx.ptr);
 	free_cub(&cub);
+
+	// remove
+	int i = 0;
+	while (i < cub.clock.n)
+	{
+		if (cub.clock.frames[i].img.ptr)
+			mlx_destroy_image(cub.mlx.ptr, cub.clock.frames[i].img.ptr);
+		++i;
+	}
+	free(cub.clock.frames);
+	
 	return (0);
 }
 

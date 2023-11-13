@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 19:29:12 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/13 15:45:00 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/13 16:20:24 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ static void	set_player_rotation(t_player *p, t_cub *cub)
 	{
 		p->rot = get_principal_angle(p->rot);
 		set_vec2df(&p->dir, cos(p->rot), sin(p->rot));
-		set_vec2df(&p->cam, cos(p->rot - M_PI_2) * (((double)W_WIDTH / (double)W_HEIGHT) / 2.0), sin(p->rot - M_PI_2) * (((double)W_WIDTH / (double)W_HEIGHT) / 2.0)); // calculate at init
+		set_vec2df(&p->cam, cos(p->rot - M_PI_2) * p->ratio_fix,
+				sin(p->rot - M_PI_2) * p->ratio_fix);
 	}
 }
 
