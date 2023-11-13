@@ -6,7 +6,7 @@
 /*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:32:27 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/13 16:46:57 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/13 17:42:22 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	dda_increment(t_ray *r)
 static int	ray_dda_loop(t_ray *r, t_cub *cub)
 {
 	if (r->index == cub->mlx.w_mid)
-		cub->player.cursor = 0;
+		cub->player.cursor = NULL;
 	while (r->last_dist <= RENDER_DIST)
 	{
 		dda_increment(r);
@@ -67,9 +67,9 @@ static int	ray_dda_loop(t_ray *r, t_cub *cub)
 				(r->map_check.y >= 0 && r->map_check.y < cub->map.h)) // clean this later
 			if (cub->map.tiles[r->map_check.y][r->map_check.x])
 			{
-				if (r->index == cub->mlx.w_mid)
+				if (r->index == cub->mlx.w_mid && r->last_dist <= 1.5) // put door loop outside of hit wall for when it's open
 					cub->player.cursor
-						= cub->map.tiles[r->map_check.y][r->map_check.x];
+						= &cub->map.tiles[r->map_check.y][r->map_check.x];
 				return (1);
 			}
 	}
@@ -89,6 +89,10 @@ static void	cast_rays(t_cub *cub, t_player *p)
 		init_ray(&ray, p, i);
 		ray_dda_loop(&ray, cub);
 		draw_vert_line(cub, &ray);
+		if (p->cursor == NULL)
+			printf("looking at nothing\n");
+		else
+			printf("looking at -> %d\n", *(p->cursor));
 		++i;
 	}
 }

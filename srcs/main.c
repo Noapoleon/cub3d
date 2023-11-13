@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:01 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/13 16:40:12 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/13 17:41:00 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,14 @@ int	main(int ac, char **av)
 	free_cub(&cub);
 
 	// remove
-	int i = 0;
-	while (i < cub.clock.n)
-	{
-		if (cub.clock.frames[i].img.ptr)
-			mlx_destroy_image(cub.mlx.ptr, cub.clock.frames[i].img.ptr);
-		++i;
-	}
-	free(cub.clock.frames);
+	//int i = 0;
+	//while (i < cub.clock.n)
+	//{
+	//	if (cub.clock.frames[i].img.ptr)
+	//		mlx_destroy_image(cub.mlx.ptr, cub.clock.frames[i].img.ptr);
+	//	++i;
+	//}
+	//free(cub.clock.frames);
 	
 	return (0);
 }

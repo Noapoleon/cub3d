@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/13 16:49:13 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/13 17:33:44 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ struct s_player
 	t_vec2df	dir;
 	t_vec2df	cam;
 	double		ratio_fix;
-	int			cursor;
+	int			*cursor;
 };
 struct s_cub
 {
