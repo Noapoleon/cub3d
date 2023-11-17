@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 16:20:00 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/17 19:05:11 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/16 14:31:39 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	get_props(t_props *props, t_list **cur, int *count)
 {
 	char	*tmp;
 
-	while (*cur && !has_all_props(props))
+	while (*cur && !has_all_props(props)) // change when adding doors for texture
 	{
 		tmp = get_line_start((*cur)->data);
 		if (tmp[0] != '\0' && get_prop(props, tmp, *count) != 0) // CHECK AGAIN FOR OTHER OUTCOMES

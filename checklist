@@ -16,6 +16,8 @@ to do:
 	- if shift key is pressed double player speed
 	- add cursor
 	- multithreading
+	- in 'assets' folder, put required textures and make an error if they are
+	  gone like "error\n Missing assets: lajksdfljdsf.xpm or something
 
 done:
 	- init player rotation

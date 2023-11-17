@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 18:25:34 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/17 18:50:04 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/16 14:43:03 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,15 @@ int	is_map_str(const char *s)
 	int	i;
 
 	i = 0;
+	// torched walls	-> '2'
+	// doors			-> '3'
+	// opened doors		-> '4' (never present in parsing, all doors are closed by default)
+	// doors need to be treated like air blocks for closed map check
 	while (s[i])
 	{
-		if (s[i] != '0' && s[i] != '1' && s[i] != ' '
-			&& s[i] != 'N' && s[i] != 'S' && s[i] != 'E' && s[i] != 'W')
+		if (s[i] != '0' && s[i] != '1' && s[i] != '2' && s[i] != '3'
+			&& s[i] != ' ' && s[i] != 'N' && s[i] != 'S' && s[i] != 'E'
+			&& s[i] != 'W')
 			return (0);
 		++i;
 	}

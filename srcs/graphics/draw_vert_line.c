@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:20:05 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/09 10:33:55 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/16 15:39:24 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,12 @@ static int	tex_sample_wall(t_texline *tl, t_cub *cub,  t_ray *r)
 	if (tl->pos[1] >= cub->props.walls[r->side].h)
 		tl->pos[1] = cub->props.walls[r->side].h - 1;
 	col = get_tex_col(&cub->props.walls[r->side], tl->pos);
+	if (col == 0 && r->index == 0) // remove
+	{
+		printf("graphic bug here\n");
+		printf("map_check -> %d;%d\n", r->map_check.x, r->map_check.y);
+		printf("player.pos -> %lf;%lf\n", cub->player.pos.x, cub->player.pos.y);
+	}
 	return (col); // remove
 	//return (tex_apply_fog(col, cub->props.col_f, tl->fog));
 }

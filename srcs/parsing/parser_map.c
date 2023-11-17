@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 16:52:56 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/13 16:23:50 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/17 11:33:05 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,8 @@ static int	check_map(t_map *map, int count)
 		x = 0;
 		while (x < map->w)
 		{
-			if (map->tiles[y][x] == 0 && check_airtile_surround(map, x, y) != 0)
+			if ((map->tiles[y][x] == 0 || map->tiles[y][x] == 3)
+					&& check_airtile_surround(map, x, y) != 0)
 				return (ft_perr(CUB_ERR CE_LINE, count, CE_MAP_BAD), -1);
 			++x;
 		}

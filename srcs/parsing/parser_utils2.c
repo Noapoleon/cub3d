@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 16:48:36 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/26 17:07:13 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/16 15:12:43 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ int	get_tile_val(char c)
 {
 	if (c == ' ')
 		return (-1);
-	else if (c == '0' || c == 'N' || c == 'S' || c == 'W' || c == 'E')
-		return (0);
+	else if (ft_isdigit(c))
+		return (c - '0');
 	else
-		return (1);
+		return (0);
 }
 
 // Returns -1 if block around air tile is not airtile or wall

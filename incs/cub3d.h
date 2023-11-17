@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/13 17:33:44 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/17 11:33:05 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,15 @@
 # define MOUSE_SPEED	1.0
 # define PLAYER_SPEED	3.0 // blocks per second
 # define RENDER_DIST	100.0 // secure later // try really low and really high or protect higher than would be 1 pixel
+# define MULTITHREADING	0
 
 // CONSTANTS
 # define T_NONE			-1
 # define T_AIR			0
 # define T_WALL			1
+# define T_WALL_TORCH	2
+# define T_DOOR_CLOSED	3
+# define T_DOOR_OPENED	4
 # define W_TITLE		"cub3d"
 
 typedef struct s_sprite		t_sprite;
