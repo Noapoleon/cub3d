@@ -6,7 +6,7 @@
 /*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 19:06:57 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/21 21:11:18 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 14:52:15 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	print_fps(t_cub *cub)
 	static long	elapsed;
 	static int	frames;
 
-	elapsed += cub->dt;
+	elapsed += cub->delta;
 	++frames;
 	if (elapsed >= 1000000)
 	{

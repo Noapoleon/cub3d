@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 05:20:42 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/17 11:44:34 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 16:58:59 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,11 @@ void	write_map(t_map *map)
 				printf("0");
 			else if (row[x] == T_WALL)
 				printf("1");
-			else if (row[x] == T_WALL_TORCH)
+			else if (row[x] == T_WALL_ANIM)
 				printf("2");
-			else if (row[x] == T_DOOR_OPENED)
+			else if (row[x] == T_DOOR_C)
 				printf("3");
-			else if (row[x] == T_DOOR_OPENED)
+			else if (row[x] == T_DOOR_O)
 				printf("4");
 			else
 				printf("x");

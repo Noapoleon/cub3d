@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 19:10:09 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/21 19:07:02 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 14:52:11 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	get_deltatime(t_cub *cub)
 	now = tv.tv_sec * 1000000 + tv.tv_usec;
 	if (last == -1)
 		last = now;
-	cub->dt = now - last;
+	cub->delta = now - last;
 	last = now;
 }
 

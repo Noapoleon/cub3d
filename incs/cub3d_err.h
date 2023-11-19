@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 15:28:17 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/13 16:43:06 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 17:44:50 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ file name must end with '.map'\n"
 # define CE_SCENE_EMPTY		"Scene is empty\n"
 # define CE_MAP_NONE		"No map found in scene\n"
 # define CE_MAP_SMALL		"Map too small\n"
-# define CE_MAP_MALLOC		"Map alloc fail: %s\n"
+# define CE_MAP_ALLOC		"Map alloc fail: %s\n"
 # define CE_PLAYER_NONE		"No player found\n"
 
 // MLX errors
@@ -53,5 +53,9 @@ file name must end with '.map'\n"
 # define CE_MLX_WIN			"Failed to create new mlx window\n"
 # define CE_MLX_IMG			"Failed to create new mlx image\n"
 # define CE_TEXTURE_OPEN	"Failed to open/read texture `%s'\n"
+# define CE_SPRITE_RES		"Sprite width is not multiple of its height\n"
+# define CE_SPRITE_ALLOC	"Failed to allocate frames: `%s'\n"
+# define CE_SPRITE_ALLOC	"Failed to allocate frames: `%s'\n"
+# define CE_SPRITE_IMG		"Failed to create new sprite mlx image\n"
 
 #endif

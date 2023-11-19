@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/17 11:33:05 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 18:38:32 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@
 # define T_NONE			-1
 # define T_AIR			0
 # define T_WALL			1
-# define T_WALL_TORCH	2
-# define T_DOOR_CLOSED	3
-# define T_DOOR_OPENED	4
+# define T_WALL_ANIM	2
+# define T_DOOR_C		3
+# define T_DOOR_O		4
 # define W_TITLE		"cub3d"
 
 typedef struct s_sprite		t_sprite;
@@ -49,7 +49,7 @@ typedef struct s_vec2df		t_vec2df;
 typedef struct s_vec2di		t_vec2di;
 typedef struct s_ray		t_ray;
 typedef struct s_inputs		t_inputs;
-typedef struct s_imgbuf		t_imgbuf;
+typedef struct s_mlximg		t_mlximg;
 typedef struct s_texture	t_texture;
 typedef struct s_mlx		t_mlx;
 typedef struct s_props		t_props;
@@ -59,20 +59,23 @@ typedef struct s_cub		t_cub;
 
 struct s_sprite
 {
-	int			n;
-	t_texture	*frames; //tex[]
-	t_texture	*cur;
-	long		uspf; // usec = 200
+	t_texture	tex; // probably can remove that and put it in init thing
+	int			num_frames;
+	t_texture	*frames; // allocated
+	int			index;
+	t_texture	*frame; // not allocated
+	long		delay; // usec
 };
 
 struct s_texline
 {
-	int		height;
-	int		h_mid;
-	int		range[2];
-	double	step[2];
-	int		pos[2];
-	double	fog;
+	t_texture	*tex;
+	int			height;
+	int			h_mid;
+	int			range[2];
+	double		step[2];
+	int			pos[2];
+	double		fog;
 };
 struct s_vec2df
 {
@@ -93,6 +96,7 @@ struct s_ray
 	t_vec2df	dist;
 	double		last_dist;
 	int			side; // remove? 0 to 3 for index in textures?? idk, -1 no walls
+	int			tile_type;
 	int			index;
 };
 struct s_inputs
@@ -103,21 +107,24 @@ struct s_inputs
 	int	d;
 	int	e;
 	int	m;
+	//int	shift; // later
 	int	la; // init
 	int	ra;
 };
-struct s_imgbuf
+struct s_img
 {
 	void	*ptr;
 	char	*addr;
 	int		bpp;
 	int		ll;
 	int		endian;
+	int		w; //just added this
+	int		h; //just added this
 };
 struct s_texture
 {
 	char		*path;
-	t_imgbuf	img;
+	t_mlximg	img;
 	int			w;
 	int			h;
 };
@@ -125,7 +132,7 @@ struct s_mlx
 {
 	void		*ptr;
 	void		*win;
-	t_imgbuf	img;
+	t_mlximg	img;
 	int			w;
 	int			h;
 	int			w_mid;
@@ -136,6 +143,8 @@ struct s_props
 {
 	// CHECK INIT FUNCTIONS FOR ALL STRUCTS
 	t_texture	walls[4];
+	t_texture	door[2];
+	t_sprite	wall_anim;
 	int			col_f;
 	int			col_c;
 };
@@ -161,9 +170,8 @@ struct s_cub
 	t_player	player;
 	t_mlx		mlx;
 	t_inputs	inputs;
-	long		dt;
+	long		delta;
 	int			minimap;
-	t_sprite	clock;
 };
 
 // ---- //
@@ -183,10 +191,9 @@ void	init_vars_player(t_player *player);
 void	init_vars_mlx(t_mlx *mlx);
 void	init_vars_inputs(t_inputs *inputs);
 // setup_init_2.c
-void	init_vars_imgbuf(t_imgbuf *img);
+void	init_vars_mlximg(t_mlximg *img);
 void	init_vars_texture(t_texture *t);
 // setup_mlx.c
-int		open_texture(t_mlx *mlx, t_texture *t);
 int		setup_mlx(t_cub *cub, t_mlx *mlx);
 
 // ------ //
@@ -216,7 +223,7 @@ void	alloc_map_size(t_map *map, int width, int height);
 // ----- //
 // utils1.c
 void	set_int_arr(int *arr, int size, int val);
-void	clear_imgbuf(t_cub *cub, int col);
+void	clear_mlximg(t_cub *cub, int col);
 void	get_deltatime(t_cub *cub);
 double	get_principal_angle(double angle);
 // utils_free.c
@@ -237,7 +244,6 @@ void	print_mouse_pos(t_mlx *mlx);
 // ----- //
 // hooks.c
 int		set_mlx_hooks(t_cub *cub, t_mlx *mlx);
-// hooks_keys.c
 int		keypress_hook(int keycode, t_cub *cub);
 int		keyrelease_hook(int keycode, t_cub *cub);
 // hooks_mouse.c
@@ -251,13 +257,14 @@ void	draw_frame(t_cub *cub, t_mlx *mlx, t_player *player);
 // draw_vert_line.c
 void	draw_vert_line(t_cub *cub, t_ray *r);
 // graphic_utils.c
+int		open_texture(t_mlx *mlx, t_texture *t);
 int		get_tex_col(t_texture *t, int pos[2]);
 void	my_pixel_put(t_mlx *mlx, int pos[2], int col);
 void	my_rect_put(t_mlx *m, int pos[2], int size[2], int col);
 void	my_texture_put(t_mlx *mlx, int pos[2], t_texture *t);
 
-// movement.c
-void	do_player_movement(t_cub *cub);
+// handle_inputs.c
+void	handle_inputs(t_cub *cub);
 
 
 // TEST CODE REMOVE LATER -------------------------------------------------------

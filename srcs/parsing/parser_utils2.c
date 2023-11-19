@@ -1,5 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
+/* ************************************************************************** */ /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parser_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
@@ -47,7 +46,7 @@ void	alloc_map_size(t_map *map, int width, int height)
 		return ((void)ft_perr(CUB_ERR CE_MAP_SMALL));
 	map->tiles = malloc(sizeof(*map->tiles) * height); // check if that's good for the sizeof
 	if (map->tiles == NULL)
-		return ((void)ft_perr(CUB_ERR CE_MAP_MALLOC, strerror(errno)));
+		return ((void)ft_perr(CUB_ERR CE_MAP_ALLOC, strerror(errno)));
 	i = 0;
 	while (i < height)
 	{
@@ -57,7 +56,7 @@ void	alloc_map_size(t_map *map, int width, int height)
 			while (i--)
 				free(map->tiles[i]);
 			free(map->tiles);
-			return ((void)ft_perr(CUB_ERR CE_MAP_MALLOC, strerror(errno)));
+			return ((void)ft_perr(CUB_ERR CE_MAP_ALLOC, strerror(errno)));
 		}
 		set_int_arr(map->tiles[i], width, -1);
 		++i;

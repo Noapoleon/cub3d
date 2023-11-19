@@ -1,10 +1,14 @@
-F 33,33,33
-C 33,33,33
+F 31,31,31
+C 31,31,31
 
-NO textures/nl_dungeon/nl_brickwall.xpm
-SO textures/nl_dungeon/nl_brickwall.xpm
-WE textures/nl_dungeon/nl_brickwall.xpm
-EA textures/nl_dungeon/nl_brickwall.xpm
+NO textures/nl_dungeon/new/brickwall.xpm
+SO textures/nl_dungeon/new/brickwall.xpm
+WE textures/nl_dungeon/new/brickwall.xpm
+EA textures/nl_dungeon/new/brickwall.xpm
+
+DC textures/nl_dungeon/new/brickwall_door_closed.xpm
+DO textures/nl_dungeon/new/brickwall_door_opened.xpm
+WA textures/nl_dungeon/new/brickwall_numbers.xpm
 
 1211111111111111111
 10W1001001001000001

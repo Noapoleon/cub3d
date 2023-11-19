@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:20:05 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/16 15:39:24 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 17:01:47 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,19 @@ static double	get_wall_x(t_ray *r, t_player *p)
 	return (wall_x);
 }
 
+static t_texture	*get_wall_tex(t_cub *cub, t_ray *r)
+{
+	if (r->tile_type == T_WALL)
+		return (&cub->props.walls[r->side]);
+	else if (r->tile_type == T_WALL_ANIM)
+		return (cub->props.wall_anim.cur);
+	else if (r->tile_type == T_DOOR_C)
+		return (&cub->props.door[0]);
+	else
+		return (&cub->props.door[1]);
+}
+
+
 static void	init_texline(t_texline *tl, t_cub *cub, t_ray *r)
 {
 	if (r->side == -1)
@@ -40,19 +53,19 @@ static void	init_texline(t_texline *tl, t_cub *cub, t_ray *r)
 		tl->range[1] = cub->mlx.h_mid;
 		return ;
 	}
+	tl->tex = get_wall_tex(cub, r);
 	tl->height = (int)((double)W_HEIGHT / r->last_dist);
 	tl->h_mid = tl->height / 2;
 	tl->range[0] = cub->mlx.h_mid - tl->h_mid;
 	tl->range[1] = W_HEIGHT - tl->range[0];
-	tl->step[0] = (double)cub->props.walls[r->side].h / (double)tl->height; // parentheses?
+	tl->step[0] = (double)tl->tex->h / (double)tl->height; // parentheses?
 	if (tl->range[0] >= 0)
 		tl->step[1] =  0;
 	else
 		tl->step[1]  = (tl->h_mid - cub->mlx.h_mid) * tl->step[0];
-	tl->pos[0] = (get_wall_x(r, &cub->player) *
-			(double)cub->props.walls[r->side].w);
-	if (tl->pos[0] >= cub->props.walls[r->side].w)
-		tl->pos[0] = cub->props.walls[r->side].w - 1;
+	tl->pos[0] = (get_wall_x(r, &cub->player) * (double)tl->tex->w);
+	if (tl->pos[0] >= tl->tex->w)
+		tl->pos[0] = tl->tex->w - 1;
 	tl->fog = r->last_dist / RENDER_DIST;
 	if (tl->fog > 1.0)
 		tl->fog = 1.0;
@@ -77,14 +90,8 @@ static int	tex_sample_wall(t_texline *tl, t_cub *cub,  t_ray *r)
 	tl->pos[1] = tl->step[1];
 	if (tl->pos[1] >= cub->props.walls[r->side].h)
 		tl->pos[1] = cub->props.walls[r->side].h - 1;
-	col = get_tex_col(&cub->props.walls[r->side], tl->pos);
-	if (col == 0 && r->index == 0) // remove
-	{
-		printf("graphic bug here\n");
-		printf("map_check -> %d;%d\n", r->map_check.x, r->map_check.y);
-		printf("player.pos -> %lf;%lf\n", cub->player.pos.x, cub->player.pos.y);
-	}
-	return (col); // remove
+	col = get_tex_col(tl->tex, tl->pos);
+	return (col);
 	//return (tex_apply_fog(col, cub->props.col_f, tl->fog));
 }
 

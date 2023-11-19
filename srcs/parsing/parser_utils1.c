@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 18:25:34 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/16 14:43:03 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 16:57:23 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int	has_all_props(t_props *props)
 {
 	return (props->walls[0].path && props->walls[1].path
 			&& props->walls[2].path && props->walls[3].path
+			&& props->door[0].path && props->door[1].path
+			&& props->wall_anim.tex.path
 			&& props->col_f != -1 && props->col_c != -1);
 }
 

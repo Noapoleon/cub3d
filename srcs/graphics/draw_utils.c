@@ -6,7 +6,7 @@
 /*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:32:27 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/17 12:15:34 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 14:51:49 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static void	init_ray(t_ray *r, t_player *p, int	index)
 		r->dist.y = (p->pos.y - (double)r->map_check.y) * r->step_dist.y;
 	r->last_dist = 0.0;
 	r->side = -1;
+	r->tile_type = -1;
 }
 
 void	dda_increment(t_ray *r)
@@ -58,6 +59,8 @@ void	dda_increment(t_ray *r)
 // Returns 1 if a wall is hit, returns 0 otherwise
 static int	ray_dda_loop(t_ray *r, t_cub *cub)
 {
+	int	*tile;
+
 	if (r->index == cub->mlx.w_mid)
 		cub->player.cursor = NULL;
 	while (r->last_dist <= RENDER_DIST)
@@ -65,13 +68,16 @@ static int	ray_dda_loop(t_ray *r, t_cub *cub)
 		dda_increment(r);
 		if ((r->map_check.x >= 0 && r->map_check.x < cub->map.w) &&
 				(r->map_check.y >= 0 && r->map_check.y < cub->map.h)) // clean this later
-			if (cub->map.tiles[r->map_check.y][r->map_check.x] >= T_WALL) // just added == 1 to test map edge graphic bug
+		{
+			tile = &cub->map.tiles[r->map_check.y][r->map_check.x];
+			if (*tile >= T_WALL) // just added == 1 to test map edge graphic bug
 			{
+				r->tile_type = *tile;
 				if (r->index == cub->mlx.w_mid && r->last_dist <= 1.5) // put door loop outside of hit wall for when it's open
-					cub->player.cursor
-						= &cub->map.tiles[r->map_check.y][r->map_check.x];
+					cub->player.cursor = tile;
 				return (1);
 			}
+		}
 	}
 	r->side = -1; // check later if setting this here doesn't cause problems
 	return (0);
@@ -126,7 +132,7 @@ void draw_clock(t_mlx *mlx, t_cub *cub, t_sprite *clock)
 	static int	n;
 	static long	sum;
 
-	sum += cub->dt;
+	sum += cub->delta;
 	if (sum >= clock->uspf)
 	{
 		++n;
@@ -148,5 +154,6 @@ void	draw_frame(t_cub *cub, t_mlx *mlx, t_player *player)
 	//my_pixel_put(mlx, (int[2]){mlx->w_mid, mlx->h_mid}, 0x00ffffff); // cursor
 	//display_inputs(cub, (int[2]){0,0}); // remove
 	draw_clock(mlx, cub, &cub->clock); // remoe later
+	//my_texture_put(mlx, (int[2]){0, 0}, &cub->props.door[0]);
 	mlx_put_image_to_window(mlx->ptr, mlx->win, mlx->img.ptr, 0, 0);
 }

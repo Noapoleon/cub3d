@@ -30,12 +30,11 @@ SRCS	:=	main.c \
 			utils/utils_free.c \
 			utils/utils_vec.c \
 			utils/utils_debug.c \
-			hooking/hooks.c \
-			hooking/hooks_keys.c \
+			inputs/hooks.c \
+			inputs/handle_inputs.c \
 			graphics/draw_utils.c \
 			graphics/draw_vert_line.c \
 			graphics/graphic_utils.c \
-			movement.c \
 			test_code/display_utils.c
 OBJS	:=	$(SRCS:.c=.o)
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCS))

@@ -6,44 +6,55 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:21:17 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/13 15:20:44 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 18:38:54 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// Returns the color of pixel in the texture at coordinates pos
-// Returns 0 if outside of texture range
-int	get_tex_col(t_texture *t, int pos[2])
+// Opens single texture file and fills in texture struct with info
+int	open_texture(t_mlx *mlx, t_texture *t)
 {
-	char	*dst;
-
-	if (pos[0] >= 0 && pos[0] < t->w
-			&& pos[1] >= 0 && pos[1] < t->h)
-	{
-		dst = t->img.addr + (pos[1] * t->img.ll + pos[0] * (t->img.bpp / 8));
-		return (*(unsigned int *)dst);
-	}
+	if (t->path == NULL)
+		return (-1);
+	t->img.ptr = mlx_xpm_file_to_image(mlx->ptr, t->path, &t->w, &t->h);
+	if (t->img.ptr == NULL)
+		return (-1);
+	t->img.addr = mlx_get_data_addr(t->img.ptr, &t->img.bpp, &t->img.ll,
+			&t->img.endian);
 	return (0);
 }
 
 // Substitute function for mlx_pixel_put
 // Writes pixels into the image buffer instead of directly to the screen for
 // much better performance
-void	my_pixel_put(t_mlx *m, int pos[2], int col)
+void	set_pixel(t_mlximg *img, int pos[2], int col)
 {
 	char	*dst;
 
-	if (pos[0] >= 0 && pos[0] < m->w
-			&& pos[1] >= 0 && pos[1] < m->h)
+	if (pos[0] >= 0 && pos[0] < img->w
+			&& pos[1] >= 0 && pos[1] < img->h)
 	{
-		dst = m->img.addr + (pos[1] * m->img.ll + pos[0] * (m->img.bpp / 8));
+		dst = img->addr + (pos[1] * img->ll + pos[0] * (img->bpp / 8));
 		*(unsigned int *)dst = col;
 	}
 }
 
-// draws rectangle to imgbuf
-void	my_rect_put(t_mlx *m, int pos[2], int size[2], int col)
+// Get color of pixel in mlximg at coords pos
+int	get_pixel(t_mlximg *img, int pos[2])
+{
+	char	*dst;
+
+	if (pos[0] >= 0 && pos[0] < img->w
+			&& pos[1] >= 0 && pos[1] < img->h)
+	{
+		dst = img->addr + (pos[1] * img->ll + pos[0] * (img->bpp / 8));
+		return (*(unsigned int *)dst);
+	}
+}
+
+// draws rectangle to mlximg
+void	set_rect(t_mlximg *img, int pos[2], int size[2], int col)
 {
 	int	x;
 	int	y;
@@ -55,13 +66,13 @@ void	my_rect_put(t_mlx *m, int pos[2], int size[2], int col)
 	{
 		x = 0;
 		while (x < size[0])
-			my_pixel_put(m, (int[2]){pos[0] + x++, pos[1] + y}, col);
+			set_pixel(img, (int[2]){pos[0] + x++, pos[1] + y}, col);
 		++y;
 	}
 }
 
 // Draws texture to buffer at native resolution
-void	my_texture_put(t_mlx *mlx, int pos[2], t_texture *t)
+void	my_texture_put(t_mlx *mlx, int pos[2], t_texture *t) // probably remove
 {
 	int	coord[2];
 	int	cur[2];
@@ -74,7 +85,7 @@ void	my_texture_put(t_mlx *mlx, int pos[2], t_texture *t)
 		{
 			cur[0] = pos[0] + coord[0];
 			cur[1] = pos[1] + coord[1];
-			my_pixel_put(mlx, cur, get_tex_col(t, coord));
+			set_pixel(mlx->img, cur, get_pixel(&t->img, coord));
 			++(coord[0]);
 		}
 		++(coord[1]);

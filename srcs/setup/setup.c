@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:45:29 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/13 16:42:39 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 14:51:31 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	init_vars(t_cub *cub)
 	init_vars_player(&cub->player);
 	init_vars_mlx(&cub->mlx);
 	init_vars_inputs(&cub->inputs);
-	cub->dt = 0;
+	cub->delta = 0;
 	cub->minimap = 1;
 }
 
