@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:20:05 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 17:01:47 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 23:06:28 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static t_texture	*get_wall_tex(t_cub *cub, t_ray *r)
 	if (r->tile_type == T_WALL)
 		return (&cub->props.walls[r->side]);
 	else if (r->tile_type == T_WALL_ANIM)
-		return (cub->props.wall_anim.cur);
+		return (cub->props.wall_anim.frame);
 	else if (r->tile_type == T_DOOR_C)
 		return (&cub->props.door[0]);
 	else
@@ -90,7 +90,7 @@ static int	tex_sample_wall(t_texline *tl, t_cub *cub,  t_ray *r)
 	tl->pos[1] = tl->step[1];
 	if (tl->pos[1] >= cub->props.walls[r->side].h)
 		tl->pos[1] = cub->props.walls[r->side].h - 1;
-	col = get_tex_col(tl->tex, tl->pos);
+	col = get_pixel(&tl->tex->img, tl->pos);
 	return (col);
 	//return (tex_apply_fog(col, cub->props.col_f, tl->fog));
 }
@@ -107,12 +107,12 @@ void	draw_vert_line(t_cub *cub, t_ray *r)
 	while (pos[1] < W_HEIGHT)
 	{
 		if (pos[1] < tl.range[0])
-			my_pixel_put(&cub->mlx, pos, cub->props.col_c);
+			set_pixel(&cub->mlx.img, pos, cub->props.col_c);
 		else if (pos[1] >= tl.range[1])
-			my_pixel_put(&cub->mlx, pos, cub->props.col_f);
+			set_pixel(&cub->mlx.img, pos, cub->props.col_f);
 		else
 		{
-			my_pixel_put(&cub->mlx, pos, tex_sample_wall(&tl, cub, r));
+			set_pixel(&cub->mlx.img, pos, tex_sample_wall(&tl, cub, r));
 			tl.step[1] += tl.step[0];
 		}
 		++pos[1];

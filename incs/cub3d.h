@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 18:38:32 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 23:10:51 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # define MOUSE_SPEED	1.0
 # define PLAYER_SPEED	3.0 // blocks per second
 # define RENDER_DIST	100.0 // secure later // try really low and really high or protect higher than would be 1 pixel
-# define MULTITHREADING	0
+# define MULTITHREADING	0 // maybe do or not idk
 
 // CONSTANTS
 # define T_NONE			-1
@@ -49,23 +49,13 @@ typedef struct s_vec2df		t_vec2df;
 typedef struct s_vec2di		t_vec2di;
 typedef struct s_ray		t_ray;
 typedef struct s_inputs		t_inputs;
-typedef struct s_mlximg		t_mlximg;
+typedef struct s_imgmlx		t_imgmlx;
 typedef struct s_texture	t_texture;
 typedef struct s_mlx		t_mlx;
 typedef struct s_props		t_props;
 typedef struct s_map		t_map;
 typedef struct s_player		t_player;
 typedef struct s_cub		t_cub;
-
-struct s_sprite
-{
-	t_texture	tex; // probably can remove that and put it in init thing
-	int			num_frames;
-	t_texture	*frames; // allocated
-	int			index;
-	t_texture	*frame; // not allocated
-	long		delay; // usec
-};
 
 struct s_texline
 {
@@ -108,31 +98,41 @@ struct s_inputs
 	int	e;
 	int	m;
 	//int	shift; // later
-	int	la; // init
+	int	la;
 	int	ra;
 };
-struct s_img
+struct s_imgmlx
 {
 	void	*ptr;
 	char	*addr;
 	int		bpp;
 	int		ll;
 	int		endian;
-	int		w; //just added this
-	int		h; //just added this
+	int		w;
+	int		h;
 };
 struct s_texture
 {
 	char		*path;
-	t_mlximg	img;
+	t_imgmlx	img;
 	int			w;
 	int			h;
+};
+struct s_sprite
+{
+	t_texture	tex;
+	int			num_frames;
+	t_texture	*frames;
+	int			index;
+	t_texture	*frame;
+	long		delay; //usec
+	long		elapsed;
 };
 struct s_mlx
 {
 	void		*ptr;
 	void		*win;
-	t_mlximg	img;
+	t_imgmlx	img;
 	int			w;
 	int			h;
 	int			w_mid;
@@ -191,10 +191,11 @@ void	init_vars_player(t_player *player);
 void	init_vars_mlx(t_mlx *mlx);
 void	init_vars_inputs(t_inputs *inputs);
 // setup_init_2.c
-void	init_vars_mlximg(t_mlximg *img);
+void	init_vars_imgmlx(t_imgmlx *img);
 void	init_vars_texture(t_texture *t);
+void	init_vars_sprite(t_sprite *s);
 // setup_mlx.c
-int		setup_mlx(t_cub *cub, t_mlx *mlx);
+int		setup_mlx(t_cub *cub, t_mlx *mlx, t_props *props);
 
 // ------ //
 // PARSER //
@@ -223,7 +224,6 @@ void	alloc_map_size(t_map *map, int width, int height);
 // ----- //
 // utils1.c
 void	set_int_arr(int *arr, int size, int val);
-void	clear_mlximg(t_cub *cub, int col);
 void	get_deltatime(t_cub *cub);
 double	get_principal_angle(double angle);
 // utils_free.c
@@ -257,11 +257,15 @@ void	draw_frame(t_cub *cub, t_mlx *mlx, t_player *player);
 // draw_vert_line.c
 void	draw_vert_line(t_cub *cub, t_ray *r);
 // graphic_utils.c
+void	clear_imgmlx(t_cub *cub, int col);
+void	set_imgmlx_data(t_imgmlx *img, int width, int height);
+void	copy_imgmlx(t_imgmlx *src, t_imgmlx *dst, int pos[2]);
 int		open_texture(t_mlx *mlx, t_texture *t);
-int		get_tex_col(t_texture *t, int pos[2]);
-void	my_pixel_put(t_mlx *mlx, int pos[2], int col);
-void	my_rect_put(t_mlx *m, int pos[2], int size[2], int col);
-void	my_texture_put(t_mlx *mlx, int pos[2], t_texture *t);
+int		open_sprite(t_mlx *mlx, t_sprite *s, int delay);
+void	set_pixel(t_imgmlx *img, int pos[2], int col);
+int		get_pixel(t_imgmlx *img, int pos[2]);
+void	set_rect(t_imgmlx *img, int pos[2], int size[2], int col);
+void	refresh_sprite(t_cub *cub, t_sprite *s);
 
 // handle_inputs.c
 void	handle_inputs(t_cub *cub);

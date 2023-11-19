@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 15:28:17 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 17:44:50 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 22:52:12 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # define CUB_ERR				"Error\n"
 
 // Settings errors
-# define CE_BAD_RES			"Resolution cannot be inferior to 128x128\
- or superior to 4096x4096\n"
+# define CE_BAD_RES			"Resolution cannot be inferior to 128x128 \
+or superior to 4096x4096\n"
 # define CE_BAD_MOUSESPEED	"Mouse speed must be positive\n"
 # define CE_BAD_PLAYERSPEED	"Player speed must be positive\n"
 # define CE_BAD_RENDERDIST	"Render distance must be positive\n"
@@ -52,7 +52,7 @@ file name must end with '.map'\n"
 # define CE_MLX_PTR			"Failed to initialize mlx\n"
 # define CE_MLX_WIN			"Failed to create new mlx window\n"
 # define CE_MLX_IMG			"Failed to create new mlx image\n"
-# define CE_TEXTURE_OPEN	"Failed to open/read texture `%s'\n"
+# define CE_TEX_OPEN	"Failed to open/read texture `%s'\n"
 # define CE_SPRITE_RES		"Sprite width is not multiple of its height\n"
 # define CE_SPRITE_ALLOC	"Failed to allocate frames: `%s'\n"
 # define CE_SPRITE_ALLOC	"Failed to allocate frames: `%s'\n"

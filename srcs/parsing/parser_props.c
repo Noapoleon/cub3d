@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 16:20:00 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 16:54:57 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 22:56:51 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static int	get_prop(t_props *props, const char *tmp, int count)
 		return (get_texture_path(&props->door[0].path, tmp + 3, count));
 	else if (ft_strncmp("DO ", tmp, 3) == 0)
 		return (get_texture_path(&props->door[1].path, tmp + 3, count));
-	else if (ft_strncmp("WA ", tmp, 3) == 0) // cant do that since it's multiple textures but let's temporarily do it anyway
+	else if (ft_strncmp("WA ", tmp, 3) == 0)
 		return (get_texture_path(&props->wall_anim.tex.path, tmp + 3, count));
 	else if (ft_strncmp("F ", tmp, 2) == 0)
 		return (get_color(&props->col_f, tmp + 2, count));

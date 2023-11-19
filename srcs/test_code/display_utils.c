@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 05:20:42 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 16:58:59 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 23:09:41 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	draw_square(t_cub *cub, int pos[2], int size, int col)
 		i = 0;
 		while (i < size)
 		{
-			my_pixel_put(&cub->mlx, (int[2]){pos[0] + i, pos[1] + j}, col);
+			set_pixel(&cub->mlx.img, (int[2]){pos[0] + i, pos[1] + j}, col);
 			++i;
 		}
 		++j;

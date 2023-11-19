@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 18:25:34 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 16:57:23 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 22:47:01 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,12 @@ void	print_missing_props(t_props *prop)
 		ft_printf(" - West texture\n");
 	if (prop->walls[3].path == NULL)
 		ft_printf(" - East texture\n");
+	if (prop->door[0].path == NULL)
+		ft_printf(" - Closed door texture\n");
+	if (prop->door[1].path == NULL)
+		ft_printf(" - Opened door texture\n");
+	if (prop->wall_anim.tex.path == NULL)
+		ft_printf(" - Animated wall sprite\n");
 	if (prop->col_f == -1)
 		ft_printf(" - Floor color\n");
 	if (prop->col_c == -1)

@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 16:18:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/10/16 00:08:46 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 22:57:41 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,5 @@ int	parse_scene(t_cub *cub, const char *map_path)
 		return (-1);
 	if (parse_lines(cub, lines) != 0)
 		return (ft_lstclear(&lines, free), -1); // print line number error message
-	ft_lstclear(&lines, free);
-	return (0);
+	return (ft_lstclear(&lines, free), 0);
 }
