@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 23:10:51 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 23:40:42 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,6 +259,7 @@ void	draw_vert_line(t_cub *cub, t_ray *r);
 // graphic_utils.c
 void	clear_imgmlx(t_cub *cub, int col);
 void	set_imgmlx_data(t_imgmlx *img, int width, int height);
+void	copy_frame(t_imgmlx *src, t_imgmlx *dst, int pos[2]);
 void	copy_imgmlx(t_imgmlx *src, t_imgmlx *dst, int pos[2]);
 int		open_texture(t_mlx *mlx, t_texture *t);
 int		open_sprite(t_mlx *mlx, t_sprite *s, int delay);

@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:21:17 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 23:10:51 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 23:59:32 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,26 @@ void	set_imgmlx_data(t_imgmlx *img, int width, int height)
 
 
 // Copies pixels of src to dst
+void	copy_frame(t_imgmlx *src, t_imgmlx *dst, int pos[2])
+{
+	int	coord[2];
+	int	cur[2];
+
+	cur[1] = 0;
+	while (cur[1] < dst->h)
+	{
+		cur[0] = 0;
+		while (cur[0] < dst->w)
+		{
+			coord[0] = pos[0] + cur[0];
+			coord[1] = pos[1] + cur[1];
+			set_pixel(dst, cur, get_pixel(src, coord));
+			++(cur[0]);
+		}
+		++(cur[1]);
+	}
+}
+
 void	copy_imgmlx(t_imgmlx *src, t_imgmlx *dst, int pos[2])
 {
 	int	coord[2];
@@ -79,7 +99,7 @@ int	open_sprite(t_mlx *mlx, t_sprite *s, int delay)
 	int	i;
 
 	if (open_texture(mlx, &s->tex) != 0)
-		return (-1);
+		return (ft_perr(CUB_ERR CE_TEX_OPEN, s->tex.path), -1);
 	if (s->tex.w % s->tex.h != 0) // test edge cases
 		return (ft_perr(CUB_ERR CE_SPRITE_RES), -1);
 	s->num_frames = s->tex.w / s->tex.h;
@@ -93,11 +113,13 @@ int	open_sprite(t_mlx *mlx, t_sprite *s, int delay)
 	while (i < s->num_frames)
 	{
 		init_vars_texture(&s->frames[i]);
-		s->frames[i].img.ptr = mlx_new_image(mlx, s->tex.h, s->tex.h);
+		s->frames[i].img.ptr = mlx_new_image(mlx->ptr, s->tex.h, s->tex.h);
 		if (s->frames[i].img.ptr == NULL)
 			return (ft_perr(CUB_ERR CE_SPRITE_IMG), -1);
 		set_imgmlx_data(&s->frames[i].img, s->tex.h, s->tex.h);
-		copy_imgmlx(&s->tex.img, &s->frames[i].img, (int[2]){i * s->tex.h, 0});
+		s->frames[i].w = s->tex.h;
+		s->frames[i].h = s->tex.h;
+		copy_frame(&s->tex.img, &s->frames[i].img, (int[2]){i * s->tex.h, 0});
 		++i;
 	}
 	return (0);

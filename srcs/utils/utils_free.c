@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 16:11:15 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 22:58:44 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 23:27:20 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	free_props(t_props *props)
 		if (props->walls[i].path)
 			free(props->walls[i].path);
 		if (i < 2 && props->door[i].path)
-			free(props->walls[i].path);
+			free(props->door[i].path);
 		++i;
 	}
 	if (props->wall_anim.tex.path)
@@ -65,6 +65,7 @@ void	free_mlx(t_mlx *mlx, t_props *props)
 	i = 0;
 	while (props->wall_anim.frames && i < props->wall_anim.num_frames)
 		free_imgmlx(mlx, &props->wall_anim.frames[i++].img);
+	free(props->wall_anim.frames);
 	free_imgmlx(mlx, &mlx->img);
 	if (mlx->win)
 		mlx_destroy_window(mlx->ptr, mlx->win);

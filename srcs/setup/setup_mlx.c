@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 17:20:54 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 22:54:04 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 23:15:43 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	open_props_textures(t_mlx *mlx, t_props *props)
 		++i;
 	}
 	if (open_sprite(mlx, &props->wall_anim, 200000) != 0)
-		return (ft_perr(CUB_ERR CE_TEX_OPEN, props->wall_anim.tex.path), -1);
+		return (-1);
 	return (0);
 }
 

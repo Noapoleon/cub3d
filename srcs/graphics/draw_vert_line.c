@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:20:05 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 23:06:28 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/19 23:57:06 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,13 @@ static void	init_texline(t_texline *tl, t_cub *cub, t_ray *r)
 //	return ((r << 16) | (g << 8) | b);
 //}
 
-static int	tex_sample_wall(t_texline *tl, t_cub *cub,  t_ray *r)
+static int	tex_sample_wall(t_texline *tl)
 {
 	int		col;
 
 	tl->pos[1] = tl->step[1];
-	if (tl->pos[1] >= cub->props.walls[r->side].h)
-		tl->pos[1] = cub->props.walls[r->side].h - 1;
+	if (tl->pos[1] >= tl->tex->h)
+		tl->pos[1] = tl->tex->h - 1;
 	col = get_pixel(&tl->tex->img, tl->pos);
 	return (col);
 	//return (tex_apply_fog(col, cub->props.col_f, tl->fog));
@@ -112,7 +112,7 @@ void	draw_vert_line(t_cub *cub, t_ray *r)
 			set_pixel(&cub->mlx.img, pos, cub->props.col_f);
 		else
 		{
-			set_pixel(&cub->mlx.img, pos, tex_sample_wall(&tl, cub, r));
+			set_pixel(&cub->mlx.img, pos, tex_sample_wall(&tl));
 			tl.step[1] += tl.step[0];
 		}
 		++pos[1];

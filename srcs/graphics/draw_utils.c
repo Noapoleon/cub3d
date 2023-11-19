@@ -6,7 +6,7 @@
 /*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:32:27 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 23:04:30 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/20 00:00:33 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,5 +136,6 @@ void	draw_frame(t_cub *cub, t_mlx *mlx, t_player *player)
 		draw_minimap(mlx, &cub->map, player);
 	//my_pixel_put(mlx, (int[2]){mlx->w_mid, mlx->h_mid}, 0x00ffffff); // cursor
 	//display_inputs(cub, (int[2]){0,0}); // remove
+	//copy_imgmlx(&cub->props.wall_anim.frame->img, &mlx->img, (int[2]){0,0}); // remove
 	mlx_put_image_to_window(mlx->ptr, mlx->win, mlx->img.ptr, 0, 0);
 }
