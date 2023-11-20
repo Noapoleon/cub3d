@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/20 20:47:18 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/20 21:03:59 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define W_WIDTH		1600
 # define W_HEIGHT		800
 # define MOUSE_SPEED	1.0
-# define PLAYER_SPEED	5000.0 // blocks per second
+# define PLAYER_SPEED	3.0 // blocks per second
 # define PLAYER_REACH	4
 # define RENDER_DIST	100.0 // secure later // try really low and really high or protect higher than would be 1 pixel
 # define MULTITHREADING	0 // maybe do or not idk

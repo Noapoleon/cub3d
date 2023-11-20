@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:01 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/20 18:01:45 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/20 21:06:58 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,9 @@ int	main(int ac, char **av)
 {
 	t_cub	cub;
 
-	//printf("truc -> %.30lf\n", tan(M_PI/2));
-	//printf("truc2 -> %.30lf\n", sin(M_PI/2));
-	//printf("truc3 -> %.30lf\n", cos(M_PI/2));
 	errno = 0;
 	if (setup_cub(&cub, ac, av) != 0)
 		return (1);
-	//display_scene(&cub); // remove
 	mlx_loop(cub.mlx.ptr);
 	free_cub(&cub);
 	return (0);
@@ -33,8 +29,6 @@ int	main(int ac, char **av)
 int	game_loop(t_cub *cub)
 {
 	get_deltatime(cub);
-	print_fps(cub); // remove
-	//print_mouse_pos(&cub->mlx); // remove
 	if (cub->mlx.focused)
 	{
 		refresh_sprite(cub, &cub->props.wall_anim);

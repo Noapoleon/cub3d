@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 19:29:12 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/20 20:45:37 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/20 21:05:21 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,28 +121,16 @@ static void	clamp_pos(t_map *map, t_vec2df *pos)
 
 	if (is_solid_tile(map, pos->x - 1, pos->y)
 			&& (pos->x - (int)pos->x) <= 0.1)
-	{
 		pos->x = (int)pos->x + 0.1;
-		printf("tagrandmere1\n");
-	}
 	else if (is_solid_tile(map, pos->x + 1, pos->y)
 			&& (pos->x - (int)pos->x) >= 0.9)
-	{
-		printf("tagrandmere2\n");
 		pos->x = (int)pos->x + 0.9;
-	}
 	if (is_solid_tile(map, pos->x, pos->y - 1)
 			&& (pos->y - (int)pos->y) <= 0.1)
-	{
-		printf("tagrandmere3\n");
 		pos->y = (int)pos->y + 0.1;
-	}
 	else if (is_solid_tile(map, pos->x, pos->y + 1)
 			&& (pos->y - (int)pos->y) >= 0.9)
-	{
-		printf("tagrandmere4\n");
 		pos->y = (int)pos->y + 0.9;
-	}
 }
 
 void	init_ray_collision(t_ray *r, t_player *p, double angle, double r_dist)
@@ -175,8 +163,6 @@ static void	set_player_location(t_player *p, t_cub *cub)
 	double		delta_sec;
 	t_ray		r;
 
-	static int truc; // remove
-
 	if (cub->inputs.w - cub->inputs.s || cub->inputs.a - cub->inputs.d)
 	{
 		mov_angle = get_mov_angle(p->rot, &cub->inputs);
@@ -198,24 +184,8 @@ static void	set_player_location(t_player *p, t_cub *cub)
 				else if (r.side == 3)
 					new_pos.x -= 0.001;
 			}
-			if (truc == 0)
-			{
-				truc = 1;
-				//printf("r.last_dist   = %.400lf\n", r.last_dist);
-				//printf("r.render_dist = %.400lf\n", r.render_dist);
-				printf("new_pos -> %lf;%.400lf\n", new_pos.x, new_pos.y);
-			}
 		}
 		clamp_pos(&cub->map, &new_pos);
-		if (truc == 1)
-		{
-			truc = 2;
-			//printf("r.last_dist   = %.400lf\n", r.last_dist);
-			//printf("r.render_dist = %.400lf\n", r.render_dist);
-			if (new_pos.y == 2.0)
-				printf("tamere\n");
-			printf("new_pos -> %lf;%.400lf\n", new_pos.x, new_pos.y);
-		}
 		set_vec2df(&p->pos, new_pos.x, new_pos.y);
 	}
 }
