@@ -6,7 +6,7 @@
 /*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:32:27 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/20 16:52:26 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/20 18:54:52 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	init_ray(t_ray *r, t_player *p, int	index)
 	r->last_dist = 0.0;
 	r->side = -1;
 	r->tile_type = -1;
+	r->render_dist = RENDER_DIST;
 }
 
 void	dda_increment(t_ray *r)
@@ -63,9 +64,11 @@ int	ray_dda_loop(t_ray *r, t_cub *cub)
 
 	if (r->index == cub->mlx.w_mid)
 		cub->player.cursor = NULL;
-	while (r->last_dist <= RENDER_DIST)
+	while (r->last_dist <= r->render_dist)
 	{
 		dda_increment(r);
+		if (r->last_dist >= r->render_dist)
+			break ;
 		if ((r->map_check.x >= 0 && r->map_check.x < cub->map.w) &&
 				(r->map_check.y >= 0 && r->map_check.y < cub->map.h)) // clean this later
 		{
@@ -80,6 +83,7 @@ int	ray_dda_loop(t_ray *r, t_cub *cub)
 		}
 	}
 	r->side = -1; // check later if setting this here doesn't cause problems
+	r->tile_type = -1; // check later if setting this here doesn't cause problems
 	return (0);
 }
 

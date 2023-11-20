@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 19:29:12 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/20 17:00:53 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/20 20:45:37 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,45 +76,147 @@ static double get_mov_angle(double rot, t_inputs *inputs)
 	return (rot);
 }
 
-static int	check_collision(t_map *map, t_vec2df *pos)
-{
-	int	tile_type;
+//static int	check_collision(t_map *map, t_vec2df *pos)
+//{
+//	int	tile_type;
+//
+//	tile_type = map->tiles[(int)pos->y][(int)pos->x];
+//	if (tile_type != T_AIR && tile_type != T_DOOR_O)
+//		return (1);
+//	return (0);
+//}
 
-	tile_type = map->tiles[(int)pos->y][(int)pos->x];
-	if (tile_type != T_AIR && tile_type != T_DOOR_O)
-		return (1);
-	return (0);
+//void	clamp_pos(t_map *map, t_vec2df *pos)
+//{
+//	int	tile_type;
+//
+//	tile_type = map->tiles[(int)pos->y][(int)pos->x - 1];
+//	if (tile_type >= T_WALL && tile_type <= T_DOOR_C
+//			&& (pos->x - (int)pos->x) <= 0.1)
+//		pos->x = (int)pos->x + 0.1;
+//	tile_type = map->tiles[(int)pos->y][(int)pos->x + 1];
+//	if (tile_type >= T_WALL && tile_type <= T_DOOR_C
+//			&& (pos->x - (int)pos->x) >= 0.9)
+//		pos->x = (int)pos->x + 0.9;
+//	tile_type = map->tiles[(int)pos->y - 1][(int)pos->x];
+//	if (tile_type >= T_WALL && tile_type <= T_DOOR_C
+//			&& (pos->y - (int)pos->y) <= 0.1)
+//		pos->y = (int)pos->y + 0.1;
+//	tile_type = map->tiles[(int)pos->y + 1][(int)pos->x];
+//	if (tile_type >= T_WALL && tile_type <= T_DOOR_C
+//			&& (pos->y - (int)pos->y) >= 0.9)
+//		pos->y = (int)pos->y + 0.9;
+//}
+static int	is_solid_tile(t_map *map, int x, int y)
+{
+	if (x < 0 || x >= map->w)
+		return (0);
+	if (y < 0 || y >= map->h)
+		return (0);
+	return (map->tiles[y][x] >= T_WALL && map->tiles[y][x] <= T_DOOR_C);
+}
+
+static void	clamp_pos(t_map *map, t_vec2df *pos)
+{
+
+	if (is_solid_tile(map, pos->x - 1, pos->y)
+			&& (pos->x - (int)pos->x) <= 0.1)
+	{
+		pos->x = (int)pos->x + 0.1;
+		printf("tagrandmere1\n");
+	}
+	else if (is_solid_tile(map, pos->x + 1, pos->y)
+			&& (pos->x - (int)pos->x) >= 0.9)
+	{
+		printf("tagrandmere2\n");
+		pos->x = (int)pos->x + 0.9;
+	}
+	if (is_solid_tile(map, pos->x, pos->y - 1)
+			&& (pos->y - (int)pos->y) <= 0.1)
+	{
+		printf("tagrandmere3\n");
+		pos->y = (int)pos->y + 0.1;
+	}
+	else if (is_solid_tile(map, pos->x, pos->y + 1)
+			&& (pos->y - (int)pos->y) >= 0.9)
+	{
+		printf("tagrandmere4\n");
+		pos->y = (int)pos->y + 0.9;
+	}
+}
+
+void	init_ray_collision(t_ray *r, t_player *p, double angle, double r_dist)
+{
+	r->index = 0;
+	set_vec2df(&r->dir, cos(angle), sin(angle));
+	set_vec2df(&r->step_dist, fabs(1.0 / r->dir.x), fabs(1.0 / r->dir.y));
+	set_vec2di(&r->map_check, p->pos.x, p->pos.y);
+	set_vec2di(&r->step, 1 - (r->dir.x < 0.0) * 2, 1 - (r->dir.y > 0.0) * 2);
+	if (r->dir.x < 0.0)
+		r->dist.x = (p->pos.x - (double)r->map_check.x) * r->step_dist.x;
+	else
+		r->dist.x = ((double)(r->map_check.x + 1) - p->pos.x) * r->step_dist.x;
+	if (r->dir.y < 0.0)
+		r->dist.y = ((double)(r->map_check.y + 1) - p->pos.y) * r->step_dist.y;
+	else
+		r->dist.y = (p->pos.y - (double)r->map_check.y) * r->step_dist.y;
+	r->last_dist = 0.0;
+	r->side = -1;
+	r->tile_type = -1;
+	r->render_dist = r_dist;
 }
 
 // move player using input keys and delta time
 static void	set_player_location(t_player *p, t_cub *cub)
 {
 	double		mov_angle;
+	t_vec2df	mov;
+	t_vec2df	new_pos;
 	double		delta_sec;
-	t_vec2df	pos;
+	t_ray		r;
+
+	static int truc; // remove
 
 	if (cub->inputs.w - cub->inputs.s || cub->inputs.a - cub->inputs.d)
 	{
 		mov_angle = get_mov_angle(p->rot, &cub->inputs);
+		set_vec2df(&mov, cos(mov_angle), sin(mov_angle));
 		delta_sec = (double)cub->delta * 0.000001;
-		//init_ray_collision(&ray, p, mov_angle);
-		//ray_dda_loop(&ray, cub);
-		pos.x = p->pos.x + (delta_sec * PLAYER_SPEED
-			* cos(mov_angle));
-		pos.y = p->pos.y - (delta_sec * PLAYER_SPEED
-			* sin(mov_angle));
-		//if (ray.last_dist < sqrt(pow(pos.x - p->pos.x, 2.0) + pow(pos.y - p->pos.y, 2.0)))
-		//	set_vec2df(&p->pos, p->pos.x + ray.dir.x * (ray.last_dist - 0.1), p->pos.y + ray.dir.y * (ray.last_dist - 0.1)); // change
-		//else
-		//	set_vec2df(&p->pos, pos.x, pos.y);
-		if (check_collision(&cub->map, &pos))
+		set_vec2df(&new_pos, p->pos.x + (delta_sec * PLAYER_SPEED * mov.x),
+			p->pos.y - (delta_sec * PLAYER_SPEED * mov.y));
+		if ((int)p->pos.x != (int)new_pos.x || (int)p->pos.y != (int)new_pos.y)
 		{
-			printf("les murs c du poison, t nul\n");
-			free_cub(cub);
-			exit(EXIT_SUCCESS);
+			init_ray_collision(&r, p, mov_angle, sqrt((new_pos.x - p->pos.x) * (new_pos.x - p->pos.x) + (new_pos.y - p->pos.y) * (new_pos.y - p->pos.y)));
+			ray_dda_loop(&r, cub);
+
+			if (r.tile_type >= T_WALL && r.tile_type <= T_DOOR_C)
+			{
+				set_vec2df(&new_pos, p->pos.x + r.dir.x * r.last_dist,
+						p->pos.y - r.dir.y * r.last_dist);
+				if (r.side == 1)
+					new_pos.y -= 0.001;
+				else if (r.side == 3)
+					new_pos.x -= 0.001;
+			}
+			if (truc == 0)
+			{
+				truc = 1;
+				//printf("r.last_dist   = %.400lf\n", r.last_dist);
+				//printf("r.render_dist = %.400lf\n", r.render_dist);
+				printf("new_pos -> %lf;%.400lf\n", new_pos.x, new_pos.y);
+			}
 		}
-		set_vec2df(&p->pos, pos.x, pos.y);
-			//set_vec2df(&p->pos, pos.x, pos.y);
+		clamp_pos(&cub->map, &new_pos);
+		if (truc == 1)
+		{
+			truc = 2;
+			//printf("r.last_dist   = %.400lf\n", r.last_dist);
+			//printf("r.render_dist = %.400lf\n", r.render_dist);
+			if (new_pos.y == 2.0)
+				printf("tamere\n");
+			printf("new_pos -> %lf;%.400lf\n", new_pos.x, new_pos.y);
+		}
+		set_vec2df(&p->pos, new_pos.x, new_pos.y);
 	}
 }
 
