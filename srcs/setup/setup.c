@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:45:29 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 22:54:50 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/20 15:08:35 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static int	settings_check(void)
 		return (ft_perr(CUB_ERR CE_BAD_MOUSESPEED), -1);
 	if (PLAYER_SPEED <= 0)
 		return (ft_perr(CUB_ERR CE_BAD_PLAYERSPEED), -1);
+	if (PLAYER_REACH <= 0)
+		return (ft_perr(CUB_ERR CE_BAD_PLAYERREACH), -1);
 	if (RENDER_DIST <= 0)
 		return (ft_perr(CUB_ERR CE_BAD_RENDERDIST), -1);
 	return (0);

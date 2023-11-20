@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 15:28:17 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 22:52:12 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/20 15:09:38 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 or superior to 4096x4096\n"
 # define CE_BAD_MOUSESPEED	"Mouse speed must be positive\n"
 # define CE_BAD_PLAYERSPEED	"Player speed must be positive\n"
+# define CE_BAD_PLAYERREACH	"Player reach must be positive\n"
 # define CE_BAD_RENDERDIST	"Render distance must be positive\n"
 
 // Scene file

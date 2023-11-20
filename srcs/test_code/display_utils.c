@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 05:20:42 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 23:09:41 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/20 16:08:43 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,16 +131,16 @@ void	display_map(t_cub *cub)
 void display_inputs(t_cub *cub, int pos[2])
 {
 	t_inputs *inputs = &cub->inputs;
-	int	size = 60;
+	int	size[2] = {60, 60};
 
 	if (inputs->w)
-		draw_square(cub, (int[2]){pos[0] + size, pos[1]}, size, 0x00ff0000);
+		set_rect(&cub->mlx.img, (int[2]){pos[0] + size[0], pos[1]}, size, 0x00ff0000);
 	if (inputs->s)
-		draw_square(cub, (int[2]){pos[0] + size, pos[1] + size}, size, 0x00ff0000);
+		set_rect(&cub->mlx.img, (int[2]){pos[0] + size[0], pos[1] + size[1]}, size, 0x00ff0000);
 	if (inputs->a)
-		draw_square(cub, (int[2]){pos[0], pos[1] + size}, size, 0x00ff0000);
+		set_rect(&cub->mlx.img, (int[2]){pos[0], pos[1] + size[1]}, size, 0x00ff0000);
 	if (inputs->d)
-		draw_square(cub, (int[2]){pos[0] + size * 2, pos[1] + size}, size, 0x00ff0000);
+		set_rect(&cub->mlx.img, (int[2]){pos[0] + size[0] * 2, pos[1] + size[1]}, size, 0x00ff0000);
 }
 
 void	display_rot(t_cub *cub, int pos[2])

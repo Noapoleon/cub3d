@@ -8,12 +8,12 @@ EA textures/nl_dungeon/new/brickwall.xpm
 
 DC textures/nl_dungeon/new/brickwall_door_closed.xpm
 DO textures/nl_dungeon/new/brickwall_door_opened.xpm
-WA textures/nl_dungeon/new/brickwall_numbers.xpm
+WA textures/nl_dungeon/new/brickwall_torch.xpm
 
 1211111111111111111
 10W1001001001000001
 2011000001000001001
-1001001001111101111
+1001001000111101111
 2001111000001001001
 1000000000000001001
 1311111111111001001

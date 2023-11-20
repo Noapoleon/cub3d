@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 23:40:42 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/20 15:30:52 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # define W_HEIGHT		800
 # define MOUSE_SPEED	1.0
 # define PLAYER_SPEED	3.0 // blocks per second
+# define PLAYER_REACH	4
 # define RENDER_DIST	100.0 // secure later // try really low and really high or protect higher than would be 1 pixel
 # define MULTITHREADING	0 // maybe do or not idk
 
@@ -252,7 +253,9 @@ int		mouse_move_hook(int x, int y, t_cub *cub);
 // ------- //
 // GRAHICS //
 // ------- //
-// draw_frame.c
+// draw_utils.c
+void	init_ray(t_ray *r, t_player *p, int	index);
+int		ray_dda_loop(t_ray *r, t_cub *cub);
 void	draw_frame(t_cub *cub, t_mlx *mlx, t_player *player);
 // draw_vert_line.c
 void	draw_vert_line(t_cub *cub, t_ray *r);

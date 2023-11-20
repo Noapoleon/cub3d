@@ -6,14 +6,14 @@
 /*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:32:27 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/20 00:00:33 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/20 16:52:26 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // Sets ray struct variables for DDA loop
-static void	init_ray(t_ray *r, t_player *p, int	index)
+void	init_ray(t_ray *r, t_player *p, int	index)
 {
 	double	cam_x;
 
@@ -57,7 +57,7 @@ void	dda_increment(t_ray *r)
 
 // Loops on the DDA algorithm, stores info in ray struct
 // Returns 1 if a wall is hit, returns 0 otherwise
-static int	ray_dda_loop(t_ray *r, t_cub *cub)
+int	ray_dda_loop(t_ray *r, t_cub *cub)
 {
 	int	*tile;
 
@@ -73,7 +73,7 @@ static int	ray_dda_loop(t_ray *r, t_cub *cub)
 			if (*tile >= T_WALL) // just added == 1 to test map edge graphic bug
 			{
 				r->tile_type = *tile;
-				if (r->index == cub->mlx.w_mid && r->last_dist <= 1.5) // put door loop outside of hit wall for when it's open
+				if (r->index == cub->mlx.w_mid && r->last_dist <= PLAYER_REACH) // put door loop outside of hit wall for when it's open
 					cub->player.cursor = tile;
 				return (1);
 			}
