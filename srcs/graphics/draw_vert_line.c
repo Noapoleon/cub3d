@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:20:05 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 23:57:06 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 05:00:58 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // Returns X coord of ray hit on wall
 static double	get_wall_x(t_ray *r, t_player *p)
 {
-	double wall_x;
+	double	wall_x;
 
 	if (r->side < 2)
 	{
@@ -44,7 +44,6 @@ static t_texture	*get_wall_tex(t_cub *cub, t_ray *r)
 		return (&cub->props.door[1]);
 }
 
-
 static void	init_texline(t_texline *tl, t_cub *cub, t_ray *r)
 {
 	if (r->side == -1)
@@ -58,30 +57,15 @@ static void	init_texline(t_texline *tl, t_cub *cub, t_ray *r)
 	tl->h_mid = tl->height / 2;
 	tl->range[0] = cub->mlx.h_mid - tl->h_mid;
 	tl->range[1] = W_HEIGHT - tl->range[0];
-	tl->step[0] = (double)tl->tex->h / (double)tl->height; // parentheses?
+	tl->step[0] = (double)tl->tex->h / (double)tl->height;
 	if (tl->range[0] >= 0)
-		tl->step[1] =  0;
+		tl->step[1] = 0;
 	else
-		tl->step[1]  = (tl->h_mid - cub->mlx.h_mid) * tl->step[0];
+		tl->step[1] = (tl->h_mid - cub->mlx.h_mid) * tl->step[0];
 	tl->pos[0] = (get_wall_x(r, &cub->player) * (double)tl->tex->w);
 	if (tl->pos[0] >= tl->tex->w)
 		tl->pos[0] = tl->tex->w - 1;
-	tl->fog = r->last_dist / RENDER_DIST;
-	if (tl->fog > 1.0)
-		tl->fog = 1.0;
 }
-
-//static int	tex_apply_fog(int col, int col_f, double fog)
-//{
-//	int		r;
-//	int		g;
-//	int		b;
-//
-//	r = ((col >> 16) & 0xff) - ((double)((((col >> 16) & 0xff) - ((col_f >> 16) & 0xff)) * fog));
-//	g = ((col >> 8) & 0xff) - ((double)(((col >> 8) & 0xff) - ((col_f >> 8) & 0xff)) * fog);
-//	b = (col & 0xff) - ((double)((col & 0xff) - (col_f & 0xff)) * fog);
-//	return ((r << 16) | (g << 8) | b);
-//}
 
 static int	tex_sample_wall(t_texline *tl)
 {
@@ -92,7 +76,6 @@ static int	tex_sample_wall(t_texline *tl)
 		tl->pos[1] = tl->tex->h - 1;
 	col = get_pixel(&tl->tex->img, tl->pos);
 	return (col);
-	//return (tex_apply_fog(col, cub->props.col_f, tl->fog));
 }
 
 // Prints vertical line with texture

@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 16:20:00 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 22:56:51 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 00:49:44 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,14 +104,11 @@ static int	get_prop(t_props *props, const char *tmp, int count)
 		return (get_color(&props->col_f, tmp + 2, count));
 	else if (ft_strncmp("C ", tmp, 2) == 0)
 		return (get_color(&props->col_c, tmp + 2, count));
+	if (is_map_str(tmp))
+		return (ft_perr(CUB_ERR CE_LINE, count, CE_PROP_MAP),
+			print_missing_props(props), -1);
 	else
-	{
-		if (is_map_str(tmp))
-			return (ft_perr(CUB_ERR CE_LINE, count, CE_PROP_MAP),
-					print_missing_props(props), -1);
-		else
-			return (ft_perr(CUB_ERR CE_LINE, count, CE_PROP_UNKNOWN), -1);
-	}
+		return (ft_perr(CUB_ERR CE_LINE, count, CE_PROP_UNKNOWN), -1);
 }
 
 // Returns map start pointer
@@ -119,10 +116,10 @@ int	get_props(t_props *props, t_list **cur, int *count)
 {
 	char	*tmp;
 
-	while (*cur && !has_all_props(props)) // change when adding doors for texture
+	while (*cur && !has_all_props(props))
 	{
 		tmp = get_line_start((*cur)->data);
-		if (tmp[0] != '\0' && get_prop(props, tmp, *count) != 0) // CHECK AGAIN FOR OTHER OUTCOMES
+		if (tmp[0] != '\0' && get_prop(props, tmp, *count) != 0)
 			return (free_props(props), -1);
 		++(*count);
 		*cur = (*cur)->next;

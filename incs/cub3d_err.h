@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 15:28:17 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/20 15:09:38 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 00:32:22 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ or superior to 4096x4096\n"
 // Scene file
 # define CE_SCENE_PATH_NULL		"Scene path is NULL\n"
 # define CE_SCENE_PATH_FORMAT	"Scene path wrong format, \
-file name must end with '.map'\n"
+file name must end with '.cub'\n"
 # define CE_SCENE_DIRECTORY		"Scene path is a directory\n"
 # define CE_SCENE_OPEN			"Failed to open scene: %s: %s\n"
 # define CE_SCENE_READ			"Failed to read scene: %s\n\n"

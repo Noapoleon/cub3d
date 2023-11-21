@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 14:11:05 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 22:10:03 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 05:14:14 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	init_vars_texture(t_texture *t)
 	t->w = -1;
 	t->h = -1;
 }
-
 
 // Initializes imgbuf variables to default values
 void	init_vars_imgmlx(t_imgmlx *img)
@@ -44,4 +43,3 @@ void	init_vars_sprite(t_sprite *s)
 	s->delay = -1;
 	s->elapsed = 0;
 }
-

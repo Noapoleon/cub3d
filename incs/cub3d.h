@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/20 21:03:59 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 05:20:26 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,9 @@
 # define W_WIDTH		1600
 # define W_HEIGHT		800
 # define MOUSE_SPEED	1.0
-# define PLAYER_SPEED	3.0 // blocks per second
-# define PLAYER_REACH	4
-# define RENDER_DIST	100.0 // secure later // try really low and really high or protect higher than would be 1 pixel
-# define MULTITHREADING	0 // maybe do or not idk
+# define PLAYER_SPEED	3.0
+# define PLAYER_REACH	1.5
+# define RENDER_DIST	100.0
 
 // CONSTANTS
 # define T_NONE			-1
@@ -66,7 +65,6 @@ struct s_texline
 	int			range[2];
 	double		step[2];
 	int			pos[2];
-	double		fog;
 };
 struct s_vec2df
 {
@@ -86,7 +84,7 @@ struct s_ray
 	t_vec2di	map_check;
 	t_vec2df	dist;
 	double		last_dist;
-	int			side; // remove? 0 to 3 for index in textures?? idk, -1 no walls
+	int			side;
 	int			tile_type;
 	int			index;
 	double		render_dist;
@@ -99,7 +97,6 @@ struct s_inputs
 	int	d;
 	int	e;
 	int	m;
-	//int	shift; // later
 	int	la;
 	int	ra;
 };
@@ -127,7 +124,7 @@ struct s_sprite
 	t_texture	*frames;
 	int			index;
 	t_texture	*frame;
-	long		delay; //usec
+	long		delay;
 	long		elapsed;
 };
 struct s_mlx
@@ -143,7 +140,6 @@ struct s_mlx
 };
 struct s_props
 {
-	// CHECK INIT FUNCTIONS FOR ALL STRUCTS
 	t_texture	walls[4];
 	t_texture	door[2];
 	t_sprite	wall_anim;
@@ -155,6 +151,7 @@ struct s_map
 	int		w;
 	int		h;
 	int		**tiles;
+	int		size[2];
 };
 struct s_player
 {
@@ -227,7 +224,6 @@ void	alloc_map_size(t_map *map, int width, int height);
 // utils1.c
 void	set_int_arr(int *arr, int size, int val);
 void	get_deltatime(t_cub *cub);
-double	get_principal_angle(double angle);
 // utils_free.c
 void	free_props(t_props *props);
 void	free_map(t_map *map);
@@ -236,59 +232,57 @@ void	free_cub(t_cub *cub);
 // utils_vec.c
 void	set_vec2df(t_vec2df *v, double x, double y);
 void	set_vec2di(t_vec2di *v, int x, int y);
+double	get_principal_angle(double angle);
 // utils_debug.c
 void	print_fps(t_cub *cub);
 void	print_mouse_pos(t_mlx *mlx);
 
+// ------- //
+// GRAHICS //
+// ------- //
+// draw_frame.c
+void	init_ray(t_ray *r, t_player *p, int index);
+int		ray_dda_loop(t_ray *r, t_cub *cub);
+void	draw_frame(t_cub *cub, t_mlx *mlx, t_player *player);
+// draw_utils.c
+int		get_map_color(int tile_type);
+void	dda_increment(t_ray *r);
+// draw_vert_line.c
+void	draw_vert_line(t_cub *cub, t_ray *r);
+// graphic_utils1.c
+void	clear_imgmlx(t_cub *cub, int col);
+void	copy_imgmlx(t_imgmlx *src, t_imgmlx *dst, int pos[2]);
+void	set_pixel(t_imgmlx *img, int pos[2], int col);
+int		get_pixel(t_imgmlx *img, int pos[2]);
+void	set_rect(t_imgmlx *img, int pos[2], int size[2], int col);
+// graphic_utils2.c
+void	set_imgmlx_data(t_imgmlx *img, int width, int height);
+void	copy_frame(t_imgmlx *src, t_imgmlx *dst, int pos[2]);
+int		open_texture(t_mlx *mlx, t_texture *t);
+void	refresh_sprite(t_cub *cub, t_sprite *s);
+// graphic_utils3.c
+int		open_sprite(t_mlx *mlx, t_sprite *s, int delay);
 
-// ----- //
-// HOOKS //
-// ----- //
+// ------ //
+// INPUTS //
+// ------ //
+// handle_inputs.c
+void	handle_inputs(t_cub *cub);
+// movement_collision.c
+void	get_mov_vec(double rot, t_inputs *inputs, t_vec2df *mov);
+void	clamp_pos(t_map *map, t_vec2df *pos);
+void	init_ray_collision(t_ray *r, t_player *p, t_vec2df *mov, double r_dist);
+void	ray_collision(t_cub *cub, t_vec2df *new_pos, t_vec2df *mov);
 // hooks.c
 int		set_mlx_hooks(t_cub *cub, t_mlx *mlx);
 int		keypress_hook(int keycode, t_cub *cub);
 int		keyrelease_hook(int keycode, t_cub *cub);
-// hooks_mouse.c
-int		mouse_move_hook(int x, int y, t_cub *cub);
 
-// ------- //
-// GRAHICS //
-// ------- //
-// draw_utils.c
-void	init_ray(t_ray *r, t_player *p, int	index);
-int		ray_dda_loop(t_ray *r, t_cub *cub);
-void	draw_frame(t_cub *cub, t_mlx *mlx, t_player *player);
-// draw_vert_line.c
-void	draw_vert_line(t_cub *cub, t_ray *r);
-// graphic_utils.c
-void	clear_imgmlx(t_cub *cub, int col);
-void	set_imgmlx_data(t_imgmlx *img, int width, int height);
-void	copy_frame(t_imgmlx *src, t_imgmlx *dst, int pos[2]);
-void	copy_imgmlx(t_imgmlx *src, t_imgmlx *dst, int pos[2]);
-int		open_texture(t_mlx *mlx, t_texture *t);
-int		open_sprite(t_mlx *mlx, t_sprite *s, int delay);
-void	set_pixel(t_imgmlx *img, int pos[2], int col);
-int		get_pixel(t_imgmlx *img, int pos[2]);
-void	set_rect(t_imgmlx *img, int pos[2], int size[2], int col);
-void	refresh_sprite(t_cub *cub, t_sprite *s);
-
-// handle_inputs.c
-void	handle_inputs(t_cub *cub);
-
-
-// TEST CODE REMOVE LATER -------------------------------------------------------
-void	write_map(t_map *map);
-void	display_scene(t_cub *cub);
-void	display_map(t_cub *cub);
-void	draw_square(t_cub *cub, int pos[2], int size, int col);
-void	display_inputs(t_cub *cub, int pos[2]);
-void	display_rot(t_cub *cub, int pos[2]);
-void	display_movdir(t_cub *cub, int pos[2]);
-
-// Features                                                                    remove
+// Features
 // w a s d	: move
+// e		: open doors
 // m		: toggle map
 // mouse	: look around
-// add ifndef for mac and dell keys
+// arrows	: look arround
 
 #endif

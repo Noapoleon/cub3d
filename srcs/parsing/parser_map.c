@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 16:52:56 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/17 11:33:05 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 00:45:14 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,6 @@ int	get_map(t_cub *cub, t_list *cur, int count)
 	if (fill_map(cub, cur, count, offset) != 0)
 		return (free_map(&cub->map), -1);
 	if (check_map(&cub->map, count) != 0)
-		return (free_map(&cub->map), -1); // free_allocated map
+		return (free_map(&cub->map), -1);
 	return (0);
 }

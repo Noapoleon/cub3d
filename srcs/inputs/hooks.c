@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 20:41:09 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 20:13:42 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 05:15:25 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static int	disable_focus_hook(t_cub *cub)
 {
 	cub->mlx.focused = 0;
 	init_vars_inputs(&cub->inputs);
-	//mlx_mouse_show(cub->mlx.ptr, cub->mlx.win);
 	return (0);
 }
 
@@ -25,7 +24,6 @@ static int	disable_focus_hook(t_cub *cub)
 static int	enable_focus_hook(t_cub *cub)
 {
 	cub->mlx.focused = 1;
-	//mlx_mouse_hide(cub->mlx.ptr, cub->mlx.win); // leaks
 	return (0);
 }
 
@@ -55,7 +53,7 @@ int	keypress_hook(int keycode, t_cub *cub)
 	if (keycode == XK_e)
 		cub->inputs.e = 1;
 	if (keycode == XK_m)
-		cub->minimap = !cub->minimap;
+		cub->inputs.m = 1;
 	if (keycode == XK_Left)
 		cub->inputs.la = 1;
 	if (keycode == XK_Right)
@@ -78,6 +76,8 @@ int	keyrelease_hook(int keycode, t_cub *cub)
 		cub->inputs.d = 0;
 	if (keycode == XK_e)
 		cub->inputs.e = 0;
+	if (keycode == XK_m)
+		cub->inputs.m = 0;
 	if (keycode == XK_Left)
 		cub->inputs.la = 0;
 	if (keycode == XK_Right)

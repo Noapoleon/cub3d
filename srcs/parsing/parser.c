@@ -6,12 +6,11 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 16:18:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 22:57:41 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 00:45:39 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
 
 // Parses lines into map and player struct
 // Returns 0 on success, or the line number in case of error
@@ -44,6 +43,6 @@ int	parse_scene(t_cub *cub, const char *map_path)
 	if (read_map_file(map_path, &lines) != 0)
 		return (-1);
 	if (parse_lines(cub, lines) != 0)
-		return (ft_lstclear(&lines, free), -1); // print line number error message
+		return (ft_lstclear(&lines, free), -1);
 	return (ft_lstclear(&lines, free), 0);
 }

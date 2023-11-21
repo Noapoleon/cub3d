@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 18:25:34 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 22:47:01 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 05:17:25 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,14 @@ char	*get_line_end(const char *line)
 	return ((char *)(&line[i]));
 }
 
-
 // Checks t_props struct to see if all properties have been found
 int	has_all_props(t_props *props)
 {
 	return (props->walls[0].path && props->walls[1].path
-			&& props->walls[2].path && props->walls[3].path
-			&& props->door[0].path && props->door[1].path
-			&& props->wall_anim.tex.path
-			&& props->col_f != -1 && props->col_c != -1);
+		&& props->walls[2].path && props->walls[3].path
+		&& props->door[0].path && props->door[1].path
+		&& props->wall_anim.tex.path
+		&& props->col_f != -1 && props->col_c != -1);
 }
 
 // Loops through the string and checks if it only contains map characters
@@ -54,10 +53,6 @@ int	is_map_str(const char *s)
 	int	i;
 
 	i = 0;
-	// torched walls	-> '2'
-	// doors			-> '3'
-	// opened doors		-> '4' (never present in parsing, all doors are closed by default)
-	// doors need to be treated like air blocks for closed map check
 	while (s[i])
 	{
 		if (s[i] != '0' && s[i] != '1' && s[i] != '2' && s[i] != '3'

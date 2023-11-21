@@ -1,11 +1,12 @@
-/* ************************************************************************** */ /*                                                                            */
+/* ************************************************************************** */
+/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   parser_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/26 16:48:36 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/16 15:12:43 by nlegrand         ###   ########.fr       */
+/*   Created: 2023/11/21 00:46:10 by nlegrand          #+#    #+#             */
+/*   Updated: 2023/11/21 00:46:50 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +45,13 @@ void	alloc_map_size(t_map *map, int width, int height)
 
 	if (width < 3 || height < 3)
 		return ((void)ft_perr(CUB_ERR CE_MAP_SMALL));
-	map->tiles = malloc(sizeof(*map->tiles) * height); // check if that's good for the sizeof
+	map->tiles = malloc(sizeof(*map->tiles) * height);
 	if (map->tiles == NULL)
 		return ((void)ft_perr(CUB_ERR CE_MAP_ALLOC, strerror(errno)));
 	i = 0;
 	while (i < height)
 	{
-		map->tiles[i] = malloc(sizeof(**map->tiles) * width); // sizeof not sure
+		map->tiles[i] = malloc(sizeof(**map->tiles) * width);
 		if (map->tiles[i] == NULL)
 		{
 			while (i--)

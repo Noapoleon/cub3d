@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 16:14:29 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/08/26 16:15:28 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 00:44:20 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	check_map_path(const char *map_path)
 	fd = open(map_path, O_DIRECTORY);
 	if (fd != -1)
 		return (ft_perr(CUB_ERR CE_SCENE_OPEN, map_path, "Is a directory"),
-				close(fd), -1);
+			close(fd), -1);
 	return (close(fd), 0);
 }
 
@@ -52,7 +52,7 @@ int	read_map_file(const char *map_path, t_list **lines)
 		tmp = ft_lstnew(line);
 		if (tmp == NULL)
 			return (ft_perr(CUB_ERR CE_SCENE_READ, strerror(errno)),
-					ft_lstclear(lines, free), close(fd), -1);
+				ft_lstclear(lines, free), close(fd), -1);
 		tmp->next = *lines;
 		*lines = tmp;
 	}
