@@ -6,7 +6,7 @@
 /*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:32:27 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 04:48:04 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 17:39:27 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,11 @@ void	init_ray(t_ray *r, t_player *p, int index)
 
 // Loops on the DDA algorithm, stores info in ray struct
 // Returns 1 if a wall is hit, returns 0 otherwise
-int	ray_dda_loop(t_ray *r, t_cub *cub)
+void	ray_dda_loop(t_ray *r, t_cub *cub)
 {
 	int	*tile;
+
+	static int truc;
 
 	if (r->index == cub->mlx.w_mid)
 		cub->player.cursor = NULL;
@@ -54,19 +56,25 @@ int	ray_dda_loop(t_ray *r, t_cub *cub)
 		if ((r->map_check.x >= 0 && r->map_check.x < cub->map.w)
 			&& (r->map_check.y >= 0 && r->map_check.y < cub->map.h))
 		{
+			if (truc == 0 && r->map_check.x == 1 && r->map_check.y == 0)
+			{
+				++truc;
+				printf("end pos -> %lf;%lf\n", cub->player.pos.x + r->dir.x * r->last_dist,
+					cub->player.pos.y - r->dir.y * r->last_dist);
+			}
+
 			tile = &cub->map.tiles[r->map_check.y][r->map_check.x];
 			if (*tile >= T_WALL)
 			{
 				r->tile_type = *tile;
 				if (r->index == cub->mlx.w_mid && r->last_dist <= PLAYER_REACH)
 					cub->player.cursor = tile;
-				return (1);
+				return ;
 			}
 		}
 	}
 	r->side = -1;
 	r->tile_type = -1;
-	return (0);
 }
 
 // Casts one ray per horizontal pixel of the window and draws textures on walls

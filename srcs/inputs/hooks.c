@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 20:41:09 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 05:15:25 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 16:35:28 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,10 @@ int	keyrelease_hook(int keycode, t_cub *cub)
 	if (keycode == XK_e)
 		cub->inputs.e = 0;
 	if (keycode == XK_m)
+	{
 		cub->inputs.m = 0;
+		set_vec2df(&cub->player.pos, 0.5, -0.5);
+	}
 	if (keycode == XK_Left)
 		cub->inputs.la = 0;
 	if (keycode == XK_Right)

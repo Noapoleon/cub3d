@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:01 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/20 21:06:58 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 16:40:21 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@ int	game_loop(t_cub *cub)
 		refresh_sprite(cub, &cub->props.wall_anim);
 		handle_inputs(cub);
 		draw_frame(cub, &cub->mlx, &cub->player);
+		//if (is_solid_tile(&cub->map, cub->player.pos.x, cub->player.pos.y + 1))
+		//		printf("tile is solid\n");
+		//else
+		//	printf("tile isn't solid\n");
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:20:05 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 05:00:58 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 17:21:05 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,9 @@ void	draw_vert_line(t_cub *cub, t_ray *r)
 	static t_texline	tl;
 	int					pos[2];
 
+	int	col; //remove
+	static int truc;
+
 	init_texline(&tl, cub, r);
 	pos[0] = r->index;
 	pos[1] = 0;
@@ -95,6 +98,13 @@ void	draw_vert_line(t_cub *cub, t_ray *r)
 			set_pixel(&cub->mlx.img, pos, cub->props.col_f);
 		else
 		{
+			col = tex_sample_wall(&tl);
+			if (col == 0x00ff00ff && truc++ == 0)
+			{
+				printf("t pas sense colore mdr\n");
+				printf("pos colli -> %d;%d\n", r->map_check.x, r->map_check.y);
+				printf("side -> %d\n", r->side);
+			}
 			set_pixel(&cub->mlx.img, pos, tex_sample_wall(&tl));
 			tl.step[1] += tl.step[0];
 		}

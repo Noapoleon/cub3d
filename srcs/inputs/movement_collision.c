@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 02:41:19 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 05:16:50 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 16:59:15 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	get_mov_vec(double rot, t_inputs *inputs, t_vec2df *mov)
 }
 
 // Boolean solid tile function
-static int	is_solid_tile(t_map *map, int x, int y)
+int	is_solid_tile(t_map *map, int x, int y)
+//static int	is_solid_tile(t_map *map, int x, int y)
 {
 	if (x < 0 || x >= map->w)
 		return (0);
@@ -51,13 +52,13 @@ void	clamp_pos(t_map *map, t_vec2df *pos)
 	if (is_solid_tile(map, pos->x - 1, pos->y)
 		&& (pos->x - (int)pos->x) <= 0.1)
 		pos->x = (int)pos->x + 0.1;
-	else if (is_solid_tile(map, pos->x + 1, pos->y)
+	if (is_solid_tile(map, pos->x + 1, pos->y)
 		&& (pos->x - (int)pos->x) >= 0.9)
 		pos->x = (int)pos->x + 0.9;
 	if (is_solid_tile(map, pos->x, pos->y - 1)
 		&& (pos->y - (int)pos->y) <= 0.1)
 		pos->y = (int)pos->y + 0.1;
-	else if (is_solid_tile(map, pos->x, pos->y + 1)
+	if (is_solid_tile(map, pos->x, pos->y + 1)
 		&& (pos->y - (int)pos->y) >= 0.9)
 		pos->y = (int)pos->y + 0.9;
 }
@@ -85,6 +86,35 @@ void	init_ray_collision(t_ray *r, t_player *p, t_vec2df *mov, double r_dist)
 	r->render_dist = r_dist;
 }
 
+//static int	ray_collision_loop(t_ray *r, t_cub *cub)
+//{
+//	int	*tile;
+//
+//	if (r->index == cub->mlx.w_mid)
+//		cub->player.cursor = NULL;
+//	while (r->last_dist <= r->render_dist)
+//	{
+//		dda_increment(r);
+//		if (r->last_dist >= r->render_dist)
+//			break ;
+//		if ((r->map_check.x >= 0 && r->map_check.x < cub->map.w)
+//			&& (r->map_check.y >= 0 && r->map_check.y < cub->map.h))
+//		{
+//			tile = &cub->map.tiles[r->map_check.y][r->map_check.x];
+//			if (*tile >= T_WALL)
+//			{
+//				r->tile_type = *tile;
+//				if (r->index == cub->mlx.w_mid && r->last_dist <= PLAYER_REACH)
+//					cub->player.cursor = tile;
+//				return (1);
+//			}
+//		}
+//	}
+//	r->side = -1;
+//	r->tile_type = -1;
+//	return (0);
+//}
+
 // If necessary this function will be used to detect where the players location
 // should be after moving
 void	ray_collision(t_cub *cub, t_vec2df *new_pos, t_vec2df *mov)
@@ -97,6 +127,7 @@ void	ray_collision(t_cub *cub, t_vec2df *new_pos, t_vec2df *mov)
 	render_dist = sqrt((new_pos->x - p->pos.x) * (new_pos->x - p->pos.x)
 			+ (new_pos->y - p->pos.y) * (new_pos->y - p->pos.y));
 	init_ray_collision(&r, p, mov, render_dist);
+	//ray_collision_loop(&r, cub);
 	ray_dda_loop(&r, cub);
 	if (r.tile_type >= T_WALL && r.tile_type <= T_DOOR_C)
 	{
@@ -106,5 +137,16 @@ void	ray_collision(t_cub *cub, t_vec2df *new_pos, t_vec2df *mov)
 			new_pos->y -= 0.01;
 		else if (r.side == 3)
 			new_pos->x -= 0.01;
+	}
+
+	static int truc;
+	if (truc++ == 0)
+	{
+		printf("Did ray collision:\n");
+		printf("r.last_dist -> %lf\n", r.last_dist);
+		printf("r.render_dist -> %lf\n", r.render_dist);
+		printf("r.side -> %d\n", r.side);
+		printf("r.tile_type -> %d\n", r.tile_type);
+		printf("new_pos -> %lf;%lf\n", new_pos->x, new_pos->y);
 	}
 }

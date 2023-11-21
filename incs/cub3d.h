@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 05:20:26 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 17:06:42 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,7 +242,7 @@ void	print_mouse_pos(t_mlx *mlx);
 // ------- //
 // draw_frame.c
 void	init_ray(t_ray *r, t_player *p, int index);
-int		ray_dda_loop(t_ray *r, t_cub *cub);
+void	ray_dda_loop(t_ray *r, t_cub *cub);
 void	draw_frame(t_cub *cub, t_mlx *mlx, t_player *player);
 // draw_utils.c
 int		get_map_color(int tile_type);
@@ -277,6 +277,10 @@ void	ray_collision(t_cub *cub, t_vec2df *new_pos, t_vec2df *mov);
 int		set_mlx_hooks(t_cub *cub, t_mlx *mlx);
 int		keypress_hook(int keycode, t_cub *cub);
 int		keyrelease_hook(int keycode, t_cub *cub);
+
+
+// temp remooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooove
+int	is_solid_tile(t_map *map, int x, int y);
 
 // Features
 // w a s d	: move

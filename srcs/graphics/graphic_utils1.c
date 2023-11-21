@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:21:17 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 05:03:22 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 17:04:04 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ int	get_pixel(t_imgmlx *img, int pos[2])
 		dst = img->addr + (pos[1] * img->ll + pos[0] * (img->bpp / 8));
 		return (*(unsigned int *)dst);
 	}
-	return (0);
+	return (0x00ff00ff); // remove
+	//return (0);
 }
 
 // Draws rectangle to imgmlx
