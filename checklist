@@ -1,25 +1,18 @@
 to do:
+
+done:
+	- in 'assets' folder, put required textures and make an error if they are
+	  gone like "error\n Missing assets: lajksdfljdsf.xpm or something
+	- make door reopenable
+	- add door texture
+	- add simple door, no texture
+	- protect render distance
+	- handle collisions to walls
 	- BEFORE SUBMIT, AT THE END:
 		* protect all defines settings
 		* use ft_printf instead of printf where possible
 		* check all inits
-		* figure out what the weird visual bug is when going out of bounds
 		* check if minimap is safe
-	- handle collisions to walls
-	- protect render distance
-	- make a menu with 'esc' key
-		* "continue" and "quit" options
-		* maybe an "options" menu with toggles and sliders
-	- add simple door, no texture
-	- make door reopenable
-	- add door texture
-	- if shift key is pressed double player speed
-	- add cursor
-	- multithreading
-	- in 'assets' folder, put required textures and make an error if they are
-	  gone like "error\n Missing assets: lajksdfljdsf.xpm or something
-
-done:
 	- init player rotation
 	- player rotation
 	- move player according to time elapsed
@@ -44,3 +37,10 @@ not doing:
 		* nah, let's make an escape menu
 	- make rotation amount a factor of the window's width (or not idk)
 		* stupid, dont change rotation speed based on resolution
+	- figure out what the weird visual bug is when going out of bounds
+	- make a menu with 'esc' key
+		* "continue" and "quit" options
+		* maybe an "options" menu with toggles and sliders
+	- if shift key is pressed double player speed
+	- add cursor
+	- multithreading
