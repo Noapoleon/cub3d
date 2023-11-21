@@ -6,7 +6,7 @@
 /*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/21 19:06:57 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/19 14:52:15 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 15:52:14 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	print_fps(t_cub *cub)
 	++frames;
 	if (elapsed >= 1000000)
 	{
-		printf("%d fps\n", frames);
+		ft_printf("%d fps\n", frames);
 		elapsed = 0;
 		frames = 0;
 	}
@@ -33,5 +33,5 @@ void	print_mouse_pos(t_mlx *mlx)
 	int	pos[2];
 
 	mlx_mouse_get_pos(mlx->ptr, mlx->win, &pos[0], &pos[1]);
-	printf("mouse pos -> x:%d;y:%d\n", pos[0], pos[1]);
+	ft_printf("mouse pos -> x:%d;y:%d\n", pos[0], pos[1]);
 }

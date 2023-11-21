@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 04:46:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 04:48:54 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 15:44:38 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int	get_map_color(int tile_type)
 {
 	if (tile_type == T_AIR)
-		return (0x00cccccc); 
+		return (0x00cccccc);
 	else if (tile_type == T_WALL || tile_type == T_WALL_ANIM)
 		return (0x00eeeeee);
 	else if (tile_type == T_DOOR_C)
