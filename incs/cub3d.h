@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: juduval <juduval@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 17:06:42 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 20:27:29 by juduval          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define W_WIDTH		1600
 # define W_HEIGHT		800
 # define MOUSE_SPEED	1.0
-# define PLAYER_SPEED	3.0
+# define PLAYER_SPEED	5000.0
 # define PLAYER_REACH	1.5
 # define RENDER_DIST	100.0
 
@@ -278,9 +278,8 @@ int		set_mlx_hooks(t_cub *cub, t_mlx *mlx);
 int		keypress_hook(int keycode, t_cub *cub);
 int		keyrelease_hook(int keycode, t_cub *cub);
 
-
-// temp remooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooove
-int	is_solid_tile(t_map *map, int x, int y);
+// added functions that may be removed
+int		is_solid_tile(t_map *map, int x, int y);
 
 // Features
 // w a s d	: move

@@ -33,6 +33,7 @@ SRCS	:=	main.c \
 			inputs/hooks.c \
 			inputs/handle_inputs.c \
 			inputs/movement_collision.c \
+			inputs/movement_collision2.c \
 			graphics/draw_frame.c \
 			graphics/draw_utils.c \
 			graphics/draw_vert_line.c \

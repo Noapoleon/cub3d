@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movement_collision.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: juduval <juduval@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 02:41:19 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 16:59:15 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 20:12:23 by juduval          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	clamp_pos(t_map *map, t_vec2df *pos)
 // instead of camera vectors
 void	init_ray_collision(t_ray *r, t_player *p, t_vec2df *mov, double r_dist)
 {
-	r->index = 0;
+	r->index = -1;
 	set_vec2df(&r->dir, mov->x, mov->y);
 	set_vec2df(&r->step_dist, fabs(1.0 / r->dir.x), fabs(1.0 / r->dir.y));
 	set_vec2di(&r->map_check, p->pos.x, p->pos.y);
@@ -86,67 +86,3 @@ void	init_ray_collision(t_ray *r, t_player *p, t_vec2df *mov, double r_dist)
 	r->render_dist = r_dist;
 }
 
-//static int	ray_collision_loop(t_ray *r, t_cub *cub)
-//{
-//	int	*tile;
-//
-//	if (r->index == cub->mlx.w_mid)
-//		cub->player.cursor = NULL;
-//	while (r->last_dist <= r->render_dist)
-//	{
-//		dda_increment(r);
-//		if (r->last_dist >= r->render_dist)
-//			break ;
-//		if ((r->map_check.x >= 0 && r->map_check.x < cub->map.w)
-//			&& (r->map_check.y >= 0 && r->map_check.y < cub->map.h))
-//		{
-//			tile = &cub->map.tiles[r->map_check.y][r->map_check.x];
-//			if (*tile >= T_WALL)
-//			{
-//				r->tile_type = *tile;
-//				if (r->index == cub->mlx.w_mid && r->last_dist <= PLAYER_REACH)
-//					cub->player.cursor = tile;
-//				return (1);
-//			}
-//		}
-//	}
-//	r->side = -1;
-//	r->tile_type = -1;
-//	return (0);
-//}
-
-// If necessary this function will be used to detect where the players location
-// should be after moving
-void	ray_collision(t_cub *cub, t_vec2df *new_pos, t_vec2df *mov)
-{
-	t_ray		r;
-	double		render_dist;
-	t_player	*p;
-
-	p = &cub->player;
-	render_dist = sqrt((new_pos->x - p->pos.x) * (new_pos->x - p->pos.x)
-			+ (new_pos->y - p->pos.y) * (new_pos->y - p->pos.y));
-	init_ray_collision(&r, p, mov, render_dist);
-	//ray_collision_loop(&r, cub);
-	ray_dda_loop(&r, cub);
-	if (r.tile_type >= T_WALL && r.tile_type <= T_DOOR_C)
-	{
-		set_vec2df(new_pos, p->pos.x + r.dir.x * r.last_dist,
-			p->pos.y - r.dir.y * r.last_dist);
-		if (r.side == 1)
-			new_pos->y -= 0.01;
-		else if (r.side == 3)
-			new_pos->x -= 0.01;
-	}
-
-	static int truc;
-	if (truc++ == 0)
-	{
-		printf("Did ray collision:\n");
-		printf("r.last_dist -> %lf\n", r.last_dist);
-		printf("r.render_dist -> %lf\n", r.render_dist);
-		printf("r.side -> %d\n", r.side);
-		printf("r.tile_type -> %d\n", r.tile_type);
-		printf("new_pos -> %lf;%lf\n", new_pos->x, new_pos->y);
-	}
-}

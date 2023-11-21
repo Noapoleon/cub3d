@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_frame.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: juduval <juduval@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:32:27 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 17:39:27 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 20:25:21 by juduval          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void	init_ray(t_ray *r, t_player *p, int index)
 	set_vec2df(&r->dir, p->dir.x + p->cam.x * cam_x,
 		p->dir.y + p->cam.y * cam_x);
 	set_vec2df(&r->step_dist, fabs(1.0 / r->dir.x), fabs(1.0 / r->dir.y));
-	set_vec2di(&r->map_check, p->pos.x, p->pos.y);
+	set_vec2di(&r->map_check, p->pos.x - (p->pos.x < 0.0),
+		p->pos.y - (p->pos.y < 0.0));
 	set_vec2di(&r->step, 1 - (r->dir.x < 0.0) * 2, 1 - (r->dir.y > 0.0) * 2);
 	if (r->dir.x < 0.0)
 		r->dist.x = (p->pos.x - (double)r->map_check.x) * r->step_dist.x;
@@ -44,8 +45,6 @@ void	ray_dda_loop(t_ray *r, t_cub *cub)
 {
 	int	*tile;
 
-	static int truc;
-
 	if (r->index == cub->mlx.w_mid)
 		cub->player.cursor = NULL;
 	while (r->last_dist <= r->render_dist)
@@ -56,13 +55,6 @@ void	ray_dda_loop(t_ray *r, t_cub *cub)
 		if ((r->map_check.x >= 0 && r->map_check.x < cub->map.w)
 			&& (r->map_check.y >= 0 && r->map_check.y < cub->map.h))
 		{
-			if (truc == 0 && r->map_check.x == 1 && r->map_check.y == 0)
-			{
-				++truc;
-				printf("end pos -> %lf;%lf\n", cub->player.pos.x + r->dir.x * r->last_dist,
-					cub->player.pos.y - r->dir.y * r->last_dist);
-			}
-
 			tile = &cub->map.tiles[r->map_check.y][r->map_check.x];
 			if (*tile >= T_WALL)
 			{
