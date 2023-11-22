@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 19:29:12 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 20:39:19 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:38:36 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ static void	set_player_location(t_player *p, t_cub *cub)
 		delta_sec = (double)cub->delta * 0.000001;
 		set_vec2df(&new_pos, p->pos.x + (delta_sec * PLAYER_SPEED * mov.x),
 			p->pos.y - (delta_sec * PLAYER_SPEED * mov.y));
-		if ((int)p->pos.x != (int)new_pos.x || (int)p->pos.y != (int)new_pos.y)
+		if ((int)floor(p->pos.x) != (int)floor(new_pos.x)
+			|| (int)floor(p->pos.y) != (int)floor(new_pos.y))
 			ray_collision(cub, &new_pos, &mov);
 		clamp_pos(&cub->map, &new_pos);
 		set_vec2df(&p->pos, new_pos.x, new_pos.y);

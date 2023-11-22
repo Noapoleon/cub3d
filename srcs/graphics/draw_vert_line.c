@@ -6,7 +6,7 @@
 /*   By: juduval <juduval@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:20:05 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 19:50:59 by juduval          ###   ########.fr       */
+/*   Updated: 2023/11/22 14:04:41 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static t_texture	*get_wall_tex(t_cub *cub, t_ray *r)
 		return (&cub->props.door[1]);
 }
 
-static void	init_texline(t_texline *tl, t_cub *cub, t_ray *r)
+void	init_texline(t_texline *tl, t_cub *cub, t_ray *r)
 {
 	if (r->side == -1)
 	{
@@ -65,6 +65,11 @@ static void	init_texline(t_texline *tl, t_cub *cub, t_ray *r)
 	tl->pos[0] = (get_wall_x(r, &cub->player) * (double)tl->tex->w);
 	if (tl->pos[0] >= tl->tex->w)
 		tl->pos[0] = tl->tex->w - 1;
+	if (r->side != -1)
+		tl->fog = r->last_dist / RENDER_DIST;
+	if (tl->fog >= 1.0)
+		tl->fog = 1.0;
+	tl->fog_c = cub->props.col_f;
 }
 
 static int	tex_sample_wall(t_texline *tl)
@@ -75,7 +80,7 @@ static int	tex_sample_wall(t_texline *tl)
 	if (tl->pos[1] >= tl->tex->h)
 		tl->pos[1] = tl->tex->h - 1;
 	col = get_pixel(&tl->tex->img, tl->pos);
-	return (col);
+	return (tex_apply_fog(col, tl->fog_c, tl->fog));
 }
 
 // Prints vertical line with texture

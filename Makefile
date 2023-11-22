@@ -40,7 +40,6 @@ SRCS	:=	main.c \
 			graphics/graphic_utils1.c \
 			graphics/graphic_utils2.c \
 			graphics/graphic_utils3.c
-#			test_code/display_utils.c
 OBJS	:=	$(SRCS:.c=.o)
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCS))
 OBJS	:=	$(addprefix $(OBJDIR)/, $(OBJS))

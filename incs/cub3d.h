@@ -6,7 +6,7 @@
 /*   By: juduval <juduval@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 20:33:52 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/22 14:15:46 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # define MOUSE_SPEED	1.0
 # define PLAYER_SPEED	3.0
 # define PLAYER_REACH	1.5
-# define RENDER_DIST	100.0
+# define RENDER_DIST	6.0
 
 // CONSTANTS
 # define T_NONE			-1
@@ -65,6 +65,8 @@ struct s_texline
 	int			range[2];
 	double		step[2];
 	int			pos[2];
+	double		fog;
+	double		fog_c;
 };
 struct s_vec2df
 {
@@ -262,6 +264,7 @@ int		open_texture(t_mlx *mlx, t_texture *t);
 void	refresh_sprite(t_cub *cub, t_sprite *s);
 // graphic_utils3.c
 int		open_sprite(t_mlx *mlx, t_sprite *s, int delay);
+int		tex_apply_fog(int col, int col_f, double fog);
 
 // ------ //
 // INPUTS //

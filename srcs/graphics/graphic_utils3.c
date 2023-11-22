@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 05:06:44 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 05:16:19 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/22 14:14:14 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,19 @@ int	open_sprite(t_mlx *mlx, t_sprite *s, int delay)
 		++i;
 	}
 	return (0);
+}
+
+// Blends current texture color with floor color for fog effect
+int	tex_apply_fog(int col, int col_f, double fog)
+{
+	int		r;
+	int		g;
+	int		b;
+
+	r = ((col >> 16) & 0xff)
+		- ((double)(((col >> 16) & 0xff) - ((col_f >> 16) & 0xff)) *fog);
+	g = ((col >> 8) & 0xff)
+		- ((double)(((col >> 8) & 0xff) - ((col_f >> 8) & 0xff)) *fog);
+	b = (col & 0xff) - ((double)((col & 0xff) - (col_f & 0xff)) *fog);
+	return ((r << 16) | (g << 8) | b);
 }

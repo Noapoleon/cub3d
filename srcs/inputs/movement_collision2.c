@@ -6,7 +6,7 @@
 /*   By: juduval <juduval@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 19:56:46 by juduval           #+#    #+#             */
-/*   Updated: 2023/11/21 21:18:56 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:41:21 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ static int	ray_collision_loop(t_ray *r, t_cub *cub)
 {
 	int	*tile;
 
-	if (r->index == cub->mlx.w_mid)
-		cub->player.cursor = NULL;
 	while (r->last_dist <= r->render_dist)
 	{
 		dda_increment(r);
@@ -30,8 +28,6 @@ static int	ray_collision_loop(t_ray *r, t_cub *cub)
 			if (*tile >= T_WALL && *tile <= T_DOOR_C)
 			{
 				r->tile_type = *tile;
-				if (r->index == cub->mlx.w_mid && r->last_dist <= PLAYER_REACH)
-					cub->player.cursor = tile;
 				return (1);
 			}
 		}
@@ -54,20 +50,13 @@ void	ray_collision(t_cub *cub, t_vec2df *new_pos, t_vec2df *mov)
 			+ (new_pos->y - p->pos.y) * (new_pos->y - p->pos.y));
 	init_ray_collision(&r, p, mov, render_dist);
 	ray_collision_loop(&r, cub);
-
-
 	if (r.tile_type >= T_WALL && r.tile_type <= T_DOOR_C)
 	{
 		set_vec2df(new_pos, p->pos.x + r.dir.x * r.last_dist,
 			p->pos.y - r.dir.y * r.last_dist);
-		//int static truc;
-		//if (truc == 0 && )
-		//{
-		//	++truc;
-		//}
 		if (r.side == 0)
 			new_pos->y += 0.01;
-		else if (r.side == 1) // peut etre sa
+		else if (r.side == 1)
 			new_pos->y -= 0.01;
 		else if (r.side == 2)
 			new_pos->x += 0.01;

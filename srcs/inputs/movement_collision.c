@@ -6,7 +6,7 @@
 /*   By: juduval <juduval@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 02:41:19 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 21:06:48 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:39:40 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,7 @@ void	init_ray_collision(t_ray *r, t_player *p, t_vec2df *mov, double r_dist)
 	r->index = -1;
 	set_vec2df(&r->dir, mov->x, mov->y);
 	set_vec2df(&r->step_dist, fabs(1.0 / r->dir.x), fabs(1.0 / r->dir.y));
-	set_vec2di(&r->map_check, p->pos.x - (p->pos.x < 0.0),
-		p->pos.y - (p->pos.y < 0.0));
+	set_vec2di(&r->map_check, floor(p->pos.x), floor(p->pos.y));
 	set_vec2di(&r->step, 1 - (r->dir.x < 0.0) * 2, 1 - (r->dir.y > 0.0) * 2);
 	if (r->dir.x < 0.0)
 		r->dist.x = (p->pos.x - (double)r->map_check.x) * r->step_dist.x;
@@ -86,4 +85,3 @@ void	init_ray_collision(t_ray *r, t_player *p, t_vec2df *mov, double r_dist)
 	r->tile_type = -1;
 	r->render_dist = r_dist;
 }
-

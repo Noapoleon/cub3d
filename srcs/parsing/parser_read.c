@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/26 16:14:29 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 00:44:20 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:57:03 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	check_map_path(const char *map_path)
 	if (fd != -1)
 		return (ft_perr(CUB_ERR CE_SCENE_OPEN, map_path, "Is a directory"),
 			close(fd), -1);
-	return (close(fd), 0);
+	return (0);
 }
 
 // Reads map file lines one by one and stores them in a chained list
