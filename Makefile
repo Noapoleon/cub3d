@@ -1,5 +1,5 @@
 # Project Structure
-NAME	=	cub3d
+NAME	=	cub3D
 SRCDIR	=	srcs
 OBJDIR	=	objs
 INCDIR	=	incs
