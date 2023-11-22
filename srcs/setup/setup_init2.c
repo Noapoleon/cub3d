@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 14:11:05 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 05:14:14 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/22 14:31:32 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,4 @@ void	init_vars_imgmlx(t_imgmlx *img)
 	img->endian = 0;
 	img->w = -1;
 	img->h = -1;
-}
-
-void	init_vars_sprite(t_sprite *s)
-{
-	init_vars_texture(&s->tex);
-	s->num_frames = 0;
-	s->frames = NULL;
-	s->index = -1;
-	s->frame = NULL;
-	s->delay = -1;
-	s->elapsed = 0;
 }

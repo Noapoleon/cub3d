@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 15:28:17 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 00:32:22 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/22 15:09:30 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 or superior to 4096x4096\n"
 # define CE_BAD_MOUSESPEED	"Mouse speed must be positive\n"
 # define CE_BAD_PLAYERSPEED	"Player speed must be positive\n"
-# define CE_BAD_PLAYERREACH	"Player reach must be positive\n"
 # define CE_BAD_RENDERDIST	"Render distance must be positive\n"
 
 // Scene file
@@ -54,9 +53,5 @@ file name must end with '.cub'\n"
 # define CE_MLX_WIN			"Failed to create new mlx window\n"
 # define CE_MLX_IMG			"Failed to create new mlx image\n"
 # define CE_TEX_OPEN	"Failed to open/read texture `%s'\n"
-# define CE_SPRITE_RES		"Sprite width is not multiple of its height\n"
-# define CE_SPRITE_ALLOC	"Failed to allocate frames: `%s'\n"
-# define CE_SPRITE_ALLOC	"Failed to allocate frames: `%s'\n"
-# define CE_SPRITE_IMG		"Failed to create new sprite mlx image\n"
 
 #endif

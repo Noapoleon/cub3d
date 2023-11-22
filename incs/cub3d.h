@@ -6,7 +6,7 @@
 /*   By: juduval <juduval@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/22 14:15:46 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/22 15:13:24 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,16 @@
 # define W_HEIGHT		800
 # define MOUSE_SPEED	1.0
 # define PLAYER_SPEED	3.0
-# define PLAYER_REACH	1.5
-# define RENDER_DIST	6.0
+# define RENDER_DIST	100.0
 
 // CONSTANTS
 # define T_NONE			-1
 # define T_AIR			0
 # define T_WALL			1
-# define T_WALL_ANIM	2
-# define T_DOOR_C		3
-# define T_DOOR_O		4
 # define W_TITLE		"cub3d"
+# define DELTA_SEC		0.0125
+# define DELTA_USEC		12500
 
-typedef struct s_sprite		t_sprite;
 typedef struct s_texline	t_texline;
 typedef struct s_vec2df		t_vec2df;
 typedef struct s_vec2di		t_vec2di;
@@ -65,8 +62,6 @@ struct s_texline
 	int			range[2];
 	double		step[2];
 	int			pos[2];
-	double		fog;
-	double		fog_c;
 };
 struct s_vec2df
 {
@@ -97,8 +92,6 @@ struct s_inputs
 	int	s;
 	int	a;
 	int	d;
-	int	e;
-	int	m;
 	int	la;
 	int	ra;
 };
@@ -119,16 +112,6 @@ struct s_texture
 	int			w;
 	int			h;
 };
-struct s_sprite
-{
-	t_texture	tex;
-	int			num_frames;
-	t_texture	*frames;
-	int			index;
-	t_texture	*frame;
-	long		delay;
-	long		elapsed;
-};
 struct s_mlx
 {
 	void		*ptr;
@@ -143,8 +126,6 @@ struct s_mlx
 struct s_props
 {
 	t_texture	walls[4];
-	t_texture	door[2];
-	t_sprite	wall_anim;
 	int			col_f;
 	int			col_c;
 };
@@ -153,7 +134,6 @@ struct s_map
 	int		w;
 	int		h;
 	int		**tiles;
-	int		size[2];
 };
 struct s_player
 {
@@ -162,7 +142,6 @@ struct s_player
 	t_vec2df	dir;
 	t_vec2df	cam;
 	double		ratio_fix;
-	int			*cursor;
 };
 struct s_cub
 {
@@ -171,8 +150,6 @@ struct s_cub
 	t_player	player;
 	t_mlx		mlx;
 	t_inputs	inputs;
-	long		delta;
-	int			minimap;
 };
 
 // ---- //
@@ -194,7 +171,6 @@ void	init_vars_inputs(t_inputs *inputs);
 // setup_init_2.c
 void	init_vars_imgmlx(t_imgmlx *img);
 void	init_vars_texture(t_texture *t);
-void	init_vars_sprite(t_sprite *s);
 // setup_mlx.c
 int		setup_mlx(t_cub *cub, t_mlx *mlx, t_props *props);
 
@@ -225,7 +201,6 @@ void	alloc_map_size(t_map *map, int width, int height);
 // ----- //
 // utils1.c
 void	set_int_arr(int *arr, int size, int val);
-void	get_deltatime(t_cub *cub);
 // utils_free.c
 void	free_props(t_props *props);
 void	free_map(t_map *map);
@@ -235,9 +210,6 @@ void	free_cub(t_cub *cub);
 void	set_vec2df(t_vec2df *v, double x, double y);
 void	set_vec2di(t_vec2di *v, int x, int y);
 double	get_principal_angle(double angle);
-// utils_debug.c
-void	print_fps(t_cub *cub);
-void	print_mouse_pos(t_mlx *mlx);
 
 // ------- //
 // GRAHICS //
@@ -246,9 +218,6 @@ void	print_mouse_pos(t_mlx *mlx);
 void	init_ray(t_ray *r, t_player *p, int index);
 void	ray_dda_loop(t_ray *r, t_cub *cub);
 void	draw_frame(t_cub *cub, t_mlx *mlx, t_player *player);
-// draw_utils.c
-int		get_map_color(int tile_type);
-void	dda_increment(t_ray *r);
 // draw_vert_line.c
 void	draw_vert_line(t_cub *cub, t_ray *r);
 // graphic_utils1.c
@@ -259,30 +228,20 @@ int		get_pixel(t_imgmlx *img, int pos[2]);
 void	set_rect(t_imgmlx *img, int pos[2], int size[2], int col);
 // graphic_utils2.c
 void	set_imgmlx_data(t_imgmlx *img, int width, int height);
-void	copy_frame(t_imgmlx *src, t_imgmlx *dst, int pos[2]);
 int		open_texture(t_mlx *mlx, t_texture *t);
-void	refresh_sprite(t_cub *cub, t_sprite *s);
-// graphic_utils3.c
-int		open_sprite(t_mlx *mlx, t_sprite *s, int delay);
-int		tex_apply_fog(int col, int col_f, double fog);
 
 // ------ //
 // INPUTS //
 // ------ //
 // handle_inputs.c
 void	handle_inputs(t_cub *cub);
-// movement_collision.c
-void	get_mov_vec(double rot, t_inputs *inputs, t_vec2df *mov);
-void	clamp_pos(t_map *map, t_vec2df *pos);
-void	init_ray_collision(t_ray *r, t_player *p, t_vec2df *mov, double r_dist);
-void	ray_collision(t_cub *cub, t_vec2df *new_pos, t_vec2df *mov);
 // hooks.c
 int		set_mlx_hooks(t_cub *cub, t_mlx *mlx);
 int		keypress_hook(int keycode, t_cub *cub);
 int		keyrelease_hook(int keycode, t_cub *cub);
 
 // added functions that may be removed
-int		is_solid_tile(t_map *map, int x, int y);
+//int		is_solid_tile(t_map *map, int x, int y);
 
 // Features
 // w a s d	: move

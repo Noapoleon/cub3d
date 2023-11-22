@@ -1,5 +1,5 @@
-F 31,31,31
-C 31,31,31
+F 25,25,25
+C 25,25,25
 
 NO textures/nl_dungeon/new/brickwall.xpm
 SO textures/nl_dungeon/new/brickwall.xpm
@@ -10,7 +10,13 @@ DC textures/nl_dungeon/new/brickwall_door_closed.xpm
 DO textures/nl_dungeon/new/brickwall_door_opened.xpm
 WA textures/nl_dungeon/new/brickwall_torch.xpm
 
-111
-1S1
-111
-
+1211111111111111111
+10W1001001001000001
+2011000001000001001
+1003001000111101111
+2001111000001001001
+1000000000000001001
+1311111111111001001
+1011000000000001011
+1000000001000000001
+1111111222111111111

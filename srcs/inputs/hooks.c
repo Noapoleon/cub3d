@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 20:41:09 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 16:35:28 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/22 14:48:37 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,6 @@ int	keypress_hook(int keycode, t_cub *cub)
 		cub->inputs.a = 1;
 	if (keycode == XK_d)
 		cub->inputs.d = 1;
-	if (keycode == XK_e)
-		cub->inputs.e = 1;
-	if (keycode == XK_m)
-		cub->inputs.m = 1;
 	if (keycode == XK_Left)
 		cub->inputs.la = 1;
 	if (keycode == XK_Right)
@@ -74,13 +70,6 @@ int	keyrelease_hook(int keycode, t_cub *cub)
 		cub->inputs.a = 0;
 	if (keycode == XK_d)
 		cub->inputs.d = 0;
-	if (keycode == XK_e)
-		cub->inputs.e = 0;
-	if (keycode == XK_m)
-	{
-		cub->inputs.m = 0;
-		set_vec2df(&cub->player.pos, 0.5, -0.5);
-	}
 	if (keycode == XK_Left)
 		cub->inputs.la = 0;
 	if (keycode == XK_Right)

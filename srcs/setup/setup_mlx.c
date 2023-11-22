@@ -6,7 +6,7 @@
 /*   By: juduval <juduval@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 17:20:54 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 19:54:10 by juduval          ###   ########.fr       */
+/*   Updated: 2023/11/22 14:47:33 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,8 @@ static int	open_props_textures(t_mlx *mlx, t_props *props)
 	{
 		if (open_texture(mlx, &props->walls[i]) != 0)
 			return (ft_perr(CUB_ERR CE_TEX_OPEN, props->walls[i].path), -1);
-		if (i < 2 && open_texture(mlx, &props->door[i]) != 0)
-			return (ft_perr(CUB_ERR CE_TEX_OPEN, props->door[i].path), -1);
 		++i;
 	}
-	if (open_sprite(mlx, &props->wall_anim, 100000) != 0)
-		return (-1);
 	return (0);
 }
 

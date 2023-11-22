@@ -6,7 +6,7 @@
 /*   By: juduval <juduval@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:01 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 19:49:23 by juduval          ###   ########.fr       */
+/*   Updated: 2023/11/22 14:49:58 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,8 @@ int	main(int ac, char **av)
 // main game loop
 int	game_loop(t_cub *cub)
 {
-	get_deltatime(cub);
 	if (cub->mlx.focused)
 	{
-		refresh_sprite(cub, &cub->props.wall_anim);
 		handle_inputs(cub);
 		draw_frame(cub, &cub->mlx, &cub->player);
 	}

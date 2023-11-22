@@ -29,17 +29,12 @@ SRCS	:=	main.c \
 			utils/utils1.c \
 			utils/utils_free.c \
 			utils/utils_vec.c \
-			utils/utils_debug.c \
 			inputs/hooks.c \
 			inputs/handle_inputs.c \
-			inputs/movement_collision.c \
-			inputs/movement_collision2.c \
 			graphics/draw_frame.c \
-			graphics/draw_utils.c \
 			graphics/draw_vert_line.c \
 			graphics/graphic_utils1.c \
-			graphics/graphic_utils2.c \
-			graphics/graphic_utils3.c
+			graphics/graphic_utils2.c
 OBJS	:=	$(SRCS:.c=.o)
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCS))
 OBJS	:=	$(addprefix $(OBJDIR)/, $(OBJS))

@@ -6,7 +6,7 @@
 /*   By: juduval <juduval@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 17:20:05 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/22 14:04:41 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/22 15:24:05 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,6 @@ static double	get_wall_x(t_ray *r, t_player *p)
 	return (wall_x);
 }
 
-static t_texture	*get_wall_tex(t_cub *cub, t_ray *r)
-{
-	if (r->tile_type == T_WALL)
-		return (&cub->props.walls[r->side]);
-	else if (r->tile_type == T_WALL_ANIM)
-		return (cub->props.wall_anim.frame);
-	else if (r->tile_type == T_DOOR_C)
-		return (&cub->props.door[0]);
-	else
-		return (&cub->props.door[1]);
-}
-
 void	init_texline(t_texline *tl, t_cub *cub, t_ray *r)
 {
 	if (r->side == -1)
@@ -52,7 +40,7 @@ void	init_texline(t_texline *tl, t_cub *cub, t_ray *r)
 		tl->range[1] = cub->mlx.h_mid;
 		return ;
 	}
-	tl->tex = get_wall_tex(cub, r);
+	tl->tex = &cub->props.walls[r->side];
 	tl->height = (int)((double)W_HEIGHT / r->last_dist);
 	tl->h_mid = tl->height / 2;
 	tl->range[0] = cub->mlx.h_mid - tl->h_mid;
@@ -65,11 +53,6 @@ void	init_texline(t_texline *tl, t_cub *cub, t_ray *r)
 	tl->pos[0] = (get_wall_x(r, &cub->player) * (double)tl->tex->w);
 	if (tl->pos[0] >= tl->tex->w)
 		tl->pos[0] = tl->tex->w - 1;
-	if (r->side != -1)
-		tl->fog = r->last_dist / RENDER_DIST;
-	if (tl->fog >= 1.0)
-		tl->fog = 1.0;
-	tl->fog_c = cub->props.col_f;
 }
 
 static int	tex_sample_wall(t_texline *tl)
@@ -80,7 +63,7 @@ static int	tex_sample_wall(t_texline *tl)
 	if (tl->pos[1] >= tl->tex->h)
 		tl->pos[1] = tl->tex->h - 1;
 	col = get_pixel(&tl->tex->img, tl->pos);
-	return (tex_apply_fog(col, tl->fog_c, tl->fog));
+	return (col);
 }
 
 // Prints vertical line with texture

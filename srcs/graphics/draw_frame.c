@@ -6,7 +6,7 @@
 /*   By: juduval <juduval@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:32:27 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/22 13:49:12 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/22 15:11:34 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,30 @@ void	init_ray(t_ray *r, t_player *p, int index)
 	r->render_dist = RENDER_DIST;
 }
 
+static void	dda_increment(t_ray *r)
+{
+	if (r->dist.x < r->dist.y)
+	{
+		r->map_check.x += r->step.x;
+		r->last_dist = r->dist.x;
+		r->dist.x += r->step_dist.x;
+		r->side = (r->step.x > 0) + 2;
+	}
+	else
+	{
+		r->map_check.y += r->step.y;
+		r->last_dist = r->dist.y;
+		r->dist.y += r->step_dist.y;
+		r->side = r->step.y > 0;
+	}
+}
+
 // Loops on the DDA algorithm, stores info in ray struct
 // Returns 1 if a wall is hit, returns 0 otherwise
 void	ray_dda_loop(t_ray *r, t_cub *cub)
 {
 	int	*tile;
 
-	if (r->index == cub->mlx.w_mid)
-		cub->player.cursor = NULL;
 	while (r->last_dist <= r->render_dist)
 	{
 		dda_increment(r);
@@ -56,11 +72,9 @@ void	ray_dda_loop(t_ray *r, t_cub *cub)
 			&& (r->map_check.y >= 0 && r->map_check.y < cub->map.h))
 		{
 			tile = &cub->map.tiles[r->map_check.y][r->map_check.x];
-			if (*tile >= T_WALL)
+			if (*tile == T_WALL)
 			{
 				r->tile_type = *tile;
-				if (r->index == cub->mlx.w_mid && r->last_dist <= PLAYER_REACH)
-					cub->player.cursor = tile;
 				return ;
 			}
 		}
@@ -85,38 +99,10 @@ static void	cast_rays(t_cub *cub, t_player *p)
 	}
 }
 
-// Draws minimap in corner
-static void	draw_minimap(t_mlx *mlx, t_map *map, t_player *p)
-{
-	int	x;
-	int	y;
-	int	pos[2];
-
-	y = 0;
-	while (y < map->h)
-	{
-		x = 0;
-		while (x < map->w)
-		{
-			pos[0] = 10 + (x * 10);
-			pos[1] = 10 + (y * 10);
-			set_rect(&mlx->img, pos, map->size,
-				get_map_color(map->tiles[y][x]));
-			++x;
-		}
-		++y;
-	}
-	set_rect(&mlx->img,
-		(int [2]){10 + p->pos.x * 10.0 - 2, 10 + p->pos.y * 10.0 - 2},
-		(int [2]){4, 4}, 0x00ff0000);
-}
-
 // Main draw function
 void	draw_frame(t_cub *cub, t_mlx *mlx, t_player *player)
 {
 	clear_imgmlx(cub, 0x0);
 	cast_rays(cub, player);
-	if (cub->minimap)
-		draw_minimap(mlx, &cub->map, player);
 	mlx_put_image_to_window(mlx->ptr, mlx->win, mlx->img.ptr, 0, 0);
 }

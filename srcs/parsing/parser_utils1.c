@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 18:25:34 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 05:17:25 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/22 14:41:28 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ int	has_all_props(t_props *props)
 {
 	return (props->walls[0].path && props->walls[1].path
 		&& props->walls[2].path && props->walls[3].path
-		&& props->door[0].path && props->door[1].path
-		&& props->wall_anim.tex.path
 		&& props->col_f != -1 && props->col_c != -1);
 }
 
@@ -55,9 +53,8 @@ int	is_map_str(const char *s)
 	i = 0;
 	while (s[i])
 	{
-		if (s[i] != '0' && s[i] != '1' && s[i] != '2' && s[i] != '3'
-			&& s[i] != ' ' && s[i] != 'N' && s[i] != 'S' && s[i] != 'E'
-			&& s[i] != 'W')
+		if (s[i] != '0' && s[i] != '1' && s[i] != ' '
+			&& s[i] != 'N' && s[i] != 'S' && s[i] != 'E' && s[i] != 'W')
 			return (0);
 		++i;
 	}
@@ -75,12 +72,6 @@ void	print_missing_props(t_props *prop)
 		ft_printf(" - West texture\n");
 	if (prop->walls[3].path == NULL)
 		ft_printf(" - East texture\n");
-	if (prop->door[0].path == NULL)
-		ft_printf(" - Closed door texture\n");
-	if (prop->door[1].path == NULL)
-		ft_printf(" - Opened door texture\n");
-	if (prop->wall_anim.tex.path == NULL)
-		ft_printf(" - Animated wall sprite\n");
 	if (prop->col_f == -1)
 		ft_printf(" - Floor color\n");
 	if (prop->col_c == -1)
