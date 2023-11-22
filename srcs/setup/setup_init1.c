@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 15:52:56 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 05:13:24 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/22 16:19:47 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ void	init_vars_map(t_map *map)
 	map->w = -1;
 	map->h = -1;
 	map->tiles = NULL;
-	map->size[0] = 10;
-	map->size[1] = 10;
+	map->size = MAP_CELL_SIZE;
 }
 
 // Initializes player variables to default values

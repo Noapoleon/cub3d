@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 15:28:17 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 00:32:22 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/22 16:15:49 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ or superior to 4096x4096\n"
 # define CE_BAD_PLAYERSPEED	"Player speed must be positive\n"
 # define CE_BAD_PLAYERREACH	"Player reach must be positive\n"
 # define CE_BAD_RENDERDIST	"Render distance must be positive\n"
+# define CE_BAD_MAPCELLSIZE	"Map cell size must be positive\n"
 
 // Scene file
 # define CE_SCENE_PATH_NULL		"Scene path is NULL\n"

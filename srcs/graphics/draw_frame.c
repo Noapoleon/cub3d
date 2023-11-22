@@ -6,7 +6,7 @@
 /*   By: juduval <juduval@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/17 16:32:27 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/22 13:49:12 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/22 16:24:33 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,23 +91,26 @@ static void	draw_minimap(t_mlx *mlx, t_map *map, t_player *p)
 	int	x;
 	int	y;
 	int	pos[2];
+	int	size[2];
 
+	size[0] = map->size;
+	size[1] = map->size;
 	y = 0;
 	while (y < map->h)
 	{
 		x = 0;
 		while (x < map->w)
 		{
-			pos[0] = 10 + (x * 10);
-			pos[1] = 10 + (y * 10);
-			set_rect(&mlx->img, pos, map->size,
+			pos[0] = 10 + (x * map->size);
+			pos[1] = 10 + (y * map->size);
+			set_rect(&mlx->img, pos, size,
 				get_map_color(map->tiles[y][x]));
 			++x;
 		}
 		++y;
 	}
 	set_rect(&mlx->img,
-		(int [2]){10 + p->pos.x * 10.0 - 2, 10 + p->pos.y * 10.0 - 2},
+		(int [2]){10 + p->pos.x * map->size - 2, 10 + p->pos.y * map->size - 2},
 		(int [2]){4, 4}, 0x00ff0000);
 }
 

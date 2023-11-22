@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:45:29 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 05:14:28 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/22 16:15:30 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static int	settings_check(void)
 		return (ft_perr(CUB_ERR CE_BAD_PLAYERREACH), -1);
 	if (RENDER_DIST <= 0)
 		return (ft_perr(CUB_ERR CE_BAD_RENDERDIST), -1);
+	if (MAP_CELL_SIZE <= 0)
+		return (ft_perr(CUB_ERR CE_BAD_MAPCELLSIZE), -1);
 	return (0);
 }
 

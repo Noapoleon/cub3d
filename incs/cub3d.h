@@ -6,7 +6,7 @@
 /*   By: juduval <juduval@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/22 14:15:46 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/22 16:24:45 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,13 @@
 # include "cub3d_err.h"
 
 // SETTINGS
-# define W_WIDTH		1600
-# define W_HEIGHT		800
+# define W_WIDTH		1920
+# define W_HEIGHT		1000
 # define MOUSE_SPEED	1.0
 # define PLAYER_SPEED	3.0
 # define PLAYER_REACH	1.5
 # define RENDER_DIST	6.0
+# define MAP_CELL_SIZE	15
 
 // CONSTANTS
 # define T_NONE			-1
@@ -153,7 +154,7 @@ struct s_map
 	int		w;
 	int		h;
 	int		**tiles;
-	int		size[2];
+	int		size;
 };
 struct s_player
 {
