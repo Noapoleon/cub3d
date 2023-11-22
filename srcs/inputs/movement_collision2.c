@@ -6,7 +6,7 @@
 /*   By: juduval <juduval@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 19:56:46 by juduval           #+#    #+#             */
-/*   Updated: 2023/11/21 20:25:54 by juduval          ###   ########.fr       */
+/*   Updated: 2023/11/21 21:18:56 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,23 @@ void	ray_collision(t_cub *cub, t_vec2df *new_pos, t_vec2df *mov)
 			+ (new_pos->y - p->pos.y) * (new_pos->y - p->pos.y));
 	init_ray_collision(&r, p, mov, render_dist);
 	ray_collision_loop(&r, cub);
+
+
 	if (r.tile_type >= T_WALL && r.tile_type <= T_DOOR_C)
 	{
 		set_vec2df(new_pos, p->pos.x + r.dir.x * r.last_dist,
 			p->pos.y - r.dir.y * r.last_dist);
-		if (r.side == 1)
+		//int static truc;
+		//if (truc == 0 && )
+		//{
+		//	++truc;
+		//}
+		if (r.side == 0)
+			new_pos->y += 0.01;
+		else if (r.side == 1) // peut etre sa
 			new_pos->y -= 0.01;
+		else if (r.side == 2)
+			new_pos->x += 0.01;
 		else if (r.side == 3)
 			new_pos->x -= 0.01;
 	}

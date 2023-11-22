@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 19:29:12 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 16:42:44 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/11/21 20:39:19 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	set_player_location(t_player *p, t_cub *cub)
 	}
 }
 
-// 
+// Opens and closes doors while preventing spam by holding the key
 static void	handle_doors(t_inputs *i, t_player *p)
 {
 	static int	last_e;
@@ -77,6 +77,7 @@ static void	handle_doors(t_inputs *i, t_player *p)
 		last_e = 0;
 }
 
+// Turns on and off the minimap while preventing spam by holding the key
 static void	handle_minimap(t_inputs *i, t_cub *cub)
 {
 	static int	last_m;

@@ -6,7 +6,7 @@
 /*   By: juduval <juduval@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 15:33:43 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/11/21 20:27:29 by juduval          ###   ########.fr       */
+/*   Updated: 2023/11/21 20:33:52 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define W_WIDTH		1600
 # define W_HEIGHT		800
 # define MOUSE_SPEED	1.0
-# define PLAYER_SPEED	5000.0
+# define PLAYER_SPEED	3.0
 # define PLAYER_REACH	1.5
 # define RENDER_DIST	100.0
 
